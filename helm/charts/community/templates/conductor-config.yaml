@@ -1,0 +1,43 @@
+kind: ConfigMap
+metadata:
+  annotations:
+    kubesphere.io/creator: admin
+    kubesphere.io/description: conductor 配置文件
+  name: conductor-config
+apiVersion: v1
+data:
+  config-local.properties: |
+    conductor.grpc-server.enabled=false
+
+    # Database persistence model.
+    {{- if .Values.postgresql.enabled }}
+    conductor.db.type=postgres
+    spring.datasource.url=jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/monkeys
+    spring.datasource.username=postgres
+    spring.datasource.password=monkeysai999
+    {{- else }}
+    conductor.db.type=memory
+    {{- end }}
+
+    # Elastic search instance indexing is disabled.
+    conductor.indexing.enabled=false
+    # conductor.elasticsearch.url=http://conductor-es:9200
+    # conductor.elasticsearch.version=7
+    # conductor.elasticsearch.indexReplicasCount=0
+    # conductor.elasticsearch.clusterHealthColor=yellow
+
+    # Load sample kitchen sink workflow
+    loadSample=false
+
+    # Thresholds
+    conductor.app.workflowInputPayloadSizeThreshold=1MB
+    conductor.app.workflowOutputPayloadSizeThreshold=1MB
+    conductor.app.maxWorkflowOutputPayloadSizeThreshold=4GB
+    conductor.app.maxWorkflowInputPayloadSizeThreshold=4GB
+    conductor.app.taskInputPayloadSizeThreshold=1MB
+    conductor.app.taskOutputPayloadSizeThreshold=1MB
+    conductor.app.maxTaskInputPayloadSizeThreshold=4GB
+    conductor.app.maxTaskOutputPayloadSizeThreshold=4GB
+    conductor.app.maxWorkflowVariablesPayloadSizeThreshold=100MB
+    conductor.app.workflowOffsetTimeout=10m
+    conductor.app.asyncUpdateShortRunningWorkflowDuration=10m

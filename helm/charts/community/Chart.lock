@@ -1,0 +1,12 @@
+dependencies:
+- name: elasticsearch
+  repository: https://helm.elastic.co
+  version: 8.5.1
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 12.5.6
+- name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 16.13.2
+digest: sha256:f8e39b7b44b8fc5cb65884de392eb6f941110ab4e58125013d91fa1c496e719d
+generated: "2024-03-24T13:34:08.250633+07:00"

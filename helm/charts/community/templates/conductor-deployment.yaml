@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+{{ include "monkeys.ud.annotations" . | indent 4 }}
+    descriptions: conductor
+  labels:
+{{- include "monkeys.labels" . | nindent 4 }}
+    component: conductor
+{{ include "monkeys.ud.labels" . | indent 4 }}
+  name: {{ template "monkeys.conductor.fullname" . }}
+spec:
+  replicas: {{ .Values.conductor.replicas }}
+  selector:
+    matchLabels:
+{{- include "monkeys.selectorLabels" . | nindent 6 }}
+      component: conductor
+  template:
+    metadata:
+      annotations:
+{{ include "monkeys.ud.annotations" . | indent 8 }}
+      labels:
+{{- include "monkeys.selectorLabels" . | nindent 8 }}
+        component: conductor
+{{ include "monkeys.ud.labels" . | indent 8 }}
+    spec:
+      enableServiceLinks: false
+      {{- if .Values.conductor.image.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.conductor.image.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - image: "{{ .Values.conductor.image.repository }}:{{ .Values.conductor.image.tag }}"
+          imagePullPolicy: "{{ .Values.conductor.image.pullPolicy }}"
+          name: conductor
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.conductor.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /app/config/config-local.properties
+              name: conductor-config
+              readOnly: true
+              subPath: config-local.properties
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: conductor-config
+          name: conductor-config

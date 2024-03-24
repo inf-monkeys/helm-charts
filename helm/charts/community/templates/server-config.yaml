@@ -1,0 +1,51 @@
+immutable: false
+kind: ConfigMap
+metadata:
+  name: server-config
+apiVersion: v1
+data:
+  config.yaml: |
+    server:
+      # defaults to run on port 3000
+      port: 3000
+      appId: {{ .Values.server.server.appId }}
+      appUrl: {{ .Values.server.server.appUrl }}
+
+    {{- if .Values.postgresql.enabled }}
+    database:
+      type: postgres
+      host: {{ .Release.Name }}-postgresql
+      port: 5432
+      username: {{ .Values.postgresql.global.postgresql.auth.username }}
+      password: {{ .Values.postgresql.global.postgresql.auth.password }}
+      database: {{ .Values.postgresql.global.postgresql.auth.database }}
+      synchronize: true
+    {{- else if .Values.externalPostgresql.enabled }}
+    database:
+      type: postgres
+      host: {{ .Values.externalPostgresql.host }}
+      port: {{ .Values.externalPostgresql.port }}
+      username: {{ .Values.externalPostgresql.username }}
+      password: {{ .Values.externalPostgresql.password }}
+      database: {{ .Values.externalPostgresql.database }}
+      synchronize: true
+    {{- else }}
+    database:
+      type: better-sqlite3
+      database: data/db.sqlite
+      synchronize: true
+    {{- end }}
+
+    auth:
+      enabled:
+        - password
+        - apikey
+
+    conductor:
+      baseUrl: http://conductor:8080/api
+
+    tools:
+      - name: common
+        manifestUrl: http://127.0.0.1:3001/manifest.json
+      - name: comfyui
+        manifestUrl: http://127.0.0.1:3002/manifest.json

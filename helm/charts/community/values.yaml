@@ -1,0 +1,113 @@
+fullnameOverride:
+
+server:
+  replicas: 1
+  resources: {}
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []
+
+  image:
+    repository: infmonkeys/monkeys
+    tag: v0.0.3
+    pullPolicy: IfNotPresent
+    pullSecrets: 
+
+  server:
+    # Defaults to monkeys, will use as table name prefix and etc, you can change to your own.
+    appId: monkeys
+    # Change this to public visible url
+    appUrl: http://localhost:3000
+
+  auth:
+    enabled:
+      - password
+      - apikey
+
+conductor:
+  replicas: 1
+  resources: {}
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []
+
+  image:
+    repository: infmonkeys/conductor
+    tag: 1.0.0
+    pullPolicy: IfNotPresent
+    pullSecrets: 
+
+
+###################################
+# BuiltIn postgres
+# - these configs are only used when `postgresql.enabled` is true
+###################################
+postgresql:
+  # If not enabled, will use sqlite as fallback.
+  enabled: true
+  global:
+    postgresql:
+      auth:
+        postgresPassword: "monkeysai999"
+        username: "monkeys"
+        password: "monkeysai999"
+        database: "monkeys"
+
+###################################
+# External postgres
+# - these configs are only used when `externalPostgresql.enabled` is true
+###################################
+externalPostgresql:
+  enabled: false
+  host: 127.0.0.1
+  port: 5432
+  username: monkeys
+  password: monkeys123
+  database: monkeys
+
+###################################
+# BuiltIn elasticsearch
+# - these configs are only used when `elasticsearch.enabled` is true
+###################################
+elasticsearch:
+  enabled: true
+
+###################################
+# External postgres
+# - these configs are only used when `externalPostgresql.enabled` is true
+###################################
+externalElasticsearch:
+  enabled: false
+
+redis:
+  enabled: true
+  # Whether to let helm create redis for you, or you can provide your existing database inside options
+  createNew: true
+  options:
+    url: 
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+    # nginx.ingress.kubernetes.io/backend-protocol: HTTP
+    # nginx.ingress.kubernetes.io/proxy-body-size: 15m
+    # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  hosts:
+    - host: monkeys-example.local
+  tls: []
+  #  - secretName: monkeys-example-tls
+  #    hosts:
+  #      - monkeys-example.local
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+
