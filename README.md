@@ -11,3 +11,8 @@
 ## Description
 
 This is a helm chart for [https://github.com/inf-monkeys/monkeys](https://github.com/inf-monkeys/monkeys)
+
+## Requirements
+
+1. A Kubernetes Cluster
+2. Helm

@@ -28,7 +28,7 @@ Create a default fully qualified server name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "monkeys.server.fullname" -}}
-{{ template "dify.fullname" . }}-server
+{{ template "monkeys.fullname" . }}-server
 {{- end -}}
 
 {{/*
@@ -36,7 +36,7 @@ Create a default fully qualified server name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "monkeys.conductor.fullname" -}}
-{{ template "dify.fullname" . }}-conductor
+{{ template "monkeys.fullname" . }}-conductor
 {{- end -}}
 
 {{/*

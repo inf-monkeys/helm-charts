@@ -36,18 +36,18 @@ spec:
           imagePullPolicy: "{{ .Values.server.image.pullPolicy }}"
           name: monkeys
           ports:
-            - name: http
+            - name: http-server
               containerPort: 3000
               protocol: TCP
           resources:
             {{- toYaml .Values.server.resources | nindent 12 }}
           volumeMounts:
             - mountPath: /etc/monkeys/config.yaml
-              name: monkeys-config
+              name: server-config
               readOnly: true
               subPath: config.yaml
       volumes:
         - configMap:
             defaultMode: 420
-            name: monkeys-config
-          name: monkeys-config
+            name: server-config
+          name: server-config

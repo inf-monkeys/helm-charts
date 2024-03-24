@@ -7,6 +7,12 @@ server:
   affinity: {}
   tolerations: []
 
+  service:
+    port: 3000
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+
   image:
     repository: infmonkeys/monkeys
     tag: v0.0.3
@@ -30,6 +36,12 @@ conductor:
   nodeSelector: {}
   affinity: {}
   tolerations: []
+
+  service:
+    port: 8080
+    annotations: {}
+    labels: {}
+    clusterIP: ""
 
   image:
     repository: infmonkeys/conductor
@@ -70,7 +82,11 @@ externalPostgresql:
 # - these configs are only used when `elasticsearch.enabled` is true
 ###################################
 elasticsearch:
-  enabled: true
+  enabled: false
+  indexReplicasCount: 0
+  clusterHealthColor: yellow
+  secret:
+    password: monkeys123
 
 ###################################
 # External postgres
@@ -78,6 +94,11 @@ elasticsearch:
 ###################################
 externalElasticsearch:
   enabled: false
+  indexReplicasCount: 0
+  clusterHealthColor: yellow
+  url: http://localhost:9200
+  username: elastic
+  password: monkeys123
 
 redis:
   enabled: true

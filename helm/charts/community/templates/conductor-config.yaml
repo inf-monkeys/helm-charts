@@ -12,19 +12,38 @@ data:
     # Database persistence model.
     {{- if .Values.postgresql.enabled }}
     conductor.db.type=postgres
-    spring.datasource.url=jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/monkeys
-    spring.datasource.username=postgres
-    spring.datasource.password=monkeysai999
+    spring.datasource.url=jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/{{ .Values.postgresql.global.postgresql.auth.database }}
+    spring.datasource.username={{ .Values.postgresql.global.postgresql.auth.username }}
+    spring.datasource.password={{ .Values.postgresql.global.postgresql.auth.password }}
+    {{- else if .Values.externalPostgresql.enabled }}
+    conductor.db.type=postgres
+    spring.datasource.url=jdbc:postgresql://{{ .Values.externalPostgresql.host }}:{{ .Values.externalPostgresql.port }}/{{ .Values.externalPostgresql.database }}
+    spring.datasource.username={{ .Values.externalPostgresql.username }}
+    spring.datasource.password={{ .Values.externalPostgresql.password }}
     {{- else }}
     conductor.db.type=memory
     {{- end }}
 
     # Elastic search instance indexing is disabled.
+    {{- if .Values.elasticsearch.enabled }}
+    conductor.indexing.enabled=true
+    conductor.elasticsearch.url=http://elasticsearch-master:9200
+    conductor.elasticsearch.version=7
+    conductor.elasticsearch.username=elastic
+    conductor.elasticsearch.password={{ .Values.elasticsearch.secret.password }}
+    conductor.elasticsearch.indexReplicasCount={{ .Values.elasticsearch.indexReplicasCount }}
+    conductor.elasticsearch.clusterHealthColor={{ .Values.elasticsearch.clusterHealthColor }}
+    {{- else if .Values.externalPostgresql.enabled }}
+    conductor.indexing.enabled=true
+    conductor.elasticsearch.url={{ .Values.externalElasticsearch.url }}
+    conductor.elasticsearch.version=7
+    conductor.elasticsearch.username={{ .Values.externalElasticsearch.username }}
+    conductor.elasticsearch.password={{ .Values.externalElasticsearch.password }}
+    conductor.elasticsearch.indexReplicasCount={{ .Values.externalElasticsearch.indexReplicasCount }}
+    conductor.elasticsearch.clusterHealthColor={{ .Values.externalElasticsearch.clusterHealthColor }}
+    {{- else }}
     conductor.indexing.enabled=false
-    # conductor.elasticsearch.url=http://conductor-es:9200
-    # conductor.elasticsearch.version=7
-    # conductor.elasticsearch.indexReplicasCount=0
-    # conductor.elasticsearch.clusterHealthColor=yellow
+    {{- end }}
 
     # Load sample kitchen sink workflow
     loadSample=false
