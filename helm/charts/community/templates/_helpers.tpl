@@ -40,6 +40,22 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
+Create a default fully qualified web name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "monkeys.web.fullname" -}}
+{{ template "monkeys.fullname" . }}-web
+{{- end -}}
+
+{{/*
+Create a default fully qualified web name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "monkeys.proxy.fullname" -}}
+{{ template "monkeys.fullname" . }}-proxy
+{{- end -}}
+
+{{/*
 Create chart name and version as used by the chart label.
 */}}
 {{- define "monkeys.chart" -}}

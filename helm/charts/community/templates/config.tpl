@@ -1,2 +1,0 @@
-{{- define "monkeys.config" -}}
-{{- end }}

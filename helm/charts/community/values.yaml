@@ -1,6 +1,85 @@
 fullnameOverride:
 
+service:
+  type: ClusterIP
+  port: 80
+
+proxy:
+  enabled: true
+
+  image:
+    repository: nginx
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  replicas: 1
+  resources: {}
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []
+  extraEnv:
+  # Apply your own Environment Variables if necessary
+  # - name: LANG
+  #   value: "C.UTF-8"
+  log:
+    persistence:
+      ## If true, create/use a Persistent Volume Claim for log
+      ## If false, flush logs to stdout & stderr
+      ##
+      enabled: false
+      mountPath: "/var/log/nginx"
+      annotations:
+        helm.sh/resource-policy: keep
+      persistentVolumeClaim:
+        existingClaim: ""
+        ## Nginx Logs Persistent Volume Storage Class
+        ## If defined, storageClassName: <storageClass>
+        ## If set to "-", storageClassName: "", which disables dynamic provisioning
+        ## If undefined (the default) or set to null, no storageClassName spec is
+        ##   set, choosing the default provisioner.
+        ## ReadWriteMany access mode required for nginx
+        ##
+        storageClass:
+        accessModes: ReadWriteMany
+        size: 1Gi
+        subPath: ""
+  service:
+    port: 80
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+
 server:
+  replicas: 1
+  resources: {}
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []
+
+  image:
+    repository: infmonkeys/monkeys
+    tag: v0.0.4
+    pullPolicy: IfNotPresent
+    pullSecrets: 
+
+  service:
+    port: 3000
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+
+  server:
+    # Defaults to monkeys, will use as table name prefix and etc, you can change to your own.
+    appId: monkeys
+    # Change this to public visible url
+    appUrl: http://localhost:3000
+
+  auth:
+    enabled:
+      - password
+      - apikey
+
+web:
   replicas: 1
   resources: {}
   nodeSelector: {}
@@ -14,21 +93,10 @@ server:
     clusterIP: ""
 
   image:
-    repository: infmonkeys/monkeys
-    tag: v0.0.3
+    repository: infmonkeys/monkeys-ui
+    tag: 0.0.1
     pullPolicy: IfNotPresent
     pullSecrets: 
-
-  server:
-    # Defaults to monkeys, will use as table name prefix and etc, you can change to your own.
-    appId: monkeys
-    # Change this to public visible url
-    appUrl: http://localhost:3000
-
-  auth:
-    enabled:
-      - password
-      - apikey
 
 conductor:
   replicas: 1
@@ -56,7 +124,7 @@ conductor:
 ###################################
 postgresql:
   # If not enabled, will use sqlite as fallback.
-  enabled: true
+  enabled: false
   global:
     postgresql:
       auth:
@@ -106,10 +174,6 @@ redis:
   createNew: true
   options:
     url: 
-
-service:
-  type: ClusterIP
-  port: 80
 
 ingress:
   enabled: false
