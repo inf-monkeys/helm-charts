@@ -14,14 +14,14 @@ spec:
   selector:
     matchLabels:
 {{- include "monkeys.selectorLabels" . | nindent 6 }}
-      component: monkeys
+      component: web
   template:
     metadata:
       annotations:
 {{ include "monkeys.ud.annotations" . | indent 8 }}
       labels:
 {{- include "monkeys.selectorLabels" . | nindent 8 }}
-        component: monkeys
+        component: web
 {{ include "monkeys.ud.labels" . | indent 8 }}
     spec:
       enableServiceLinks: false
