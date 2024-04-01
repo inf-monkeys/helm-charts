@@ -125,9 +125,9 @@ postgresql:
   global:
     postgresql:
       auth:
-        postgresPassword: "monkeysai999"
+        postgresPassword: "monkeys123"
         username: "monkeys"
-        password: "monkeysai999"
+        password: "monkeys123"
         database: "monkeys"
 
 ###################################
@@ -167,6 +167,7 @@ externalElasticsearch:
 
 redis:
   enabled: true
+  password: monkeys123
   # Whether to let helm create redis for you, or you can provide your existing database inside options
 
 externalRedis:

@@ -38,7 +38,7 @@ data:
 
     {{- if .Values.redis.enabled }}
     redis:
-      url: redis://monkeys-redis-master:6379/0
+      url: redis://:{{ .Values.redis.password }}@monkeys-redis-master:6379/0
     {{- else if .Values.externalRedis.enabled }}
     redis:
       url: {{ .Values.externalRedis.url }}
