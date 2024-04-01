@@ -1,0 +1,53 @@
+fullnameOverride:
+
+images:
+  loadBalancer:
+    repository: infmonkeys/monkey-tools-vllm
+    tag: 0.0.4
+    pullPolicy: IfNotPresent
+    pullSecrets: 
+
+  vllmServer:
+    repository: infmonkeys/vllm-server
+    tag: 0.0.3
+    pullPolicy: IfNotPresent
+    pullSecrets: 
+
+loadBalancer:
+  replicas: 1
+  resources: {}
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []
+  extraEnv:
+  service:
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+
+vllmServer:
+  replicas: 1
+  resources: {}
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []
+  extraEnv:
+  persistence:
+    annotations:
+      helm.sh/resource-policy: keep
+    persistentVolumeClaim:
+      existingClaim: ""
+      ## Dify App Data Persistent Volume Storage Class
+      ## If defined, storageClassName: <storageClass>
+      ## If set to "-", storageClassName: "", which disables dynamic provisioning
+      ## If undefined (the default) or set to null, no storageClassName spec is
+      ##   set, choosing the default provisioner.
+      ## ReadWriteMany access mode required for nginx
+      ##
+      storageClass:
+      accessModes: ReadOnly
+      size: 20Gi
+      subPath: ""
+  service:
+    annotations: {}
+    labels: {}

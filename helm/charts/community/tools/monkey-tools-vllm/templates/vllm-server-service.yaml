@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "monkey-tools-vllm.vllm-server.fullname" . }}
+  labels:
+{{ include "monkey-tools-vllm.labels" . | indent 4 }}
+{{- if .Values.vllmServer.service.labels }}
+{{ toYaml .Values.vllmServer.service.labels | indent 4 }}
+{{- end }}
+    component: "server"
+{{- with .Values.vllmServer.service.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+  type: ClusterIP
+  {{- if .Values.vllmServer.service.clusterIP }}
+  clusterIP: {{ .Values.vllmServer.service.clusterIP }}
+  {{- end }}
+  ports:
+    - name: http-server
+      port: 8000
+      protocol: TCP
+      targetPort: http-server
+    - name: http-infer
+      port: 3000
+      protocol: TCP
+      targetPort: http-infer
+  selector:
+{{ include "monkey-tools-vllm.selectorLabels" . | indent 4 }}
+    component: "server"

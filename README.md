@@ -23,11 +23,13 @@ You must have the following components installed on your machine, if not, read s
 
 ## Usage
 
+### Install the core service
+
 1. Install the chart
 
 ```sh
 git clone https://github.com/inf-monkeys/monkeys-cloud
-cd monkeys-cloud/helm/charts/community/
+cd monkeys-cloud/helm/charts/community/core
 
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo add elastic https://helm.elastic.co
@@ -60,3 +62,8 @@ curl http://localhost:8080
 
 And if your service is behide a firewall, no forget to open that port.
 
+### Install tools
+
+Tools is by plug-in design, you can install as many tools as you like. Here are the list of avaiable tools:
+
+- [monkey-tools-vllm](./helm/charts/community/tools/monkey-tools-vllm/)
