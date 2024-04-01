@@ -14,5 +14,49 @@ This is a helm chart for [https://github.com/inf-monkeys/monkeys](https://github
 
 ## Requirements
 
-1. A Kubernetes Cluster
-2. Helm
+You must have the following components installed on your machine, if not, read sepcific documentation.
+
+1. [Docker runtime](https://docs.docker.com/engine/install/ubuntu/)
+2. [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/).
+3. [A Kubenetes cluster](https://minikube.sigs.k8s.io/docs/start/)
+4. [Helm](https://helm.sh/docs/intro/install/)
+
+## Usage
+
+1. Install the chart
+
+```sh
+git clone https://github.com/inf-monkeys/monkeys-cloud
+cd monkeys-cloud/helm/charts/community/
+
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo add elastic https://helm.elastic.co
+helm dependency build
+helm install monkeys . --values ./values.yaml
+```
+
+2. Check status
+
+```sh
+kubectl get pods
+kubectl get svc
+```
+
+3. Visit the service
+
+
+By default `values.yaml` uses ClusterIP mode, you can visit monkeys web ui through **monkeys-proxy** service:
+
+```sh
+# Get current pod list
+kubectl get pods 
+
+# Port Forward monkey-proxy-xxxx-xxxx Pod, in this example use local machine's 8080 port.
+kubectl port-forward --address 0.0.0.0 monkey-proxy-xxxx-xxxx 8080:80
+
+# Try
+curl http://localhost:8080
+```
+
+And if your service is behide a firewall, no forget to open that port.
+
