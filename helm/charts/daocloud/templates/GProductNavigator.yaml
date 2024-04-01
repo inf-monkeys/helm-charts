@@ -9,7 +9,7 @@ spec:
     zh-CN: 猴子无限
     en-US: Inf-Monkeys
   url: https://ai.daocloud.cn/login
-  category: smart-application # 与parentGProduct二选一，用于区分一级菜单还是二级菜单，与NavigatorCategory的spec.name字段对应来完成匹配
+  category: modelapplication # 与parentGProduct二选一，用于区分一级菜单还是二级菜单，与NavigatorCategory的spec.name字段对应来完成匹配
   visible: true # 设置该菜单是否可见，默认为true
   order: 0 # 排序，数字越大，越靠上
   gproduct: monkeys
