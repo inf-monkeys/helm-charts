@@ -167,7 +167,9 @@ externalElasticsearch:
 
 redis:
   enabled: true
-  password: monkeys123
+  global:
+    redis:
+      password: monkeys123
   # Whether to let helm create redis for you, or you can provide your existing database inside options
 
 externalRedis:
