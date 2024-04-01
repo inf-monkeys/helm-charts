@@ -121,7 +121,7 @@ conductor:
 ###################################
 postgresql:
   # If not enabled, will use sqlite as fallback.
-  enabled: false
+  enabled: true
   global:
     postgresql:
       auth:
@@ -147,7 +147,7 @@ externalPostgresql:
 # - these configs are only used when `elasticsearch.enabled` is true
 ###################################
 elasticsearch:
-  enabled: false
+  enabled: true
   indexReplicasCount: 0
   clusterHealthColor: yellow
   secret:
