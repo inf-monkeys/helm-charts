@@ -25,15 +25,15 @@ spec:
 {{ include "monkeys.ud.labels" . | indent 8 }}
     spec:
       enableServiceLinks: false
-      {{- if .Values.server.image.pullSecrets }}
+      {{- if .Values.images.server.pullSecrets }}
       imagePullSecrets:
-      {{- range .Values.server.image.pullSecrets }}
+      {{- range .Values.images.server.pullSecrets }}
         - name: {{ . }}
       {{- end }}
       {{- end }}
       containers:
-        - image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
-          imagePullPolicy: "{{ .Values.server.image.pullPolicy }}"
+        - image: "{{ .Values.images.server.repository }}:{{ .Values.images.server.tag }}"
+          imagePullPolicy: "{{ .Values.images.server.pullPolicy }}"
           name: monkeys
           ports:
             - name: http-server

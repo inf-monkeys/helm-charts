@@ -25,15 +25,15 @@ spec:
 {{ include "monkeys.ud.labels" . | indent 8 }}
     spec:
       enableServiceLinks: false
-      {{- if .Values.conductor.image.pullSecrets }}
+      {{- if .Values.images.conductor.pullSecrets }}
       imagePullSecrets:
-      {{- range .Values.conductor.image.pullSecrets }}
+      {{- range .Values.images.conductor.pullSecrets }}
         - name: {{ . }}
       {{- end }}
       {{- end }}
       containers:
-        - image: "{{ .Values.conductor.image.repository }}:{{ .Values.conductor.image.tag }}"
-          imagePullPolicy: "{{ .Values.conductor.image.pullPolicy }}"
+        - image: "{{ .Values.images.conductor.repository }}:{{ .Values.images.conductor.tag }}"
+          imagePullPolicy: "{{ .Values.images.conductor.pullPolicy }}"
           name: conductor
           ports:
             - name: http-conductor

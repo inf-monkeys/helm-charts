@@ -1,5 +1,24 @@
 fullnameOverride:
 
+images:
+  server:
+    repository: infmonkeys/monkeys
+    tag: 0.0.7
+    pullPolicy: IfNotPresent
+    pullSecrets: 
+  
+  web:
+    repository: infmonkeys/monkeys-ui
+    tag: 1.0.5
+    pullPolicy: IfNotPresent
+    pullSecrets: 
+
+  conductor:
+    repository: infmonkeys/conductor
+    tag: 1.0.0
+    pullPolicy: IfNotPresent
+    pullSecrets: 
+
 proxy:
   enabled: true
 
@@ -52,12 +71,6 @@ server:
   affinity: {}
   tolerations: []
 
-  image:
-    repository: infmonkeys/monkeys
-    tag: v0.0.4
-    pullPolicy: IfNotPresent
-    pullSecrets: 
-
   service:
     port: 3000
     annotations: {}
@@ -88,12 +101,6 @@ web:
     labels: {}
     clusterIP: ""
 
-  image:
-    repository: infmonkeys/monkeys-ui
-    tag: 0.0.1
-    pullPolicy: IfNotPresent
-    pullSecrets: 
-
 conductor:
   replicas: 1
   resources: {}
@@ -106,13 +113,6 @@ conductor:
     annotations: {}
     labels: {}
     clusterIP: ""
-
-  image:
-    repository: infmonkeys/conductor
-    tag: 1.0.0
-    pullPolicy: IfNotPresent
-    pullSecrets: 
-
 
 ###################################
 # BuiltIn postgres
@@ -167,9 +167,10 @@ externalElasticsearch:
 redis:
   enabled: true
   # Whether to let helm create redis for you, or you can provide your existing database inside options
-  createNew: true
-  options:
-    url: 
+
+externalRedis:
+  enabled: false
+  url: redis://localhost:6379/0
 
 service:
   type: ClusterIP
