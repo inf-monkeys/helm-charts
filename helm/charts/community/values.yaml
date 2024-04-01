@@ -3,7 +3,7 @@ fullnameOverride:
 images:
   server:
     repository: infmonkeys/monkeys
-    tag: 0.0.8
+    tag: 0.0.9
     pullPolicy: IfNotPresent
     pullSecrets: 
   
