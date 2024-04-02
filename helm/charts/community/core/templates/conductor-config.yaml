@@ -24,7 +24,7 @@ data:
     conductor.db.type=memory
     {{- end }}
 
-    # Elastic search instance indexing is disabled.
+    # Elastic search indexing
     {{- if .Values.elasticsearch.enabled }}
     conductor.indexing.enabled=true
     conductor.elasticsearch.url=http://elasticsearch-master:9200

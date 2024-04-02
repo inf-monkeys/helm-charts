@@ -145,13 +145,20 @@ externalPostgresql:
 ###################################
 # BuiltIn elasticsearch
 # - these configs are only used when `elasticsearch.enabled` is true
+# See more at https://github.com/elastic/helm-charts/tree/main/elasticsearch#configuration
 ###################################
 elasticsearch:
   enabled: true
-  indexReplicasCount: 0
-  clusterHealthColor: yellow
+  replicas: 1
+  image: docker.elastic.co/elasticsearch/elasticsearch
+  imageTag: 7.17.3
+  minimumMasterNodes: 1
+  esMajorVersion: 7
   secret:
     password: monkeys123
+
+  indexReplicasCount: 0
+  clusterHealthColor: yellow
 
 ###################################
 # External postgres
@@ -167,6 +174,7 @@ externalElasticsearch:
 
 redis:
   enabled: true
+  architecture: standalone
   global:
     redis:
       password: monkeys123
