@@ -8,5 +8,8 @@ dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
   version: 16.13.2
-digest: sha256:f8e39b7b44b8fc5cb65884de392eb6f941110ab4e58125013d91fa1c496e719d
-generated: "2024-03-24T13:34:08.250633+07:00"
+- name: minio
+  repository: https://charts.bitnami.com/bitnami
+  version: 14.1.4
+digest: sha256:8fdf31a4d997040439437436954b18e84b1dfb3d20fd43628075f796460c1cf6
+generated: "2024-04-02T12:16:51.084785766+08:00"

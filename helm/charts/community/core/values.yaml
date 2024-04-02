@@ -176,6 +176,14 @@ externalRedis:
   enabled: false
   url: redis://localhost:6379/0
 
+minio:
+  enabled: true
+  mode: standalone
+  defaultBuckets: monkeys-static,monkeys-models
+  auth:
+    rootUser: minio
+    rootPassword: monkeys123
+
 service:
   type: ClusterIP
   port: 80
