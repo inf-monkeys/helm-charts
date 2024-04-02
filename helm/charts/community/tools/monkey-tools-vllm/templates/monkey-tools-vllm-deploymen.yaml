@@ -42,7 +42,7 @@ spec:
           resources:
             {{- toYaml .Values.loadBalancer.resources | nindent 12 }}
           volumeMounts:
-            - mountPath: /etc/monkey-tools-vllm/config.yaml
+            - mountPath: /usr/src/app/config.yaml
               name: monkey-tools-vllm-config
               readOnly: true
               subPath: config.yaml

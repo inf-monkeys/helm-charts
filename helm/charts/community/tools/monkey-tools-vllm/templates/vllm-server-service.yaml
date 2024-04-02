@@ -7,7 +7,7 @@ metadata:
 {{- if .Values.vllmServer.service.labels }}
 {{ toYaml .Values.vllmServer.service.labels | indent 4 }}
 {{- end }}
-    component: "server"
+    component: "vllm-server"
 {{- with .Values.vllmServer.service.annotations }}
   annotations:
 {{ toYaml . | indent 4 }}
@@ -28,4 +28,4 @@ spec:
       targetPort: http-infer
   selector:
 {{ include "monkey-tools-vllm.selectorLabels" . | indent 4 }}
-    component: "server"
+    component: "vllm-server"

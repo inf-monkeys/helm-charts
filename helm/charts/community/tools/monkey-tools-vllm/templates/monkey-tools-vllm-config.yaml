@@ -9,4 +9,7 @@ data:
       # defaults to run on port 3000
       port: 3000
     llmInferServer:
-      hosts: 
+      hosts:
+{{- range $i := until (.Values.vllmServer.replicas | int) }}
+        - monkey-tools-vllm-server-{{ $i }}.monkey-tools-vllm-server
+{{- end }}

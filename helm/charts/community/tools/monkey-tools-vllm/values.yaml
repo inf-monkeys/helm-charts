@@ -27,11 +27,20 @@ loadBalancer:
 
 vllmServer:
   replicas: 2
-  resources: {}
+  resources:
+    limits:
+      cpu: '10'
+      memory: 200Gi
+      nvidia.com/gpu: '2'
+    requests:
+      cpu: '1'
+      memory: 4Gi
   nodeSelector: {}
   affinity: {}
   tolerations: []
   extraEnv:
+    - name: CUDA_VISIBLE_DEVICES
+      value: '0,1'    
   persistence:
     annotations:
       helm.sh/resource-policy: keep
@@ -45,9 +54,11 @@ vllmServer:
       ## ReadWriteMany access mode required for nginx
       ##
       storageClass:
-      accessModes: ReadOnly
-      size: 20Gi
+      accessModes:
+        - ReadOnlyMany
+      size: 1Gi
       subPath: ""
   service:
     annotations: {}
     labels: {}
+    clusterIP: ""

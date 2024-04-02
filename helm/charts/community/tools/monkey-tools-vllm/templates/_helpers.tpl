@@ -36,7 +36,7 @@ Create a default fully qualified server name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "monkey-tools-vllm.vllm-server.fullname" -}}
-{{ template "monkey-tools-vllm.fullname" . }}-vllm-server
+{{ template "monkey-tools-vllm.fullname" . }}-server
 {{- end -}}
 
 {{/*
