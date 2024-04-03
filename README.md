@@ -62,6 +62,24 @@ curl http://localhost:8080
 
 And if your service is behide a firewall, no forget to open that port.
 
+### Update configuration
+
+Create a new values file, `prod-values.yaml` for example.
+
+For example if you want to modify server image version, add this to `prod-values.yaml`:
+
+```yaml
+images:
+  server:
+    tag: some-new-tag
+```
+
+Then run:
+
+```sh
+helm upgrade monkeys . --values ./values.yaml --values ./prod-values.yaml
+```
+
 ### Install tools
 
 Tools is by plug-in design, you can install as many tools as you like. Here are the list of avaiable tools:

@@ -3,13 +3,13 @@ fullnameOverride:
 images:
   server:
     repository: infmonkeys/monkeys
-    tag: 0.0.9
+    tag: 0.0.14
     pullPolicy: IfNotPresent
     pullSecrets: 
   
   web:
     repository: infmonkeys/monkeys-ui
-    tag: 1.0.5
+    tag: 1.0.8
     pullPolicy: IfNotPresent
     pullSecrets: 
 
@@ -172,25 +172,64 @@ externalElasticsearch:
   username: elastic
   password: monkeys123
 
+###################################
+# BuiltIn redis
+# - these configs are only used when `redis.enabled` is true
+###################################
 redis:
   enabled: true
   architecture: standalone
   global:
     redis:
       password: monkeys123
-  # Whether to let helm create redis for you, or you can provide your existing database inside options
 
+###################################
+# External redis
+# - these configs are only used when `externalRedis.enabled` is true
+###################################
 externalRedis:
   enabled: false
   url: redis://localhost:6379/0
 
+###################################
+# BuiltIn s3 storage
+# - these configs are only used when `minio.enabled` is true
+# - See more configuration at https://artifacthub.io/packages/helm/bitnami/minio
+###################################
 minio:
   enabled: true
   mode: standalone
-  defaultBuckets: monkeys-static,monkeys-models
+  defaultBuckets: monkeys-static
   auth:
     rootUser: minio
     rootPassword: monkeys123
+
+  # By default use nodeport mode, so in browser user can access.
+  service:
+    type: NodePort
+    nodePorts:
+      # NodePort value should be between 30000-32767
+      # And if your server is behind a firewall, be sure to open those ports.
+      api: 31900
+      console: 31901
+
+  # This is the public accessible url of your minio, this will be use by frontend to display your staticfiles.
+  # **NOTE: this is the api port not console port**
+  # **NOTE: if you are using minikube, you need to port-foward minio service, see more at https://stackoverflow.com/a/55110218**
+  endpoint: http://127.0.0.1:31900
+
+###################################
+# External s3 storage
+# - these configs are only used when `externalRedis.enabled` is true
+###################################
+externalS3:
+  enabled: false
+  endpoint: ""
+  accessKeyId: ""
+  secretAccessKey: ""
+  region: ""
+  bucket: ""
+  publicAccessUrl: ""
 
 service:
   type: ClusterIP

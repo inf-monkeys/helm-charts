@@ -57,11 +57,11 @@ spec:
             {{- toYaml .Values.server.resources | nindent 12 }}
           volumeMounts:
             - mountPath: /etc/monkeys/config.yaml
-              name: server-config
+              name: {{ template "monkeys.server.fullname" . }}
               readOnly: true
               subPath: config.yaml
       volumes:
         - configMap:
             defaultMode: 420
-            name: server-config
-          name: server-config
+            name: {{ template "monkeys.server.fullname" . }}
+          name: {{ template "monkeys.server.fullname" . }}

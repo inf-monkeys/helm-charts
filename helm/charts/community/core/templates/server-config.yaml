@@ -1,16 +1,18 @@
 immutable: false
 kind: ConfigMap
 metadata:
-  name: server-config
+  name: {{ template "monkeys.server.fullname" . }}
 apiVersion: v1
 data:
   config.yaml: |
+    # Server config
     server:
       # defaults to run on port 3000
       port: 3000
       appId: {{ .Values.server.server.appId }}
       appUrl: {{ .Values.server.server.appUrl }}
 
+    # Database Config
     {{- if .Values.postgresql.enabled }}
     database:
       type: postgres
@@ -33,6 +35,7 @@ data:
       database: data/db.sqlite
     {{- end }}
 
+    # Redis Config
     {{- if .Values.redis.enabled }}
     redis:
       url: redis://:{{ .Values.redis.global.redis.password }}@monkeys-redis-master:6379/0
@@ -42,16 +45,28 @@ data:
     {{- else }}
     {{- end }}
 
+    # Auth Config
     auth:
-      enabled:
-        - password
-        - apikey
+    {{- toYaml .Values.server.auth | nindent 6 }}
+
+    {{- if .Values.minio.enabled }}
+    s3:
+      endpoint: {{ .Values.minio.endpoint }}
+      accessKeyId: {{ if .Values.minio.accessKeyId }}{{ .Values.minio.accessKeyId }}{{ else }}{{ .Values.minio.auth.rootUser }}{{ end }}
+      secretAccessKey: {{ if .Values.minio.secretAccessKey }}{{ .Values.minio.secretAccessKey }}{{ else }}{{ .Values.minio.auth.rootPassword }}{{ end }}
+      region: 'us-east-1'
+      bucket: {{ .Values.minio.defaultBuckets }}
+      publicAccessUrl: {{ .Values.minio.endpoint }}/{{ .Values.minio.defaultBuckets }}
+    {{- else if .Values.externalS3.enabled }}
+    s3:
+      endpoint: {{ .Values.externalS3.endpoint }}
+      accessKeyId: {{ .Values.externalS3.accessKeyId }}
+      secretAccessKey: {{ .Values.externalS3.secretAccessKey }}
+      region: {{ .Values.externalS3.region_name }}
+      bucket: {{ .Values.externalS3.bucket_name }}
+      publicAccessUrl: {{ .Values.externalS3.publicAccessUrl }}
+    {{- else }}
+    {{- end }}
 
     conductor:
       baseUrl: http://{{ template "monkeys.conductor.fullname" . }}:8080/api
-
-    tools:
-      - name: common
-        manifestUrl: http://127.0.0.1:3001/manifest.json
-      - name: comfyui
-        manifestUrl: http://127.0.0.1:3002/manifest.json
