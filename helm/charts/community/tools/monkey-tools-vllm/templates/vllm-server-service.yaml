@@ -21,11 +21,11 @@ spec:
     - name: http-server
       port: 8000
       protocol: TCP
-      targetPort: http-server
+      targetPort: 8000
     - name: http-infer
       port: 3000
       protocol: TCP
-      targetPort: http-infer
+      targetPort: 3000
   selector:
 {{ include "monkey-tools-vllm.selectorLabels" . | indent 4 }}
     component: "vllm-server"
