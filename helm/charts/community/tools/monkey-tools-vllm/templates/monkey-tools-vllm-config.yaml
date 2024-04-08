@@ -11,5 +11,5 @@ data:
     llmInferServer:
       hosts:
 {{- range $i := until (.Values.vllmServer.replicas | int) }}
-        - monkey-tools-vllm-server-{{ $i }}.monkey-tools-vllm-server
+        - monkey-tools-vllm-server-{{ $i }}.monkey-tools-vllm-server-service
 {{- end }}
