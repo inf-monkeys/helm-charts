@@ -31,7 +31,7 @@ vllmServer:
     limits:
       cpu: '10'
       memory: 200Gi
-      nvidia.com/gpu: '2'
+      nvidia.com/gpu: '1'
     requests:
       cpu: '1'
       memory: 4Gi
@@ -40,7 +40,7 @@ vllmServer:
   tolerations: []
   extraEnv:
     - name: CUDA_VISIBLE_DEVICES
-      value: '0,1'    
+      value: '0'    
   persistence:
     annotations:
       helm.sh/resource-policy: keep
