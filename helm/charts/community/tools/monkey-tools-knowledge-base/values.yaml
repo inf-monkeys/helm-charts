@@ -1,0 +1,49 @@
+fullnameOverride:
+
+images:
+  server:
+    repository: infmonkeys/monkey-tools-knowledge-base
+    tag: 0.0.5
+    pullPolicy: IfNotPresent
+    pullSecrets: 
+
+server:
+  service:
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+
+###################################
+# External elasticsearch 8
+###################################
+externalElasticsearch:
+  url: http://elasticsearch-master:9200
+  username: elastic
+  password: monkeys123
+  secure: false
+
+###################################
+# External postgres
+###################################
+externalPostgresql:
+  host: monkeys-postgresql
+  port: 5432
+  username: monkeys
+  password: monkeys123
+  database: monkeys
+
+###################################
+# External s3
+###################################
+externalS3:
+  endpoint: ""
+  accessKeyId: ""
+  secretAccessKey: ""
+  region: ""
+  bucket: ""
+
+###################################
+# External redis
+###################################
+externalRedis:
+  url: redis://:monkeys123@monkeys-redis-master:6379

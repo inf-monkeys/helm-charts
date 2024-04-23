@@ -169,8 +169,8 @@ elasticsearch:
   clusterHealthColor: yellow
 
 ###################################
-# External postgres
-# - these configs are only used when `externalPostgresql.enabled` is true
+# External elasticsearch 7
+# - these configs are only used when `externalElasticsearch.enabled` is true
 ###################################
 externalElasticsearch:
   enabled: false

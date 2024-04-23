@@ -1,0 +1,30 @@
+immutable: false
+kind: ConfigMap
+metadata:
+  name: monkey-tools-knowledge-base
+apiVersion: v1
+data:
+  config.yaml: |
+    server:
+      port: 5000
+
+    database:
+      url: postgresql://{{ .Values.externalPostgresql.username }}:{{ .Values.externalPostgresql.password }}@{{ .Values.externalPostgresql.host }}:{{ .Values.externalPostgresql.port }}/{{ .Values.externalPostgresql.database }}
+
+    redis:
+      url: {{ .Values.externalRedis.url }}
+
+    s3:
+      endpoint: {{ .Values.externalS3.endpoint }}
+      accessKeyId: {{ .Values.externalS3.accessKeyId }}
+      secretAccessKey: {{ .Values.externalS3.secretAccessKey }}
+      region: {{ .Values.externalS3.region_name }}
+      bucket: {{ .Values.externalS3.bucket_name }}
+
+    vector:
+      type: elasticsearch
+      elasticsearch:
+        url: {{ .Values.externalElasticsearch.url }}
+        username: {{ .Values.externalElasticsearch.username }}
+        password: {{ .Values.externalElasticsearch.password }}
+        secure: {{ .Values.externalElasticsearch.secure }}
