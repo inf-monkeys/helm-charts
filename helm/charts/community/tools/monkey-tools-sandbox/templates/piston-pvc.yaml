@@ -1,4 +1,4 @@
-{{- if and (not .Values.piston.persistence.persistentVolumeClaim.existingClaim) .Values.piston.persistence.hostPath.path }}
+{{- if and (not .Values.piston.persistence.persistentVolumeClaim.existingClaim) (not .Values.piston.persistence.hostPath.path) .Values.piston.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:

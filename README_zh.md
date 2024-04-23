@@ -91,4 +91,5 @@ helm upgrade monkeys .  --namespace monkeys --values ./values.yaml --values ./pr
 
 Monkey Tools 采用插件化设计，每个 monkey tool 有自己独立的 helm chart，你可以阅读对应的文档：
 
-- [monkey-tools-vllm](./helm/charts/community/tools/monkey-tools-vllm/)
+- [monkey-tools-vllm](./helm/charts/community/tools/monkey-tools-vllm/README_zh.md)
+- [monkey-tools-sandbox](./helm/charts/community/tools/monkey-tools-sandbox/README_zh.md)

@@ -35,14 +35,14 @@ sandbox:
     clusterIP: ""
 
 piston:
-  enabled: true
+  enabled: false
   replicas: 1
   resources:
     limits:
       cpu: '2'
       memory: 8Gi
     requests:
-      cpu: '0.2'
+      cpu: '1'
       memory: 2Gi
   nodeSelector: {}
   affinity: {}
@@ -71,7 +71,7 @@ piston:
       storageClass:
       accessModes:
         - ReadWriteMany
-      size: 50Gi
+      size: 10Gi
       subPath: ""
     hostPath:
       path: "/piston"
