@@ -57,7 +57,19 @@
 
 ### Sandbox 配置
 
-详情请见 [./values.yaml](./values.yaml) 文件的注释。
+- `sandbox`:
+  - `piston`: 
+    - `runTimeout`: 请和 piston 的 `PISTON_RUN_TIMEOUT` 保持一致。
+    - `compileTimeout`: 请和 piston 的 `PISTON_RUN_TIMEOUT` 保持一致。
+  - `replicas`: 1 # 副本数，默认为 1
+  - `resources`: # cpu 和 memory 限制，推荐使用默认配置。
+
+### Redis 配置
+
+- `redis`:
+  - `url`: Redis 链接
+
+更多详情请见 [./values.yaml](./values.yaml) 文件。
 
 
 ## 安装
