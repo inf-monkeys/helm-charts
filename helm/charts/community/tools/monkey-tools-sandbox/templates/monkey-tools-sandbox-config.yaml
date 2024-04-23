@@ -1,0 +1,18 @@
+immutable: false
+kind: ConfigMap
+metadata:
+  name: monkey-tools-sandbox
+apiVersion: v1
+data:
+  config.yaml: |
+    server:
+      port: 3000
+
+    sandbox:
+      piston:
+        apiServer: http://{{ template "monkey-tools-sandbox.piston.fullname" . }}:2000
+        runTimeout: {{ .Values.sandbox.piston.runTimeout }}
+        compileTimeout: {{ .Values.sandbox.piston.compileTimeout }}
+
+    redis:
+      url: {{ .Values.redis.url }}

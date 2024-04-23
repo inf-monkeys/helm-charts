@@ -1,0 +1,30 @@
+{{- if and .Values.piston.enabled}}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "monkey-tools-sandbox.piston.fullname" . }}
+  labels:
+{{ include "monkey-tools-sandbox.labels" . | indent 4 }}
+{{- if .Values.piston.service.labels }}
+{{ toYaml .Values.piston.service.labels | indent 4 }}
+{{- end }}
+    component: "piston"
+{{- with .Values.piston.service.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+  type: ClusterIP
+  {{- if .Values.piston.service.clusterIP }}
+  clusterIP: {{ .Values.piston.service.clusterIP }}
+  {{- end }}
+  ports:
+    - name: http
+      port: 2000
+      protocol: TCP
+      targetPort: 2000
+  selector:
+{{ include "monkey-tools-sandbox.selectorLabels" . | indent 4 }}
+    component: "piston"
+{{- end }}

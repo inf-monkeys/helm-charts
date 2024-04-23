@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+{{ include "monkey-tools-sandbox.ud.annotations" . | indent 4 }}
+    descriptions: sandbox
+  labels:
+{{- include "monkey-tools-sandbox.labels" . | nindent 4 }}
+    component: sandbox
+{{ include "monkey-tools-sandbox.ud.labels" . | indent 4 }}
+  name: {{ template "monkey-tools-sandbox.sandbox.fullname" . }}
+spec:
+  replicas: {{ .Values.sandbox.replicas }}
+  selector:
+    matchLabels:
+{{- include "monkey-tools-sandbox.selectorLabels" . | nindent 6 }}
+      component: sandbox
+  template:
+    metadata:
+      annotations:
+{{ include "monkey-tools-sandbox.ud.annotations" . | indent 8 }}
+      labels:
+{{- include "monkey-tools-sandbox.selectorLabels" . | nindent 8 }}
+        component: sandbox
+{{ include "monkey-tools-sandbox.ud.labels" . | indent 8 }}
+    spec:
+      enableServiceLinks: false
+      {{- if .Values.images.sandbox.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.images.sandbox.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - image: "{{ .Values.images.sandbox.repository }}:{{ .Values.images.sandbox.tag }}"
+          imagePullPolicy: "{{ .Values.images.sandbox.pullPolicy }}"
+          name: sandbox
+          ports:
+            - name: http-server
+              containerPort: 3000
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.sandbox.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /usr/src/app/config.yaml
+              name: monkey-tools-sandbox
+              readOnly: true
+              subPath: config.yaml
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: monkey-tools-sandbox
+          name: monkey-tools-sandbox

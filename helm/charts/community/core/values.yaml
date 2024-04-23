@@ -3,13 +3,13 @@ fullnameOverride:
 images:
   server:
     repository: infmonkeys/monkeys
-    tag: 0.0.16
+    tag: 0.0.21
     pullPolicy: IfNotPresent
     pullSecrets: 
   
   web:
     repository: infmonkeys/monkeys-ui
-    tag: 1.0.11
+    tag: 0.0.21
     pullPolicy: IfNotPresent
     pullSecrets: 
 
@@ -85,9 +85,17 @@ server:
 
   auth:
     enabled:
-      - phone
       - password
       - apikey
+
+  models:
+    - model:
+        - gpt-3.5-turbo
+        - gpt-4-0613
+      baseURL: https://api.openai.com/v1
+      apiKey: sk-xxxxxxxxxxxxxxxxxxxx
+      type:
+        - chat_completions
 
 web:
   replicas: 1

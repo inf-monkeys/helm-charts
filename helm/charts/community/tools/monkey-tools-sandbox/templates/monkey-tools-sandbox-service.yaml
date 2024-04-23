@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "monkey-tools-sandbox.sandbox.fullname" . }}
+  labels:
+{{ include "monkey-tools-sandbox.labels" . | indent 4 }}
+{{- if .Values.sandbox.service.labels }}
+{{ toYaml .Values.sandbox.service.labels | indent 4 }}
+{{- end }}
+    component: "sandbox"
+{{- with .Values.sandbox.service.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+  type: ClusterIP
+  {{- if .Values.sandbox.service.clusterIP }}
+  clusterIP: {{ .Values.sandbox.service.clusterIP }}
+  {{- end }}
+  ports:
+    - name: http
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+  selector:
+{{ include "monkey-tools-sandbox.selectorLabels" . | indent 4 }}
+    component: "sandbox"

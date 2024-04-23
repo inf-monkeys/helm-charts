@@ -70,3 +70,6 @@ data:
 
     conductor:
       baseUrl: http://{{ template "monkeys.conductor.fullname" . }}:8080/api
+
+    models:
+    {{- toYaml .Values.server.models | nindent 6 }}

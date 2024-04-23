@@ -1,0 +1,63 @@
+{{- if and .Values.piston.enabled}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+{{ include "monkey-tools-sandbox.ud.annotations" . | indent 4 }}
+    descriptions: piston
+  labels:
+{{- include "monkey-tools-sandbox.labels" . | nindent 4 }}
+    component: piston
+{{ include "monkey-tools-sandbox.ud.labels" . | indent 4 }}
+  name: {{ template "monkey-tools-sandbox.piston.fullname" . }}
+spec:
+  replicas: {{ .Values.piston.replicas }}
+  selector:
+    matchLabels:
+{{- include "monkey-tools-sandbox.selectorLabels" . | nindent 6 }}
+      component: piston
+  template:
+    metadata:
+      annotations:
+{{ include "monkey-tools-sandbox.ud.annotations" . | indent 8 }}
+      labels:
+{{- include "monkey-tools-sandbox.selectorLabels" . | nindent 8 }}
+        component: piston
+{{ include "monkey-tools-sandbox.ud.labels" . | indent 8 }}
+    spec:
+      enableServiceLinks: false
+      {{- if .Values.images.piston.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.images.piston.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - image: "{{ .Values.images.piston.repository }}:{{ .Values.images.piston.tag }}"
+          imagePullPolicy: "{{ .Values.images.piston.pullPolicy }}"
+          name: piston
+          env:
+            {{- if .Values.piston.extraEnv }}
+              {{- toYaml .Values.piston.extraEnv | nindent 14 }}
+            {{- end }}
+          ports:
+            - name: http-server
+              containerPort: 2000
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.piston.resources | nindent 12 }}
+          volumeMounts:
+          - name: data-volume
+            mountPath: /piston/packages
+      volumes:
+        - name: data-volume
+          {{- if .Values.piston.persistence.hostPath.path }}
+          hostPath:
+            path: {{ .Values.piston.persistence.hostPath.path }}
+            type: {{ .Values.piston.persistence.hostPath.type }}
+          {{- else }}
+          persistentVolumeClaim:
+            claimName: {{ template "monkey-tools-sandbox.piston.fullname" . }}-pvc
+          {{- end }}
+
+{{- end }}

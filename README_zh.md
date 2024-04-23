@@ -8,6 +8,9 @@
 
 </div>
 
+中文 | [English](./README.md)
+
+
 ## 描述
 
 此项目为 [https://github.com/inf-monkeys/monkeys](https://github.com/inf-monkeys/monkeys) 提供的官方 helm chart。
@@ -21,7 +24,11 @@
 3. [A Kubenetes cluster](https://minikube.sigs.k8s.io/docs/start/)
 4. [Helm](https://helm.sh/docs/intro/install/)
 
+> 你也可以通过 `./scripts/` 目录下的一键安装脚本进行安装。
+
 ## 使用
+
+### 配置
 
 ### 安装核心服务
 
@@ -34,14 +41,14 @@ cd monkeys-cloud/helm/charts/community/core
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo add elastic https://helm.elastic.co
 helm dependency build
-helm install monkeys . --values ./values.yaml
+helm install monkeys --namespace monkeys . --values ./values.yaml --create-namespace
 ```
 
 2. 检查运行状态
 
 ```sh
-kubectl get pods
-kubectl get svc
+kubectl get pods -n monkeys
+kubectl get svc -n monkeys
 ```
 
 3. 访问服务
@@ -51,16 +58,34 @@ kubectl get svc
 
 ```sh
 # Get current pod list
-kubectl get pods 
+kubectl get pods -n monkeys
 
 # Port Forward monkey-proxy-xxxx-xxxx Pod, in this example use local machine's 8080 port.
-kubectl port-forward --address 0.0.0.0 monkey-proxy-xxxx-xxxx 8080:80
+kubectl port-forward --address 0.0.0.0 monkey-proxy-xxxx-xxxx 8080:80 -n monkeys
 
 # Try
 curl http://localhost:8080
 ```
 
 如果你的服务运行在防火墙后面，请不要忘记打开防火墙。
+
+### 更新配置
+
+创建一个新的 Values yaml 文件, 比如 `prod-values.yaml`。
+
+比如说你需要更新 server 的镜像，添加下面的内容到 `prod-values.yaml` 中:
+
+```yaml
+images:
+  server:
+    tag: some-new-tag
+```
+
+然后执行：
+
+```sh
+helm upgrade monkeys .  --namespace monkeys --values ./values.yaml --values ./prod-values.yaml
+```
 
 ### 安装 Monkey Tools
 

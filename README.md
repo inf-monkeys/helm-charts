@@ -8,6 +8,8 @@
 
 </div>
 
+English | [中文](./README_zh.md)
+
 ## Description
 
 This is a helm chart for [https://github.com/inf-monkeys/monkeys](https://github.com/inf-monkeys/monkeys)
@@ -77,7 +79,7 @@ images:
 Then run:
 
 ```sh
-helm upgrade monkeys . --values ./values.yaml --values ./prod-values.yaml
+helm upgrade monkeys . --values ./values.yaml --values ./prod-values.yaml --namespace monkeys
 ```
 
 ### Install tools

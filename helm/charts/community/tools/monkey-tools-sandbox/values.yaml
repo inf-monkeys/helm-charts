@@ -1,0 +1,85 @@
+fullnameOverride:
+
+images:
+  sandbox:
+    repository: infmonkeys/monkey-tools-sandbox
+    tag: 0.0.1
+    pullPolicy: IfNotPresent
+    pullSecrets: 
+
+  piston:
+    repository: ghcr.io/engineer-man/piston
+    tag: latest
+    pullPolicy: Always
+    pullSecrets: 
+
+sandbox:
+  piston:
+    runTimeout: 3600000
+    compileTimeout: 3600000
+
+  replicas: 1
+  resources:
+    limits:
+      cpu: '2'
+      memory: 8Gi
+    requests:
+      cpu: '0.2'
+      memory: 2Gi
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []
+  service:
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+
+piston:
+  enabled: true
+  replicas: 1
+  resources:
+    limits:
+      cpu: '2'
+      memory: 8Gi
+    requests:
+      cpu: '0.2'
+      memory: 2Gi
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []
+  extraEnv:
+    - name: PISTON_RUN_TIMEOUT
+      value: "3600000"
+    - name: PISTON_COMPILE_TIMEOUT
+      value: "3600000"
+    - name: PISTON_OUTPUT_MAX_SIZE
+      value: "1024000"
+    - name: PISTON_DISABLE_NETWORKING
+      value: "false"
+  persistence:
+    annotations:
+      helm.sh/resource-policy: keep
+    persistentVolumeClaim:
+      existingClaim: ""
+      ## Dify App Data Persistent Volume Storage Class
+      ## If defined, storageClassName: <storageClass>
+      ## If set to "-", storageClassName: "", which disables dynamic provisioning
+      ## If undefined (the default) or set to null, no storageClassName spec is
+      ##   set, choosing the default provisioner.
+      ## ReadWriteMany access mode required for nginx
+      ##
+      storageClass:
+      accessModes:
+        - ReadWriteMany
+      size: 50Gi
+      subPath: ""
+    hostPath:
+      path: "/piston"
+      type: "DirectoryOrCreate"
+  service:
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+
+redis:
+  url: redis://:monkeys123@monkeys-redis-master:6379

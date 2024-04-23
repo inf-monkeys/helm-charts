@@ -1,0 +1,17 @@
+{{- if and (not .Values.piston.persistence.persistentVolumeClaim.existingClaim) .Values.piston.persistence.hostPath.path }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "monkey-tools-sandbox.piston.fullname" . }}-pvc
+  annotations:
+    {{- toYaml .Values.piston.persistence.persistentVolumeClaim.annotations | nindent 4 }}
+spec:
+  accessModes:
+    {{- toYaml .Values.piston.persistence.persistentVolumeClaim.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ .Values.piston.persistence.persistentVolumeClaim.size }}
+  {{- if .Values.piston.persistence.persistentVolumeClaim.storageClass }}
+  storageClassName: "{{ .Values.piston.persistence.persistentVolumeClaim.storageClass }}"
+  {{- end }}
+{{- end }}
