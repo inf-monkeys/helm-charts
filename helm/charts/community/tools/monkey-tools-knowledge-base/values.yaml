@@ -3,7 +3,7 @@ fullnameOverride:
 images:
   server:
     repository: infmonkeys/monkey-tools-knowledge-base
-    tag: 0.0.5
+    tag: 0.0.9
     pullPolicy: IfNotPresent
     pullSecrets: 
 
@@ -13,6 +13,23 @@ server:
     labels: {}
     clusterIP: ""
 
+  embeddings:
+    models:
+      - name: BAAI/bge-base-zh-v1.5
+        dimension: 768
+      - name: jinaai/jina-embeddings-v2-base-en
+        dimension: 768
+      - name: jinaai/jina-embeddings-v2-small-en
+        dimension: 512
+      - name: moka-ai/m3e-base
+        dimension: 768
+
+  storage:
+    vector:
+      type: elasticsearch
+    relational:
+      type: sqlite
+
 ###################################
 # External elasticsearch 8
 ###################################
@@ -20,28 +37,16 @@ externalElasticsearch:
   url: http://elasticsearch-master:9200
   username: elastic
   password: monkeys123
-  secure: false
 
 ###################################
 # External postgres
 ###################################
 externalPostgresql:
-  host: monkeys-postgresql
-  port: 5432
-  username: monkeys
-  password: monkeys123
-  database: monkeys
-
-###################################
-# External s3
-###################################
-externalS3:
-  endpoint: ""
-  accessKeyId: ""
-  secretAccessKey: ""
-  region: ""
-  bucket: ""
-
+  url: postgresql://monkeys:monkeys123@monkeys-postgresql:5432/monkeys
+  pool:
+    pool_size: 30
+    pool_recycle: 3600
+ 
 ###################################
 # External redis
 ###################################

@@ -1,24 +1,40 @@
 <div align="center">
 
-# Helm Chart for [monkey-tools-sandbox](https://github.com/inf-monkeys/monkey-tools-sandbox)
+# Helm Chart for [monkey-tools-sandbox](https://github.com/inf-monkeys/monkey-tools-sandbox)<!-- omit in toc -->
 
 </div>
 
-## 配置
+
+- [配置项](#配置项)
+  - [镜像版本](#镜像版本)
+  - [Piston 配置（可选）](#piston-配置可选)
+    - [配置项](#配置项-1)
+    - [有网环境下添加 Python runtime](#有网环境下添加-python-runtime)
+    - [离线网络环境下添加 Python runtime](#离线网络环境下添加-python-runtime)
+  - [Sandbox 配置](#sandbox-配置)
+  - [Redis 配置](#redis-配置)
+- [安装](#安装)
+  - [更新配置](#更新配置)
+- [卸载](#卸载)
+
+## 配置项
 
 以下是你需要特别关心的一些配置：
 
 ### 镜像版本
 
-- `images`:
-  - `sandbox`: 
-    - `repository`: [monkey-tools-sandbox](https://github.com/inf-monkeys/monkey-tools-sandbox) 的 docker 镜像仓库。
-    - `tag`: 版本号
-    - `pullSecrets`: 拉取镜像的 secret，没有可留空
-  - `piston`:
-    - `repository`: [piston](https://github.com/engineer-man/piston) 的 docker 镜像仓库。
-    - `tag`: 版本号
-    - `pullSecrets`: 拉取镜像的 secret，没有可留空
+
+
+| 参数                         | 描述                                                                                                                                | 默认值                            |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| `images.sanbox.repository`   | [https://github.com/inf-monkeys/monkey-tools-sandbox](https://github.com/inf-monkeys/monkey-tools-sandbox) 服务的 Docker 镜像地址。 | `infmonkeys/monkey-tools-sandbox` |
+| `images.sandbox.tag`         | 版本号                                                                                                                              | `""`                              |
+| `images.sandbox.pullPolicy`  | 镜像拉取策略                                                                                                                        | `IfNotPresent`                    |
+| `images.sandbox.pullSecrets` | 拉取镜像的密钥，没有可以不填。                                                                                                      | ``                                |
+| `images.piston.repository`   | [piston](https://github.com/engineer-man/piston) 项目的 Docker 镜像地址。                                                           | `ghcr.io/engineer-man/piston`     |
+| `images.piston.tag`          | 版本号                                                                                                                              | `latest`                          |
+| `images.piston.pullPolicy`   | 镜像拉取策略                                                                                                                        | `IfNotPresent`                    |
+| `images.piston.pullSecrets`  | 拉取镜像的密钥，没有可以不填。                                                                                                      | ``                                |
 
 ### Piston 配置（可选）
 
@@ -26,21 +42,21 @@
 
 #### 配置项
 
-- `piston`:
-  - `enabled`: true # 设置为 true，默认为 false
-  - `replicas`: 1 # 副本数，默认为 1
-  - `resources`: # cpu 和 memory 限制，推荐使用默认配置。
-  - `extraEnv`:
-    - `PISTON_RUN_TIMEOUT`: 执行超时时间，单位为毫秒
-    - `PISTON_COMPILE_TIMEOUT`: 编译超时时间，单位为毫秒
-    - `PISTON_OUTPUT_MAX_SIZE`: 执行 stdout 以及 stderr 最大长度。
-  - `persistence`:
-    - `persistentVolumeClaim`: 使用 pvc 挂载的方式
-      - `existingClaim`: 使用现成的 pvc，没有可不填
-      - `size`: 大小，一个 Python Runtime 的大小约为 1G，推荐至少给 10G.
-    - `hostPath`: 使用 host path 的方式
-      - `path`: **请修改为宿主机的挂载目录**，如 `/var/piston`
-      - `type`: DirectoryOrCreate
+
+| 参数                                                     | 描述                                                                          | 默认值                   |
+| -------------------------------------------------------- | ----------------------------------------------------------------------------- | ------------------------ |
+| `piston.enabled`                                         | 使用启用 piston 服务，默认为 false。                                          | `false`                  |
+| `piston.replicas`                                        | 副本数                                                                        | `1`                      |
+| `piston.resources`                                       | 资源限制                                                                      | 要求 1C 2G，限制 2C 8G。 |
+| `piston.extraEnv.PISTON_RUN_TIMEOUT`                     | 执行超时时间，单位为毫秒                                                      | `3600000`                |
+| `piston.extraEnv.PISTON_COMPILE_TIMEOUT`                 | 编译超时时间，单位为毫秒                                                      | `3600000`                |
+| `piston.extraEnv.PISTON_OUTPUT_MAX_SIZE`                 | 执行 stdout 以及 stderr 最大长度。                                            | `1024`                   |
+| `piston.persistence.persistentVolumeClaim`               | 使用 PVC 的方式进行挂载                                                       |                          |
+| `piston.persistence.persistentVolumeClaim.existingClaim` | 使用现成的 PVC，留空则表示创建新的。                                          | `""`                     |
+| `piston.persistence.hostPath`                            | 使用 Host Path 方式进行挂载                                                   |                          |
+| `piston.persistence.hostPath.path`                       | **请指定宿主机的挂载目录**，如 `/var/piston`。如果留空则会使用 PVC 挂载方式。 | `"/piston"`              |
+| `piston.persistence.hostPath.type`                       | Host Path 类型                                                                | `DirectoryOrCreate`      |
+
 
 #### 有网环境下添加 Python runtime
 
@@ -57,19 +73,20 @@
 
 ### Sandbox 配置
 
-- `sandbox`:
-  - `piston`: 
-    - `runTimeout`: 请和 piston 的 `PISTON_RUN_TIMEOUT` 保持一致。
-    - `compileTimeout`: 请和 piston 的 `PISTON_RUN_TIMEOUT` 保持一致。
-  - `replicas`: 1 # 副本数，默认为 1
-  - `resources`: # cpu 和 memory 限制，推荐使用默认配置。
+| 参数                            | 描述                                               | 默认值                   |
+| ------------------------------- | -------------------------------------------------- | ------------------------ |
+| `sandbox.piston.runTimeout`     | 请和 piston 的 `PISTON_RUN_TIMEOUT` 保持一致。     | `3600000`                |
+| `sandbox.piston.compileTimeout` | 请和 piston 的 `PISTON_COMPILE_TIMEOUT` 保持一致。 | `3600000`                |
+| `sandbox.replicas`              | 副本数                                             | 1                        |
+| `sandbox.resources`             | 资源限制                                           | 要求 1C 2G，限制 2C 8G。 |
+
 
 ### Redis 配置
 
-- `redis`:
-  - `url`: Redis 链接
+| 参数        | 描述               | 默认值 |
+| ----------- | ------------------ | ------ |
+| `redis.url` | Redis 的连接地址。 | `""`   |
 
-更多详情请见 [./values.yaml](./values.yaml) 文件。
 
 
 ## 安装

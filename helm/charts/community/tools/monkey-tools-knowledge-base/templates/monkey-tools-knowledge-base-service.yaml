@@ -19,9 +19,9 @@ spec:
   {{- end }}
   ports:
     - name: http
-      port: 3000
+      port: 5000
       protocol: TCP
-      targetPort: 3000
+      targetPort: 5000
   selector:
 {{ include "monkey-tools-knowledge-base.selectorLabels" . | indent 4 }}
     component: "server"

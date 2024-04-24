@@ -9,17 +9,10 @@ data:
       port: 5000
 
     database:
-      url: postgresql://{{ .Values.externalPostgresql.username }}:{{ .Values.externalPostgresql.password }}@{{ .Values.externalPostgresql.host }}:{{ .Values.externalPostgresql.port }}/{{ .Values.externalPostgresql.database }}
+      url: {{ .Values.externalPostgresql.url }}
 
     redis:
       url: {{ .Values.externalRedis.url }}
-
-    s3:
-      endpoint: {{ .Values.externalS3.endpoint }}
-      accessKeyId: {{ .Values.externalS3.accessKeyId }}
-      secretAccessKey: {{ .Values.externalS3.secretAccessKey }}
-      region: {{ .Values.externalS3.region_name }}
-      bucket: {{ .Values.externalS3.bucket_name }}
 
     vector:
       type: elasticsearch
@@ -27,4 +20,6 @@ data:
         url: {{ .Values.externalElasticsearch.url }}
         username: {{ .Values.externalElasticsearch.username }}
         password: {{ .Values.externalElasticsearch.password }}
-        secure: {{ .Values.externalElasticsearch.secure }}
+
+    embeddings:
+      {{- toYaml .Values.server.embeddings | nindent 6 }}

@@ -3,13 +3,13 @@ fullnameOverride:
 images:
   server:
     repository: infmonkeys/monkeys
-    tag: 0.0.21
+    tag: 0.0.22
     pullPolicy: IfNotPresent
     pullSecrets: 
   
   web:
     repository: infmonkeys/monkeys-ui
-    tag: 0.0.21
+    tag: 0.0.22
     pullPolicy: IfNotPresent
     pullSecrets: 
 

@@ -28,11 +28,9 @@
 
 ## 使用
 
-### 配置
-
 ### 安装核心服务
 
-1. 安装 Chart
+1. 安装 Chart 依赖
 
 ```sh
 git clone https://github.com/inf-monkeys/monkeys-cloud
@@ -41,17 +39,28 @@ cd monkeys-cloud/helm/charts/community/core
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo add elastic https://helm.elastic.co
 helm dependency build
+```
+
+2. 修改配置项
+
+**请详细阅读配置项中的内容。**
+
+完整配置项请见: [配置项列表](./CONFIGURATION_zh.md)
+
+3. 安装 Chart
+
+```sh
 helm install monkeys --namespace monkeys . --values ./values.yaml --create-namespace
 ```
 
-2. 检查运行状态
+4. 检查运行状态
 
 ```sh
 kubectl get pods -n monkeys
 kubectl get svc -n monkeys
 ```
 
-3. 访问服务
+5. 访问服务
 
 
 默认情况下 `values.yaml` 使用 ClusterIP 模式, 你可以通过 **monkeys-proxy** service 访问 monkeys web ui:
@@ -91,5 +100,7 @@ helm upgrade monkeys .  --namespace monkeys --values ./values.yaml --values ./pr
 
 Monkey Tools 采用插件化设计，每个 monkey tool 有自己独立的 helm chart，你可以阅读对应的文档：
 
+- [monkey-tools-knowledge-base](./helm/charts/community/tools/monkey-tools-knowledge-base/README_zh.md)
 - [monkey-tools-vllm](./helm/charts/community/tools/monkey-tools-vllm/README_zh.md)
 - [monkey-tools-sandbox](./helm/charts/community/tools/monkey-tools-sandbox/README_zh.md)
+- [monkey-tools-midjourney](./helm/charts/community/tools/monkey-tools-midjourney/README_zh.md)
