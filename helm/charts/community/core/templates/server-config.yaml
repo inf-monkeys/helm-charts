@@ -62,8 +62,8 @@ data:
       endpoint: {{ .Values.externalS3.endpoint }}
       accessKeyId: {{ .Values.externalS3.accessKeyId }}
       secretAccessKey: {{ .Values.externalS3.secretAccessKey }}
-      region: {{ .Values.externalS3.region_name }}
-      bucket: {{ .Values.externalS3.bucket_name }}
+      region: {{ .Values.externalS3.region }}
+      bucket: {{ .Values.externalS3.bucket }}
       publicAccessUrl: {{ .Values.externalS3.publicAccessUrl }}
     {{- else }}
     {{- end }}
