@@ -136,12 +136,22 @@
 | `minio.mode`                      | 部署架构，目前只支持 `standalone` 单机模式。                                                                                                                  | `standalone`             |
 | `minio.defaultBuckets`            | 默认创建的 Bucket Name，可以用逗号分隔。                                                                                                                      | `monkeys-static`         |
 | `minio.auth.rootUser`             | Root 用户名                                                                                                                                                   | `minio`                  |
-| `minio.auth.rootPassword`         | Root 用户密码                                                                                                                                                 | `minio`                  |
+| `minio.auth.rootPassword`         | Root 用户密码                                                                                                                                                 | `monkeys123`                  |
 | `minio.service.type`              | Minio Service 模式，次 Minio 需要能够被外部（浏览器）访问，默认使用 `Nodeport` 模式。                                                                         | `NodePort`               |
 | `minio.service.nodePorts.api`     | Minio API 端口挂载到宿主机的端口                                                                                                                              | `31900`                  |
 | `minio.service.nodePorts.console` | Minio Console 端口使用宿主机的端口                                                                                                                            | `31901`                  |
 | `minio.endpoint`                  | Minio API 端口对外可被访问到的地址。你可能需要改成宿主机服务器的 IP + API Node Port 端口                                                                      | `http://127.0.0.1:31900` |
 
+启动之后，访问宿主机 IP + 端口（31901） 应该能够访问到 minio 的管理后台，账号密码为上述设置的密码。
+
+> 注：如果你使用的是 minikube 搭建的集群，还需要手动 port forward minio service 的端口，如下所示：
+>
+> ```bash
+> kubectl port-forward svc/monkeys-minio 31900:9000 -n monkeys
+> kubectl port-forward svc/monkeys-minio 31901:9001 -n monkeys
+> ```
+> 并且注意需要开放宿主机的端口，外网才能访问。
+> 详情请见 [https://stackoverflow.com/a/55110218](https://stackoverflow.com/a/55110218)。
 
 #### 使用外部 S3 存储
 
