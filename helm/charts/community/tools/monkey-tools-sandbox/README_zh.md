@@ -12,7 +12,10 @@
     - [有网环境下添加 Python runtime](#有网环境下添加-python-runtime)
     - [离线网络环境下添加 Python runtime](#离线网络环境下添加-python-runtime)
   - [Sandbox 配置](#sandbox-配置)
-  - [Redis 配置](#redis-配置)
+  - [Redis](#redis)
+    - [单机 Redis](#单机-redis)
+    - [Redis 集群](#redis-集群)
+      - [Redis sentinel](#redis-sentinel)
 - [安装](#安装)
   - [更新配置](#更新配置)
 - [卸载](#卸载)
@@ -64,7 +67,7 @@
 
 #### 离线网络环境下添加 Python runtime
 
-1. 下载 [https://static.infmonkeys.com/docker/monkeys/piston/python.zip](https://static.infmonkeys.com/docker/monkeys/piston/python.zip) 文件。
+1. 下载 [https://static.infmonkeys.com/docker/monkeys/piston/python-3.10.0.tar.gz](https://static.infmonkeys.com/docker/monkeys/piston/python-3.10.0.tar.gz) 文件。
 2. 将此压缩包拷贝到宿主机。
 3. 将此压缩包移动到宿主机挂载的目录下，如 `/var/piston`，注意和上述配置中的 `persistence.hostPath.path` 保持一致。
 4. 解压此压缩包：`unzip python.zip`。
@@ -81,12 +84,57 @@
 | `sandbox.resources`             | 资源限制                                           | 要求 1C 2G，限制 2C 8G。 |
 
 
-### Redis 配置
+### Redis
 
-| 参数        | 描述               | 默认值 |
-| ----------- | ------------------ | ------ |
-| `redis.url` | Redis 的连接地址。 | `""`   |
+#### 单机 Redis
 
+| 参数                 | 描述           | 默认值                     |
+| -------------------- | -------------- | -------------------------- |
+| `externalRedis.mode` | Redis 部署架构 | `standalone`               |
+| `externalRedis.url`  | Redis 连接地址 | `redis://localhost:6379/0` |
+
+#### Redis 集群
+
+| 参数                             | 描述               | 默认值    |
+| -------------------------------- | ------------------ | --------- |
+| `externalRedis.mode`             | Redis 部署架构     | `cluster` |
+| `externalRedis.nodes`            | Redis 集群节点列表 | `""`      |
+| `externalRedis.options.password` | 密码               | `""`      |
+
+Redis 集群节点列表示例：
+
+```yaml
+nodes:
+  - host: 127.0.0.1
+    port: 7001
+  - host: 127.0.0.1
+    port: 7002
+  - host: 127.0.0.1
+    port: 7003
+  - host: 127.0.0.1
+    port: 7004
+  - host: 127.0.0.1
+    port: 7005
+  - host: 127.0.0.1
+    port: 7006
+```
+
+##### Redis sentinel
+
+| 参数                             | 描述                | 默认值     |
+| -------------------------------- | ------------------- | ---------- |
+| `externalRedis.mode`             | Redis 部署架构      | `sentinel` |
+| `externalRedis.sentinels`        | Redis 哨兵节点列表  | `""`       |
+| `externalRedis.sentinelName`     | Redis sentinel Name | `""`       |
+| `externalRedis.options.password` | 密码                | `""`       |
+
+Redis 哨兵节点列表示例：
+
+```yaml
+sentinels:
+  - host: 127.0.0.1
+    port: 7101
+```
 
 
 ## 安装

@@ -15,4 +15,4 @@ data:
         compileTimeout: {{ .Values.sandbox.piston.compileTimeout }}
 
     redis:
-      url: {{ .Values.redis.url }}
+      {{- toYaml .Values.externalRedis | nindent 6 }}

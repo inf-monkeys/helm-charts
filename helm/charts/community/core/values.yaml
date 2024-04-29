@@ -3,13 +3,13 @@ fullnameOverride:
 images:
   server:
     repository: infmonkeys/monkeys
-    tag: 0.0.22
+    tag: 0.0.26
     pullPolicy: IfNotPresent
     pullSecrets: 
   
   web:
     repository: infmonkeys/monkeys-ui
-    tag: 0.0.22
+    tag: 0.0.26
     pullPolicy: IfNotPresent
     pullSecrets: 
 
@@ -195,9 +195,42 @@ redis:
 # External redis
 # - these configs are only used when `externalRedis.enabled` is true
 ###################################
+# standalone example
 externalRedis:
+  mode: standalone
   enabled: false
   url: redis://localhost:6379/0
+
+# cluster example
+# externalRedis:
+#   enabled: true
+#   mode: cluster
+#   nodes:
+#     - host: 127.0.0.1
+#       port: 7001
+#     - host: 127.0.0.1
+#       port: 7002
+#     - host: 127.0.0.1
+#       port: 7003
+#     - host: 127.0.0.1
+#       port: 7004
+#     - host: 127.0.0.1
+#       port: 7005
+#     - host: 127.0.0.1
+#       port: 7006
+#   options:
+#     password: password
+
+# sentinel example
+# externalRedis:
+#   enabled: true
+#   mode: sentinel
+#   sentinels:
+#     - host: 127.0.0.1
+#       port: 7101
+#   sentinelName: mymaster
+#   options:
+#     password: password
 
 ###################################
 # BuiltIn s3 storage

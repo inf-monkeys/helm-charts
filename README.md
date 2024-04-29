@@ -89,4 +89,3 @@ Tools is by plug-in design, you can install as many tools as you like. Here are 
 - [monkey-tools-knowledge-base](./helm/charts/community/tools/monkey-tools-knowledge-base/README.md)
 - [monkey-tools-vllm](./helm/charts/community/tools/monkey-tools-vllm/README.md)
 - [monkey-tools-sandbox](./helm/charts/community/tools/monkey-tools-sandbox/README.md)
-- [monkey-tools-midjourney](./helm/charts/community/tools/monkey-tools-midjourney/README.md)

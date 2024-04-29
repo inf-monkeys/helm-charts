@@ -41,7 +41,7 @@ data:
       url: redis://:{{ .Values.redis.global.redis.password }}@monkeys-redis-master:6379/0
     {{- else if .Values.externalRedis.enabled }}
     redis:
-      url: {{ .Values.externalRedis.url }}
+      {{- toYaml .Values.externalRedis | nindent 6 }}
     {{- else }}
     {{- end }}
 

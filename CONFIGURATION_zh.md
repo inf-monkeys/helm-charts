@@ -15,6 +15,9 @@
   - [Redis](#redis)
     - [使用内置 Redis](#使用内置-redis)
     - [使用外置 Redis](#使用外置-redis)
+      - [单机 Redis](#单机-redis)
+      - [Redis 集群](#redis-集群)
+        - [Redis sentinel](#redis-sentinel)
   - [MinIO(S3) 存储](#minios3-存储)
     - [使用内置 Minio 存储](#使用内置-minio-存储)
     - [使用外部 S3 存储](#使用外部-s3-存储)
@@ -117,12 +120,58 @@
 
 #### 使用外置 Redis
 
+##### 单机 Redis
 
 | 参数                    | 描述                 | 默认值                     |
 | ----------------------- | -------------------- | -------------------------- |
 | `externalRedis.enabled` | 是否使用外置的 redis | `false`                    |
+| `externalRedis.mode`    | Redis 部署架构       | `standalone`               |
 | `externalRedis.url`     | Redis 连接地址       | `redis://localhost:6379/0` |
 
+##### Redis 集群
+
+| 参数                             | 描述                 | 默认值    |
+| -------------------------------- | -------------------- | --------- |
+| `externalRedis.enabled`          | 是否使用外置的 redis | `false`   |
+| `externalRedis.mode`             | Redis 部署架构       | `cluster` |
+| `externalRedis.nodes`            | Redis 集群节点列表   | `""`      |
+| `externalRedis.options.password` | 密码                 | `""`      |
+
+Redis 集群节点列表示例：
+
+```yaml
+nodes:
+  - host: 127.0.0.1
+    port: 7001
+  - host: 127.0.0.1
+    port: 7002
+  - host: 127.0.0.1
+    port: 7003
+  - host: 127.0.0.1
+    port: 7004
+  - host: 127.0.0.1
+    port: 7005
+  - host: 127.0.0.1
+    port: 7006
+```
+
+###### Redis sentinel
+
+| 参数                             | 描述                 | 默认值     |
+| -------------------------------- | -------------------- | ---------- |
+| `externalRedis.enabled`          | 是否使用外置的 redis | `false`    |
+| `externalRedis.mode`             | Redis 部署架构       | `sentinel` |
+| `externalRedis.sentinels`        | Redis 哨兵节点列表   | `""`       |
+| `externalRedis.sentinelName`     | Redis sentinel Name  | `""`       |
+| `externalRedis.options.password` | 密码                 | `""`       |
+
+Redis 哨兵节点列表示例：
+
+```yaml
+sentinels:
+  - host: 127.0.0.1
+    port: 7101
+```
 
 ### MinIO(S3) 存储
 
@@ -136,7 +185,8 @@
 | `minio.mode`                      | 部署架构，目前只支持 `standalone` 单机模式。                                                                                                                  | `standalone`             |
 | `minio.defaultBuckets`            | 默认创建的 Bucket Name，可以用逗号分隔。                                                                                                                      | `monkeys-static`         |
 | `minio.auth.rootUser`             | Root 用户名                                                                                                                                                   | `minio`                  |
-| `minio.auth.rootPassword`         | Root 用户密码                                                                                                                                                 | `monkeys123`                  |
+| `minio.auth.rootPassword`         | Root 用户密码                                                                                                                                                 | `monkeys123`             |
+
 | `minio.service.type`              | Minio Service 模式，次 Minio 需要能够被外部（浏览器）访问，默认使用 `Nodeport` 模式。                                                                         | `NodePort`               |
 | `minio.service.nodePorts.api`     | Minio API 端口挂载到宿主机的端口                                                                                                                              | `31900`                  |
 | `minio.service.nodePorts.console` | Minio Console 端口使用宿主机的端口                                                                                                                            | `31901`                  |

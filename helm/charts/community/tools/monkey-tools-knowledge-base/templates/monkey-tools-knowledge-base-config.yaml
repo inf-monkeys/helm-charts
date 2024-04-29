@@ -12,14 +12,20 @@ data:
       url: {{ .Values.externalPostgresql.url }}
 
     redis:
-      url: {{ .Values.externalRedis.url }}
+      {{- toYaml .Values.externalRedis | nindent 6 }}
 
     vector:
-      type: elasticsearch
+      type: {{ .Values.server.storage.vector.type }}
+      {{- if eq .Values.server.storage.vector.type "elasticsearch" }}
       elasticsearch:
         url: {{ .Values.externalElasticsearch.url }}
         username: {{ .Values.externalElasticsearch.username }}
         password: {{ .Values.externalElasticsearch.password }}
+      {{- else if eq .Values.server.storage.vector.type "pgvector" }}
+      pgvector:
+        url: {{ .Values.externalPGVector.url }}
+      {{- else }}
+      {{- end }}
 
     embeddings:
       {{- toYaml .Values.server.embeddings | nindent 6 }}

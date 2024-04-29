@@ -11,8 +11,12 @@
   - [配置向量数据库](#配置向量数据库)
     - [选择向量数据库类型](#选择向量数据库类型)
     - [配置 ES8 向量数据库](#配置-es8-向量数据库)
+    - [配置 PGVector 向量数据库](#配置-pgvector-向量数据库)
   - [配置业务数据库连接信息](#配置业务数据库连接信息)
   - [配置 Redis 连接信息](#配置-redis-连接信息)
+    - [单机 Redis](#单机-redis)
+    - [Redis 集群](#redis-集群)
+      - [Redis sentinel](#redis-sentinel)
 - [安装](#安装)
   - [更新配置](#更新配置)
 - [卸载](#卸载)
@@ -61,14 +65,19 @@ monkey-tools-knowledge-base 使用[FlagEmbedding](https://github.com/FlagOpen/Fl
 ### Embedding 模型列表
 
 
-| 参数                                     | 描述                                                                                                                                                                                                                                                                                                          | 默认值 |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| `server.embeddings.models`               | Embedding 模型列表                                                                                                                                                                                                                                                                                            | `[]`   |
-| `server.embeddings.models[].name`        | 模型名称，如 BAAI/bge-base-zh-v1.5，请务必填写完整。                                                                                                                                                                                                                                                          | `""`   |
-| `server.embeddings.models[].displayName` | 模型显示名称，用于前端展示，默认和 `name` 保持一致。                                                                                                                                                                                                                                                          |        |
-| `server.embeddings.models[].dimension`   | 向量纬度。                                                                                                                                                                                                                                                                                                    | `""`   |
-| `server.embeddings.models[].modelPath`   | 模型所在路径，默认为 `/app/models/xxxxxx`，如模型的 `name` 为 `BAAI/bge-base-zh-v1.5`，则默认路径为 `/app/models/bge-base-zh-v1.5`；`name` 为 `jinaai/jina-embeddings-v2-small-en`，则默认路径为 `/app/models/jina-embeddings-v2-small-en`。在有网环境下，如果此路径不存在，则会从 huggingface 动态拉取模型。 | `""`   |
-
+| 参数                                                    | 描述                                                                                                                                                                                                                                                                                                                                           | 默认值    |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `server.embeddings.models`                              | Embedding 模型列表                                                                                                                                                                                                                                                                                                                             | `[]`      |
+| `server.embeddings.models[].type`                       | 模型类型，分为 `local`（本地模型）和 `api`（使用自定义 API 接口。）                                                                                                                                                                                                                                                                            | `"local"` |
+| `server.embeddings.models[].name`                       | 模型名称，如 BAAI/bge-base-zh-v1.5，请务必填写完整。                                                                                                                                                                                                                                                                                           | `""`      |
+| `server.embeddings.models[].displayName`                | 模型显示名称，用于前端展示，默认和 `name` 保持一致。                                                                                                                                                                                                                                                                                           |           |
+| `server.embeddings.models[].dimension`                  | 向量纬度。                                                                                                                                                                                                                                                                                                                                     | `""`      |
+| `server.embeddings.models[].modelPath`                  | 只当 `type` 为 `local` 时才生效。模型所在路径，默认为 `/app/models/xxxxxx`，如模型的 `name` 为 `BAAI/bge-base-zh-v1.5`，则默认路径为 `/app/models/bge-base-zh-v1.5`；`name` 为 `jinaai/jina-embeddings-v2-small-en`，则默认路径为 `/app/models/jina-embeddings-v2-small-en`。在有网环境下，如果此路径不存在，则会从 huggingface 动态拉取模型。 | `""`      |
+| `server.embeddings.models[].apiConfig.url`              | 只当 `type` 为 `api` 时才生效。自定义 embedding 服务的请求地址。                                                                                                                                                                                                                                                                               | `""`      |
+| `server.embeddings.models[].apiConfig.method`           | 只当 `type` 为 `api` 时才生效。自定义 embedding 服务的 HTTP 请求方式。                                                                                                                                                                                                                                                                         | `"POST"`  |
+| `server.embeddings.models[].apiConfig.headers`          | 只当 `type` 为 `api` 时才生效。自定义 embedding 服务的 HTTP 请求头。                                                                                                                                                                                                                                                                           | `""`      |
+| `server.embeddings.models[].apiConfig.body`             | 只当 `type` 为 `api` 时才生效。自定义 embedding 服务的 HTTP 请求体。                                                                                                                                                                                                                                                                           | `""`      |
+| `server.embeddings.models[].apiConfig.responseResolver` | 只当 `type` 为 `api` 时才生效。自定义 embedding 服务的数据解析方式。                                                                                                                                                                                                                                                                           | `""`      |
 
 以下是一个完整的示例：
 
@@ -85,15 +94,31 @@ server:
       - name: moka-ai/m3e-base
         dimension: 768
         modelPath: /path/to/model/path
+
+      - name: daocloud
+        displayName: daocloud
+        dimension: 768
+        type: api
+        apiConfig:
+          url: http://localhost:5200/embeddings/FileVectorize
+          method: POST
+          headers:
+            Content-Type: application/json
+            Authorization: Bearer token
+          body:
+            shard: "{documents}"
+          responseResolver:
+            type: json
+            path: embeddings
 ```
 
 ### 配置向量数据库
 
 #### 选择向量数据库类型
 
-| 参数                         | 描述                                       | 默认值          |
-| ---------------------------- | ------------------------------------------ | --------------- |
-| `server.storage.vector.type` | 向量数据库类型，目前只支持 `elasticsearch` | `elasticsearch` |
+| 参数                         | 描述                                                   | 默认值          |
+| ---------------------------- | ------------------------------------------------------ | --------------- |
+| `server.storage.vector.type` | 向量数据库类型，目前支持 `elasticsearch` 和 `pgvector` | `elasticsearch` |
 
 
 #### 配置 ES8 向量数据库
@@ -105,6 +130,16 @@ ES 从版本 8 开始支持向量，要求大版本号必须大于等于 8。
 | `externalElasticsearch.url`      | 连接地址，如 `http://elasticsearch-master:9200` | `""`   |
 | `externalElasticsearch.username` | 用户名                                          | `""`   |
 | `externalElasticsearch.password` | 密码                                            | `""`   |
+
+
+#### 配置 PGVector 向量数据库
+
+需要在 postgres 数据库之上安装 pgvector 扩展，详情请见文档 [https://github.com/pgvector/pgvector](https://github.com/pgvector/pgvector)。
+
+
+| 参数                   | 描述                                                                 | 默认值 |
+| ---------------------- | -------------------------------------------------------------------- | ------ |
+| `externalPGVector.url` | 连接地址，如 `postgresql://postgres:postgres@localhost:5432/monkeys` | `""`   |
 
 
 ### 配置业务数据库连接信息
@@ -119,9 +154,55 @@ ES 从版本 8 开始支持向量，要求大版本号必须大于等于 8。
 
 此服务使用 redis 订阅模式异步消费任务。
 
-| 参数                | 描述               | 默认值 |
-| ------------------- | ------------------ | ------ |
-| `externalRedis.url` | Redis 的连接地址。 | `""`   |
+#### 单机 Redis
+
+| 参数                 | 描述               | 默认值         |
+| -------------------- | ------------------ | -------------- |
+| `externalRedis.mode` | Redis 部署架构     | `"standalone"` |
+| `externalRedis.url`  | Redis 的连接地址。 | `""`           |
+
+#### Redis 集群
+
+| 参数                     | 描述               | 默认值    |
+| ------------------------ | ------------------ | --------- |
+| `externalRedis.mode`     | Redis 部署架构     | `cluster` |
+| `externalRedis.nodes`    | Redis 集群节点列表 | `""`      |
+| `externalRedis.password` | 密码               | `""`      |
+
+Redis 集群节点列表示例：
+
+```yaml
+nodes:
+  - host: 127.0.0.1
+    port: 7001
+  - host: 127.0.0.1
+    port: 7002
+  - host: 127.0.0.1
+    port: 7003
+  - host: 127.0.0.1
+    port: 7004
+  - host: 127.0.0.1
+    port: 7005
+  - host: 127.0.0.1
+    port: 7006
+```
+
+##### Redis sentinel
+
+| 参数                         | 描述                | 默认值     |
+| ---------------------------- | ------------------- | ---------- |
+| `externalRedis.mode`         | Redis 部署架构      | `sentinel` |
+| `externalRedis.sentinels`    | Redis 哨兵节点列表  | `""`       |
+| `externalRedis.sentinelName` | Redis sentinel Name | `""`       |
+| `externalRedis.password`     | 密码                | `""`       |
+
+Redis 哨兵节点列表示例：
+
+```yaml
+sentinels:
+  - host: 127.0.0.1
+    port: 7101
+```
 
 ## 安装
 
