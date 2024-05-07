@@ -51,7 +51,7 @@ spec:
           {{- toYaml .Values.proxy.extraEnv | nindent 8 }}
         {{- end }}
         ports:
-          - name: nginx
+          - name: http-proxy
             containerPort: 80
             protocol: TCP
         resources:
