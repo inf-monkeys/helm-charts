@@ -159,7 +159,7 @@ ES 从版本 8 开始支持向量，要求大版本号必须大于等于 8。
 | 参数                 | 描述               | 默认值         |
 | -------------------- | ------------------ | -------------- |
 | `externalRedis.mode` | Redis 部署架构     | `"standalone"` |
-| `externalRedis.url`  | Redis 的连接地址。 | `""`           |
+| `externalRedis.url`  | Redis 连接地址，如 `redis://@localhost:6379/0`，包含密码的示例: `redis://:password@localhost:6379/0` | `""`           |
 
 #### Redis 集群
 

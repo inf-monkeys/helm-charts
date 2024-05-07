@@ -200,6 +200,8 @@ externalRedis:
   mode: standalone
   enabled: false
   url: redis://localhost:6379/0
+  # Set password like this
+  # url: redis://:password@localhost:6379/0
 
 # cluster example
 # externalRedis:

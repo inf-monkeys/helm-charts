@@ -122,11 +122,11 @@
 
 ##### 单机 Redis
 
-| 参数                    | 描述                 | 默认值                     |
-| ----------------------- | -------------------- | -------------------------- |
-| `externalRedis.enabled` | 是否使用外置的 redis | `false`                    |
-| `externalRedis.mode`    | Redis 部署架构       | `standalone`               |
-| `externalRedis.url`     | Redis 连接地址       | `redis://localhost:6379/0` |
+| 参数                    | 描述                                                                                                 | 默认值                     |
+| ----------------------- | ---------------------------------------------------------------------------------------------------- | -------------------------- |
+| `externalRedis.enabled` | 是否使用外置的 redis                                                                                 | `false`                    |
+| `externalRedis.mode`    | Redis 部署架构                                                                                       | `standalone`               |
+| `externalRedis.url`     | Redis 连接地址，如 `redis://@localhost:6379/0`，包含密码的示例: `redis://:password@localhost:6379/0` | `redis://localhost:6379/0` |
 
 ##### Redis 集群
 
@@ -179,13 +179,13 @@ sentinels:
 
 > 此模式会使用 root 用户和密码作为 accessKey，只推荐在快速测试时使用。
 
-| 参数                              | 描述                                                                                                                                                          | 默认值                   |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
-| `minio.enabled`                   | 是否启用内置的 Minio。如果设置为 true，将会创建一个新的 Minio 实例（不保证高可用），如果你有其他现成的 Minio 或者任意满足 S3 协议的对象存储，请设置为 false。 | `true`                   |
-| `minio.mode`                      | 部署架构，目前只支持 `standalone` 单机模式。                                                                                                                  | `standalone`             |
-| `minio.defaultBuckets`            | 默认创建的 Bucket Name，可以用逗号分隔。                                                                                                                      | `monkeys-static`         |
-| `minio.auth.rootUser`             | Root 用户名                                                                                                                                                   | `minio`                  |
-| `minio.auth.rootPassword`         | Root 用户密码                                                                                                                                                 | `monkeys123`             |
+| 参数                      | 描述                                                                                                                                                          | 默认值           |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| `minio.enabled`           | 是否启用内置的 Minio。如果设置为 true，将会创建一个新的 Minio 实例（不保证高可用），如果你有其他现成的 Minio 或者任意满足 S3 协议的对象存储，请设置为 false。 | `true`           |
+| `minio.mode`              | 部署架构，目前只支持 `standalone` 单机模式。                                                                                                                  | `standalone`     |
+| `minio.defaultBuckets`    | 默认创建的 Bucket Name，可以用逗号分隔。                                                                                                                      | `monkeys-static` |
+| `minio.auth.rootUser`     | Root 用户名                                                                                                                                                   | `minio`          |
+| `minio.auth.rootPassword` | Root 用户密码                                                                                                                                                 | `monkeys123`     |
 
 | `minio.service.type`              | Minio Service 模式，次 Minio 需要能够被外部（浏览器）访问，默认使用 `Nodeport` 模式。                                                                         | `NodePort`               |
 | `minio.service.nodePorts.api`     | Minio API 端口挂载到宿主机的端口                                                                                                                              | `31900`                  |

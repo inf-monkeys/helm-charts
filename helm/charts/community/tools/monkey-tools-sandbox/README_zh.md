@@ -91,7 +91,7 @@
 | 参数                 | 描述           | 默认值                     |
 | -------------------- | -------------- | -------------------------- |
 | `externalRedis.mode` | Redis 部署架构 | `standalone`               |
-| `externalRedis.url`  | Redis 连接地址 | `redis://localhost:6379/0` |
+| `externalRedis.url`  | Redis 连接地址，如 `redis://@localhost:6379/0`，包含密码的示例: `redis://:password@localhost:6379/0` | `redis://localhost:6379/0` |
 
 #### Redis 集群
 
