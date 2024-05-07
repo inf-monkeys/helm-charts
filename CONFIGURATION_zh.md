@@ -26,25 +26,31 @@
 
 ## 服务配置
 
-| 参数                          | 描述                                                                                             | 默认值                  |
-| ----------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------- |
-| `images.server.repository`    | [monkeys](https://github.com/inf-monkeys/monkeys) 服务 Docker 镜像地址                           | `infmonkeys/monkeys`    |
-| `images.server.tag`           | 版本号号                                                                                         |                         |
-| `images.server.pullPolicy`    | 镜像拉取策略                                                                                     | `IfNotPresent`          |
-| `images.web.repository`       | [前端](https://github.com/inf-monkeys/monkeys/tree/main/ui) Docker 镜像地址                      | `infmonkeys/monkeys-ui` |
-| `images.web.tag`              | 版本号                                                                                           |                         |
-| `images.web.pullPolicy`       | 镜像拉取策略                                                                                     |
-| `images.conductor.repository` | 流程编排引擎 [conductor](https://github.com/inf-monkeys/conductor) 的镜像地址                    | `infmonkeys/conductor`  |
-| `images.conductor.tag`        | 版本号                                                                                           | `1.0.0`                 |
-| `proxy.enabled`               | 是否使用 nginx 作为反向代理，用于同一前后端域名，根据路径转发到对应的服务。                      | `true`                  |
-| `proxy.replicas`              | 副本数                                                                                           | `1`                     |
-| `server.replicas`             | 副本数                                                                                           | `1`                     |
-| `server.server.appId`         | 此次部署服务的唯一 ID，将会作为数据库表、redis key 的前缀。                                      | `monkeys`               |
-| `server.server.appUrl`        | 对外可访问的连接，此配置项会影响到 OIDC 单点登录跳转以及自定义触发器，除此之外不会影响其他功能。 | `http://localhost:3000` |
-| `server.auth.enabled`         | 启用的认证方式，默认只启用密码登录和 APIKey 接口认证。                                           | `password,apikey`       |
-| `server.models`               | 启用的语言模型，详细配置请见[语言模型配置项说明](#语言模型配置项说明)                            | `[]`                    |
-| `web.replicas`                | 前端副本数                                                                                       | `1`                     |
-| `conductor.replicas`          | Conductor 副本数                                                                                 | `1`                     |
+| 参数                                                     | 描述                                                                                             | 默认值                                             |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------- |
+| `images.server.repository`                               | [monkeys](https://github.com/inf-monkeys/monkeys) 服务 Docker 镜像地址                           | `infmonkeys/monkeys`                               |
+| `images.server.tag`                                      | 版本号号                                                                                         |                                                    |
+| `images.server.pullPolicy`                               | 镜像拉取策略                                                                                     | `IfNotPresent`                                     |
+| `images.web.repository`                                  | [前端](https://github.com/inf-monkeys/monkeys/tree/main/ui) Docker 镜像地址                      | `infmonkeys/monkeys-ui`                            |
+| `images.web.tag`                                         | 版本号                                                                                           |                                                    |
+| `images.web.pullPolicy`                                  | 镜像拉取策略                                                                                     |
+| `images.conductor.repository`                            | 流程编排引擎 [conductor](https://github.com/inf-monkeys/conductor) 的镜像地址                    | `infmonkeys/conductor`                             |
+| `images.conductor.tag`                                   | 版本号                                                                                           | `1.0.0`                                            |
+| `proxy.enabled`                                          | 是否使用 nginx 作为反向代理，用于同一前后端域名，根据路径转发到对应的服务。                      | `true`                                             |
+| `proxy.replicas`                                         | 副本数                                                                                           | `1`                                                |
+| `server.replicas`                                        | 副本数                                                                                           | `1`                                                |
+| `server.server.appId`                                    | 此次部署服务的唯一 ID，将会作为数据库表、redis key 的前缀。                                      | `monkeys`                                          |
+| `server.server.appUrl`                                   | 对外可访问的连接，此配置项会影响到 OIDC 单点登录跳转以及自定义触发器，除此之外不会影响其他功能。 | `http://localhost:3000`                            |
+| `server.server.customization.title`                      | 网站标题。                                                                                       | `猴子无限`                                         |
+| `server.server.customization.logoUrl`                    | 左上角 Logo 图标。                                                                               | `https://static.aside.fun/static/vines.svg`        |
+| `server.server.customization.faviconUrl`                 | 浏览器 Favicon 图标                                                                              | `https://static.infmonkeys.com/upload/favicon.svg` |
+| `server.server.customization.colors.primary`             | 主颜色                                                                                           | `#52ad1f`                                          |
+| `server.server.customization.colors.secondary`           | Secondary 颜色                                                                                   | `#16161a`                                          |
+| `server.server.customization.colors.secondaryBackground` | Secondary 背景颜色                                                                               | `#212121`                                          |
+| `server.auth.enabled`                                    | 启用的认证方式，默认只启用密码登录和 APIKey 接口认证。                                           | `password,apikey`                                  |
+| `server.models`                                          | 启用的语言模型，详细配置请见[语言模型配置项说明](#语言模型配置项说明)                            | `[]`                                               |
+| `web.replicas`                                           | 前端副本数                                                                                       | `1`                                                |
+| `conductor.replicas`                                     | Conductor 副本数                                                                                 | `1`                                                |
 
 ## 中间件配置
 

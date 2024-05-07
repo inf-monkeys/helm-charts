@@ -3,13 +3,13 @@ fullnameOverride:
 images:
   server:
     repository: infmonkeys/monkeys
-    tag: 0.0.26
+    tag: 0.0.28
     pullPolicy: IfNotPresent
     pullSecrets: 
   
   web:
     repository: infmonkeys/monkeys-ui
-    tag: 0.0.26
+    tag: 0.0.28
     pullPolicy: IfNotPresent
     pullSecrets: 
 
@@ -82,6 +82,14 @@ server:
     appId: monkeys
     # Change this to public visible url
     appUrl: http://localhost:3000
+    customization:
+      title: 猴子无限
+      logoUrl: https://static.aside.fun/static/vines.svg
+      faviconUrl: https://static.infmonkeys.com/upload/favicon.svg
+      colors:
+        primary: "#52ad1f"
+        secondary: "#16161a"
+        secondaryBackground: "#212121"
 
   auth:
     enabled:
