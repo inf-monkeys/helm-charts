@@ -188,6 +188,7 @@ sentinels:
 | 参数                      | 描述                                                                                                                                                          | 默认值           |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
 | `minio.enabled`           | 是否启用内置的 Minio。如果设置为 true，将会创建一个新的 Minio 实例（不保证高可用），如果你有其他现成的 Minio 或者任意满足 S3 协议的对象存储，请设置为 false。 | `true`           |
+| `minio.isPrivate`         | 是否为私有仓库                                                                                                                                                | `false`          |
 | `minio.mode`              | 部署架构，目前只支持 `standalone` 单机模式。                                                                                                                  | `standalone`     |
 | `minio.defaultBuckets`    | 默认创建的 Bucket Name，可以用逗号分隔。                                                                                                                      | `monkeys-static` |
 | `minio.auth.rootUser`     | Root 用户名                                                                                                                                                   | `minio`          |
@@ -216,6 +217,7 @@ sentinels:
 | 参数                         | 描述                                                                                                | 默认值  |
 | ---------------------------- | --------------------------------------------------------------------------------------------------- | ------- |
 | `externalS3.enabled`         | 使用使用外部的满足你 S3 协议的对象存储，如 Minio、AWS S3 等。                                       | `false` |
+| `externalS3.isPrivate`       | 是否为私有仓库                                                                                      | `false` |
 | `externalS3.endpoint`        | 访问地址                                                                                            | `""`    |
 | `externalS3.accessKeyId`     | AccessKeyID                                                                                         | `""`    |
 | `externalS3.secretAccessKey` | Secret Access Key                                                                                   | `""`    |
