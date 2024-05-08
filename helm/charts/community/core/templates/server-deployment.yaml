@@ -36,15 +36,18 @@ spec:
       - name: wait-for-postgres
         image: busybox
         command: ['sh', '-c', 'until nc -z {{ .Release.Name }}-postgresql 5432; do echo waiting for postgres; sleep 2; done;']
+        imagePullPolicy: IfNotPresent
       {{- end }}
       {{- if .Values.redis.enabled }}
       - name: wait-for-redis
         image: busybox
         command: ['sh', '-c', 'until nc -z monkeys-redis-master 6379; do echo waiting for redis; sleep 2; done;']
+        imagePullPolicy: IfNotPresent
       {{- end }}
       - name: wait-for-conductor
         image: busybox
         command: ['sh', '-c', 'until nc -z {{ template "monkeys.conductor.fullname" . }} 8080; do echo waiting for conductor; sleep 2; done;']
+        imagePullPolicy: IfNotPresent
       containers:
         - image: "{{ .Values.images.server.repository }}:{{ .Values.images.server.tag }}"
           imagePullPolicy: "{{ .Values.images.server.pullPolicy }}"

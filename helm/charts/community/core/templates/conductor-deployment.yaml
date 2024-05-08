@@ -36,11 +36,13 @@ spec:
       - name: wait-for-postgres
         image: busybox
         command: ['sh', '-c', 'until nc -z {{ .Release.Name }}-postgresql 5432; do echo waiting for postgres; sleep 2; done;']
+        imagePullPolicy: IfNotPresent
       {{- end }}
       {{- if .Values.elasticsearch.enabled }}
       - name: wait-for-elasticsearch
         image: busybox
         command: ['sh', '-c', 'until nc -z elasticsearch-master 9200; do echo waiting for elasticsearch; sleep 2; done;']
+        imagePullPolicy: IfNotPresent
       {{- end }}
       containers:
         - image: "{{ .Values.images.conductor.repository }}:{{ .Values.images.conductor.tag }}"
