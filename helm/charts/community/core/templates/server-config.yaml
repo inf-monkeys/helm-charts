@@ -9,6 +9,9 @@ data:
     server:
     {{- toYaml .Values.server.server | nindent 6 }}
 
+    servers:
+    {{- toYaml .Values.server.servers | nindent 6 }}
+
     # Database Config
     {{- if .Values.postgresql.enabled }}
     database:
