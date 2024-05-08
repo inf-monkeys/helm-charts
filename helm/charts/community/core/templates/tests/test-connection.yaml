@@ -11,5 +11,6 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "monkeys.fullname" . }}:{{ .Values.server.server.port }}']
+      args: ['{{ include "monkeys.fullname" . }}:3000']
+      imagePullPolicy: IfNotPresent
   restartPolicy: Never
