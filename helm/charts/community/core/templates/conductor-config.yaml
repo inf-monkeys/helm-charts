@@ -15,11 +15,11 @@ data:
     spring.datasource.url=jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/{{ .Values.postgresql.global.postgresql.auth.database }}
     spring.datasource.username={{ .Values.postgresql.global.postgresql.auth.username }}
     spring.datasource.password={{ .Values.postgresql.global.postgresql.auth.password }}
-    {{- else if .Values.externalPostgresql.enabled }}
+    {{- else if .Values.externalConductorPostgresql.enabled }}
     conductor.db.type=postgres
-    spring.datasource.url=jdbc:postgresql://{{ .Values.externalPostgresql.host }}:{{ .Values.externalPostgresql.port }}/{{ .Values.externalPostgresql.database }}
-    spring.datasource.username={{ .Values.externalPostgresql.username }}
-    spring.datasource.password={{ .Values.externalPostgresql.password }}
+    spring.datasource.url=jdbc:postgresql://{{ .Values.externalConductorPostgresql.host }}:{{ .Values.externalConductorPostgresql.port }}/{{ .Values.externalConductorPostgresql.database }}
+    spring.datasource.username={{ .Values.externalConductorPostgresql.username }}
+    spring.datasource.password={{ .Values.externalConductorPostgresql.password }}
     {{- else }}
     conductor.db.type=memory
     {{- end }}
@@ -33,7 +33,7 @@ data:
     conductor.elasticsearch.password={{ .Values.elasticsearch.secret.password }}
     conductor.elasticsearch.indexReplicasCount={{ .Values.elasticsearch.indexReplicasCount }}
     conductor.elasticsearch.clusterHealthColor={{ .Values.elasticsearch.clusterHealthColor }}
-    {{- else if .Values.externalPostgresql.enabled }}
+    {{- else if .Values.externalElasticsearch.enabled }}
     conductor.indexing.enabled=true
     conductor.elasticsearch.url={{ .Values.externalElasticsearch.url }}
     conductor.elasticsearch.version=7

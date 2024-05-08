@@ -69,6 +69,10 @@
 
 #### 使用外置数据库
 
+> monkeys-server 和 conductor 均需要使用 PG 数据库，建议分配不同的 database。
+
+##### Monkeys 业务数据库
+
 | 参数                          | 描述                 | 默认值  |
 | ----------------------------- | -------------------- | ------- |
 | `externalPostgresql.enabled`  | 是否使用外置的数据库 | `false` |
@@ -77,6 +81,17 @@
 | `externalPostgresql.username` | 用户名               | `""`    |
 | `externalPostgresql.password` | 密码                 | `""`    |
 | `externalPostgresql.database` | database             | `""`    |
+
+##### Conductor 数据库
+
+| 参数                                   | 描述                 | 默认值  |
+| -------------------------------------- | -------------------- | ------- |
+| `externalConductorPostgresql.enabled`  | 是否使用外置的数据库 | `false` |
+| `externalConductorPostgresql.host`     | 域名或者 ip          | `""`    |
+| `externalConductorPostgresql.port`     | 端口                 | `5432`  |
+| `externalConductorPostgresql.username` | 用户名               | `""`    |
+| `externalConductorPostgresql.password` | 密码                 | `""`    |
+| `externalConductorPostgresql.database` | database             | `""`    |
 
 
 ### Elasticsearch 7 
