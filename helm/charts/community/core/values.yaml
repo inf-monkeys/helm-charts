@@ -302,9 +302,20 @@ externalS3:
   bucket: ""
   publicAccessUrl: ""
 
+###################################
+# Proxy SVC Config
+###################################
+# ClusterIP Mode
 service:
   type: ClusterIP
   port: 80
+  clusterIP: ""
+
+# NodePort Mode
+# service:
+#   type: NodePort
+#   port: 80
+#   nodePort: 30080
 
 ingress:
   enabled: false

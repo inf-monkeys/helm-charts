@@ -4,11 +4,13 @@
 
 </div>
 
-- [服务配置](#服务配置)
+- [业务配置](#业务配置)
 - [中间件配置](#中间件配置)
   - [Postgres 数据库](#postgres-数据库)
     - [使用内置数据库](#使用内置数据库)
     - [使用外置数据库](#使用外置数据库)
+      - [Monkeys 业务数据库](#monkeys-业务数据库)
+      - [Conductor 数据库](#conductor-数据库)
   - [Elasticsearch 7](#elasticsearch-7)
     - [使用内置 Elasticsearch 7](#使用内置-elasticsearch-7)
     - [使用外置 Elasticsearch 7](#使用外置-elasticsearch-7)
@@ -21,10 +23,13 @@
   - [MinIO(S3) 存储](#minios3-存储)
     - [使用内置 Minio 存储](#使用内置-minio-存储)
     - [使用外部 S3 存储](#使用外部-s3-存储)
+- [服务配置](#服务配置)
+  - [ClusterIP 模式示例](#clusterip-模式示例)
+  - [NodePort 模式示例](#nodeport-模式示例)
 - [语言模型配置项说明](#语言模型配置项说明)
 
 
-## 服务配置
+## 业务配置
 
 | 参数                                                     | 描述                                                                                             | 默认值                                             |
 | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------- |
@@ -240,6 +245,36 @@ sentinels:
 | `externalS3.bucket`          | Bucket 名称，请使用公开的 bucket，以便前端能够访问到。                                              | `""`    |
 | `externalS3.publicAccessUrl` | 请填写外部（浏览器）可访问的地址，一般为 Bucket 配置的 CDN 地址，如 `https://static.infmonkeys.com` | `31900` |
 
+
+
+## 服务配置
+
+
+| 参数                | 描述                        | 默认值      |
+| ------------------- | --------------------------- | ----------- |
+| `service.type`      | `ClusterIP` 或者 `NodePort` | `ClusterIP` |
+| `service.port`      | Proxy 组件(Nginx) 暴露端口  | `80`        |
+| `service.clusterIP` | ClusterIP                   | `""`        |
+| `service.nodePort`  | Node Port 端口              | `""`        |
+
+
+### ClusterIP 模式示例
+
+```yaml
+service:
+  type: ClusterIP
+  port: 80
+  clusterIP: ""
+```
+
+### NodePort 模式示例
+
+```yaml
+service:
+  type: NodePort
+  port: 80
+  nodePort: 30080
+```
 
 ## 语言模型配置项说明
 
