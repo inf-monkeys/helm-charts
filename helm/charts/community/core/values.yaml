@@ -5,13 +5,13 @@ images:
     repository: infmonkeys/monkeys
     # To use multi tenancy version
     # repository: infmonkeys/monkeys-multi-tenancy
-    tag: 0.0.33
+    tag: 0.0.36
     pullPolicy: IfNotPresent
     pullSecrets: 
   
   web:
     repository: infmonkeys/monkeys-ui
-    tag: 0.0.33
+    tag: 0.0.36
     pullPolicy: IfNotPresent
     pullSecrets: 
 
@@ -170,6 +170,7 @@ postgresql:
 # External postgres
 # - these configs are only used when `externalPostgresql.enabled` is true
 ###################################
+# For monkeys
 externalPostgresql:
   enabled: false
   host: 127.0.0.1
@@ -177,6 +178,15 @@ externalPostgresql:
   username: monkeys
   password: monkeys123
   database: monkeys
+
+# For conductor, we recommand use separate database for conductor
+externalConductorPostgres:
+  enabled: false
+  host: 127.0.0.1
+  port: 5432
+  username: monkeys
+  password: monkeys123
+  database: conductor
 
 ###################################
 # BuiltIn elasticsearch
@@ -295,6 +305,10 @@ minio:
 ###################################
 externalS3:
   enabled: false
+  # If the bucket is private, set this to true
+  isPrivate: false
+  # If you are use minio, set this to true
+  forcePathStyle: false
   endpoint: ""
   accessKeyId: ""
   secretAccessKey: ""

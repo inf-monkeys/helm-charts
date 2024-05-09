@@ -238,6 +238,7 @@ sentinels:
 | ---------------------------- | --------------------------------------------------------------------------------------------------- | ------- |
 | `externalS3.enabled`         | 使用使用外部的满足你 S3 协议的对象存储，如 Minio、AWS S3 等。                                       | `false` |
 | `externalS3.isPrivate`       | 是否为私有仓库                                                                                      | `false` |
+| `externalS3.forcePathStyle`  | 是否使用 path-style endpoint, 当你使用 minio 时，一般都需要设置为 `true`                            | `false` |
 | `externalS3.endpoint`        | 访问地址                                                                                            | `""`    |
 | `externalS3.accessKeyId`     | AccessKeyID                                                                                         | `""`    |
 | `externalS3.secretAccessKey` | Secret Access Key                                                                                   | `""`    |

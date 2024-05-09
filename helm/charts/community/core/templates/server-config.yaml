@@ -53,6 +53,7 @@ data:
     s3:
       endpoint: {{ .Values.minio.endpoint }}
       isPrivate: {{ .Values.minio.isPrivate }}
+      forcePathStyle: true
       accessKeyId: {{ if .Values.minio.accessKeyId }}{{ .Values.minio.accessKeyId }}{{ else }}{{ .Values.minio.auth.rootUser }}{{ end }}
       secretAccessKey: {{ if .Values.minio.secretAccessKey }}{{ .Values.minio.secretAccessKey }}{{ else }}{{ .Values.minio.auth.rootPassword }}{{ end }}
       region: 'us-east-1'
@@ -61,6 +62,7 @@ data:
     {{- else if .Values.externalS3.enabled }}
     s3:
       isPrivate: {{ .Values.externalS3.isPrivate }}
+      forcePathStyle: {{ .Values.externalS3.forcePathStyle }}
       endpoint: {{ .Values.externalS3.endpoint }}
       accessKeyId: {{ .Values.externalS3.accessKeyId }}
       secretAccessKey: {{ .Values.externalS3.secretAccessKey }}
