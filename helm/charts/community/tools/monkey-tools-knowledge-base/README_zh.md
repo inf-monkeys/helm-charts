@@ -4,6 +4,9 @@
 
 </div>
 
+中文 | [English](./README.md)
+
+
 - [下载 embedding 模型（可选）](#下载-embedding-模型可选)
 - [配置项](#配置项)
   - [镜像版本](#镜像版本)

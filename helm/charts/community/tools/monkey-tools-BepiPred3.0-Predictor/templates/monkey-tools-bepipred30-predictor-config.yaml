@@ -1,0 +1,11 @@
+immutable: false
+kind: ConfigMap
+metadata:
+  name: monkey-tools-bepipred30-predictor
+apiVersion: v1
+data:
+  config.yaml: |
+    port: 5000
+
+    s3:
+    {{- toYaml .Values.externalS3 | nindent 6 }}

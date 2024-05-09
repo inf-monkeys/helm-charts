@@ -1,6 +1,6 @@
 apiVersion: v2
-name: monkey-tools-vllm
-description: A Helm chart for monkey-tools-vllm
+name: monkey-tools-bepipred30-predictor
+description: A Helm chart for monkey-tools-bepipred30-predictor
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -21,4 +21,4 @@ version: 0.1.0
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "1.16.0"
+appVersion: "1.0.0"

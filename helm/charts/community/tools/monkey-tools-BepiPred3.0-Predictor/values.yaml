@@ -1,0 +1,29 @@
+fullnameOverride:
+
+images:
+  server:
+    repository: infmonkeys/monkey-tools-bepipred30-predictor
+    tag: 0.0.1
+    pullPolicy: IfNotPresent
+    pullSecrets:
+
+server:
+  service:
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+
+###################################
+# External s3 storage
+###################################
+externalS3:
+  # If the bucket is private, set this to true
+  isPrivate: false
+  # If you are use minio, set this to true
+  forcePathStyle: false
+  endpoint: ""
+  accessKeyId: ""
+  secretAccessKey: ""
+  region: ""
+  bucket: ""
+  publicAccessUrl: ""
