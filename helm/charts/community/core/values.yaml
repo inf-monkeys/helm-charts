@@ -180,7 +180,7 @@ externalPostgresql:
   database: monkeys
 
 # For conductor, we recommand use separate database for conductor
-externalConductorPostgres:
+externalConductorPostgresql:
   enabled: false
   host: 127.0.0.1
   port: 5432
