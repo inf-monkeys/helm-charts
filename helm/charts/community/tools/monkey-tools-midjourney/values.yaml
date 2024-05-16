@@ -14,7 +14,7 @@ server:
     clusterIP: ""
 
 # GoAPI configuration
-gpapi:
+goapi:
   apikey: 
 
 ###################################
