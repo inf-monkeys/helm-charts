@@ -7,6 +7,12 @@ images:
     pullPolicy: IfNotPresent
     pullSecrets: 
 
+server:
+  service:
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+
 # GoAPI configuration
 gpapi:
   apikey: 
