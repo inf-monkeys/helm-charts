@@ -34,20 +34,20 @@ spec:
       initContainers:
       {{- if .Values.postgresql.enabled }}
       - name: wait-for-postgres
-        image: busybox
+        image: {{ .Values.images.busybox.repository }}:{{ .Values.images.busybox.tag }}
         command: ['sh', '-c', 'until nc -z {{ .Release.Name }}-postgresql 5432; do echo waiting for postgres; sleep 2; done;']
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: {{ .Values.images.busybox.imagePullPolicy }}
       {{- end }}
       {{- if .Values.redis.enabled }}
       - name: wait-for-redis
-        image: busybox
+        image: {{ .Values.images.busybox.repository }}:{{ .Values.images.busybox.tag }}
         command: ['sh', '-c', 'until nc -z monkeys-redis-master 6379; do echo waiting for redis; sleep 2; done;']
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: {{ .Values.images.busybox.imagePullPolicy }}
       {{- end }}
       - name: wait-for-conductor
-        image: busybox
+        image: {{ .Values.images.busybox.repository }}:{{ .Values.images.busybox.tag }}
         command: ['sh', '-c', 'until nc -z {{ template "monkeys.conductor.fullname" . }} 8080; do echo waiting for conductor; sleep 2; done;']
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: {{ .Values.images.busybox.imagePullPolicy }}
       containers:
         - image: "{{ .Values.images.server.repository }}:{{ .Values.images.server.tag }}"
           imagePullPolicy: "{{ .Values.images.server.pullPolicy }}"

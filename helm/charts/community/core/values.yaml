@@ -21,6 +21,12 @@ images:
     pullPolicy: IfNotPresent
     pullSecrets: 
 
+  busybox:
+    repository: busybox
+    tag: latest
+    pullPolicy: IfNotPresent
+    pullSecrets: 
+
 proxy:
   enabled: true
 
