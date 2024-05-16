@@ -1,0 +1,15 @@
+immutable: false
+kind: ConfigMap
+metadata:
+  name: monkey-tools-midjourney
+apiVersion: v1
+data:
+  config.yaml: |
+    server:
+      port: 3000
+
+    goapi:
+    {{- toYaml .Values.goapi | nindent 6 }}
+
+    s3:
+    {{- toYaml .Values.externalS3 | nindent 6 }}

@@ -103,3 +103,4 @@ Monkey Tools 采用插件化设计，每个 monkey tool 有自己独立的 helm 
 - [monkey-tools-knowledge-base](./helm/charts/community/tools/monkey-tools-knowledge-base/README_zh.md)
 - [monkey-tools-sandbox](./helm/charts/community/tools/monkey-tools-sandbox/README_zh.md)
 - [monkey-tools-BepiPred3.0-Predictor](./helm/charts/community/tools/monkey-tools-BepiPred3.0-Predictor/README_zh.md)
+- [monkey-tools-midjourney](./helm/charts/community/tools/monkey-tools-midjourney/README_zh.md)
