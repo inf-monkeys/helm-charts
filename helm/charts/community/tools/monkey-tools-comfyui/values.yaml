@@ -1,0 +1,33 @@
+fullnameOverride:
+
+images:
+  server:
+    repository: infmonkeys/monkey-tools-comfyui
+    tag: 0.0.2
+    pullPolicy: IfNotPresent
+    pullSecrets: 
+
+server:
+  service:
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+
+# GoAPI configuration
+goapi:
+  apikey: 
+
+###################################
+# External s3 storage
+###################################
+externalS3:
+  # If the bucket is private, set this to true
+  isPrivate: false
+  # If you are use minio, set this to true
+  forcePathStyle: false
+  endpoint: ""
+  accessKeyId: ""
+  secretAccessKey: ""
+  region: ""
+  bucket: ""
+  publicAccessUrl: ""
