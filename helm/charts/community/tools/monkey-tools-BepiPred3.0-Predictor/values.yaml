@@ -27,3 +27,7 @@ externalS3:
   region: ""
   bucket: ""
   publicAccessUrl: ""
+
+proxy:
+  enabled: false
+  url: 

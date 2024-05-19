@@ -77,3 +77,6 @@ data:
 
     models:
     {{- toYaml .Values.server.models | nindent 6 }}
+
+    tools:
+    {{- toYaml .Values.server.tools | nindent 6 }}
