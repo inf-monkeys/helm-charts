@@ -36,15 +36,15 @@ spec:
         */}}
 {{ include "monkeys.ud.labels" . | indent 8 }}
     spec:
-      {{- if .Values.clash.image.pullSecrets }}
+      {{- if .Values.images.clash.pullSecrets }}
       imagePullSecrets:
-      {{- range .Values.clash.image.pullSecrets }}
+      {{- range .Values.images.clash.pullSecrets }}
         - name: {{ . }}
       {{- end }}
       {{- end }}
       containers:
-      - image: "{{ .Values.clash.image.repository }}:{{ .Values.clash.image.tag }}"
-        imagePullPolicy: "{{ .Values.clash.image.pullPolicy }}"
+      - image: "{{ .Values.images.clash.repository }}:{{ .Values.images.clash.tag }}"
+        imagePullPolicy: "{{ .Values.images.clash.pullPolicy }}"
         name: nginx
         env:
         {{- if .Values.clash.extraEnv }}
@@ -54,7 +54,7 @@ spec:
           - name: http-clash
             containerPort: 7890
             protocol: TCP
-          - name: http-clash-dashboard
+          - name: http-dashboard
             containerPort: 9090
             protocol: TCP
         resources:
@@ -64,8 +64,6 @@ spec:
           mountPath: /app/clash-for-linux/.env
           readOnly: true
           subPath: env
-        {{- if .Values.clash.log.persistence.enabled }}
-        {{- end }}
     {{- if and (.Values.nodeSelector) (not .Values.clash.nodeSelector) }}
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
@@ -91,8 +89,8 @@ spec:
 {{ toYaml .Values.clash.tolerations | indent 8 }}
     {{- end }}
       volumes:
-      - name: clash
+      - name: clash-config
         configMap:
           defaultMode: 420
-          name: {{ template "monkeys.clash.fullname" . }}
+          name: clash-config
 {{- end }}
