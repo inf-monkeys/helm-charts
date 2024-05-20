@@ -3,7 +3,7 @@ fullnameOverride:
 images:
   server:
     repository: infmonkeys/monkey-tools-midjourney
-    tag: 0.0.2
+    tag: 0.0.4
     pullPolicy: IfNotPresent
     pullSecrets: 
 
@@ -31,3 +31,7 @@ externalS3:
   region: ""
   bucket: ""
   publicAccessUrl: ""
+
+proxy:
+  enabled: false
+  url: http://monkeys-clash:7890
