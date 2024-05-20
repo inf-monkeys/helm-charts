@@ -5,13 +5,13 @@ images:
     repository: infmonkeys/monkeys
     # To use multi tenancy version
     # repository: infmonkeys/monkeys-multi-tenancy
-    tag: 0.0.36
+    tag: 0.0.50
     pullPolicy: IfNotPresent
     pullSecrets: 
   
   web:
     repository: infmonkeys/monkeys-ui
-    tag: 0.0.36
+    tag: 0.0.50
     pullPolicy: IfNotPresent
     pullSecrets: 
 
@@ -26,6 +26,12 @@ images:
     tag: latest
     pullPolicy: IfNotPresent
     pullSecrets: 
+
+  clash:
+    repository: infmonkeys/clash
+    tag: 0.0.1
+    pullPolicy: IfNotPresent
+    pullSecrets:
 
 proxy:
   enabled: true
@@ -361,3 +367,9 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 10
 
+clash:
+  enabled: false
+  subscriptionUrl: ""
+  secret: ""
+  resources: {}
+  annotations: {}

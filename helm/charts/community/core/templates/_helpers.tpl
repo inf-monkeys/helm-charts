@@ -32,6 +32,14 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
+Create a default fully qualified clash name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "monkeys.clash.fullname" -}}
+{{ template "monkeys.fullname" . }}-clash
+{{- end -}}
+
+{{/*
 Create a default fully qualified server name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
