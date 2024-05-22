@@ -9,3 +9,6 @@ data:
 
     s3:
     {{- toYaml .Values.externalS3 | nindent 6 }}
+
+    proxy:
+    {{- toYaml .Values.proxy | nindent 6 }}

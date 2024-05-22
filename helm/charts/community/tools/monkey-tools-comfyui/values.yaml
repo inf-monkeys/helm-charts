@@ -12,6 +12,7 @@ server:
     annotations: {}
     labels: {}
     clusterIP: ""
+  resources: {}
 
 ###################################
 # External s3 storage
@@ -23,3 +24,7 @@ externalS3:
   region: ""
   bucket: ""
   publicAccessUrl: ""
+
+proxy:
+  enabled: false
+  url: ""
