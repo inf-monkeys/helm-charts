@@ -1,0 +1,54 @@
+fullnameOverride:
+
+images:
+  vllm:
+    repository: vllm/vllm-openai
+    tag: v0.4.2
+    pullPolicy: IfNotPresent
+    pullSecrets: 
+
+vllm:
+
+  args:
+    - '--host'
+    - 0.0.0.0
+    - '--port'
+    - '8000'
+    - '--model'
+    - TheBloke/Mixtral-8x7B-Instruct-v0.1-GPTQ
+    - '--quantization'
+    - gptq_marlin
+    - '--dtype'
+    - float16
+    - '--gpu-memory-utilization'
+    - '0.95'
+    - '--enforce-eager'
+
+  service:
+    type: ClusterIP
+    port: 8000
+    clusterIP: ""
+    labels: 
+    annotations:
+
+  # NodePort Mode
+  # service:
+  #   type: NodePort
+  #   port: 8000
+  #   nodePort: 30080
+
+  replicas: 1
+  resources:
+    limits: 
+      cpu: '4'
+      memory: 64Gi
+      nvidia.com/gpu: 1
+    requests:
+      cpu: '4'
+      memory: 64Gi
+
+  env:
+    - name: NVIDIA_VISIBLE_DEVICES
+      value: all
+    - name: NVIDIA_DRIVER_CAPABILITIES
+      value: all

@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "vllm.vllm-openai.fullname" . }}
+  labels:
+{{ include "vllm.labels" . | indent 4 }}
+{{- if .Values.vllm.service.labels }}
+{{ toYaml .Values.vllm.service.labels | indent 4 }}
+{{- end }}
+    component: "vllm-openai"
+{{- with .Values.vllm.service.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+  type: ClusterIP
+  {{- if .Values.vllm.service.clusterIP }}
+  clusterIP: {{ .Values.vllm.service.clusterIP }}
+  {{- end }}
+  ports:
+    - name: http
+      port: 8000
+      protocol: TCP
+      targetPort: 8000
+  selector:
+{{ include "vllm.selectorLabels" . | indent 4 }}
+    component: "vllm-openai"

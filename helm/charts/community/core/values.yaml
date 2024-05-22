@@ -360,7 +360,7 @@ ingress:
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
-  #      - dify-example.local
+  #      - infmonkeys-example.local
 
 autoscaling:
   enabled: false

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+{{ include "vllm.ud.annotations" . | indent 4 }}
+    descriptions: vllm openai server
+  labels:
+{{- include "vllm.labels" . | nindent 4 }}
+    component: vllm-openai
+{{ include "vllm.ud.labels" . | indent 4 }}
+  name: {{ template "vllm.vllm-openai.fullname" . }}
+spec:
+  replicas: {{ .Values.vllm.replicas }}
+  selector:
+    matchLabels:
+{{- include "vllm.selectorLabels" . | nindent 6 }}
+      component: vllm-openai
+  template:
+    metadata:
+      annotations:
+{{ include "vllm.ud.annotations" . | indent 8 }}
+      labels:
+{{- include "vllm.selectorLabels" . | nindent 8 }}
+        component: vllm-openai
+{{ include "vllm.ud.labels" . | indent 8 }}
+    spec:
+      enableServiceLinks: false
+      {{- if .Values.images.vllm.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.images.vllm.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - image: "{{ .Values.images.vllm.repository }}:{{ .Values.images.vllm.tag }}"
+          imagePullPolicy: "{{ .Values.images.vllm.pullPolicy }}"
+          args:
+            {{- toYaml .Values.vllm.args | nindent 12 }}
+          name: vllm-openai
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.vllm.resources | nindent 12 }}
+          env:
+            {{- toYaml .Values.vllm.env | nindent 12 }}
