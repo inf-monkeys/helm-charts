@@ -3,7 +3,7 @@ fullnameOverride:
 images:
   server:
     repository: infmonkeys/monkey-tools-knowledge-base
-    tag: 0.0.12
+    tag: 0.0.14
     pullPolicy: IfNotPresent
     pullSecrets: 
 
