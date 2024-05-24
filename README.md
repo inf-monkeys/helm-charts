@@ -91,6 +91,7 @@ Tools is by plug-in design, you can install as many tools as you like. Here are 
 - [monkey-tools-BepiPred3.0-Predictor](./helm/charts/community/tools/monkey-tools-BepiPred3.0-Predictor/README.md)
 - [monkey-tools-midjourney](./helm/charts/community/tools/monkey-tools-midjourney/README.md)
 - [monkey-tools-comfyui](./helm/charts/community/tools/monkey-tools-comfyui/README.md)
+- [monkey-tools-internet](./helm/charts/community/tools/monkey-tools-internet/README.md)
 
 ### Install OpenSource Components
 

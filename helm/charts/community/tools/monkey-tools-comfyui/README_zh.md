@@ -10,12 +10,12 @@
 
 ### 镜像版本
 
-| 参数                        | 描述                          | 默认值                               |
-| --------------------------- | ----------------------------- | ------------------------------------ |
+| 参数                        | 描述                          | 默认值                            |
+| --------------------------- | ----------------------------- | --------------------------------- |
 | `images.server.repository`  | 镜像地址                      | `infmonkeys/monkey-tools-comfyui` |
-| `images.server.tag`         | 版本号                        | `""`                                 |
-| `images.server.pullSecrets` | 拉取镜像的 secret，没有可留空 | `""`                                 |
-| `images.server.pullPolicy`  | 镜像拉取策略                  | `IfNotPresent`                       |
+| `images.server.tag`         | 版本号                        | `""`                              |
+| `images.server.pullSecrets` | 拉取镜像的 secret，没有可留空 | `""`                              |
+| `images.server.pullPolicy`  | 镜像拉取策略                  | `IfNotPresent`                    |
 
 ### 外部 S3 存储
 
@@ -29,6 +29,14 @@
 | `externalS3.region`          | 区域                                                                                                | `""`    |
 | `externalS3.bucket`          | Bucket 名称，请使用公开的 bucket，以便前端能够访问到。                                              | `""`    |
 | `externalS3.publicAccessUrl` | 请填写外部（浏览器）可访问的地址，一般为 Bucket 配置的 CDN 地址，如 `https://static.infmonkeys.com` | `31900` |
+
+### 代理配置
+
+| 参数            | 描述           | 默认值  |
+| --------------- | -------------- | ------- |
+| `proxy.enabled` | 是否开启代理。 | `false` |
+| `proxy.url`     | 代理地址       | `""`    |
+
 
 ## 安装
 

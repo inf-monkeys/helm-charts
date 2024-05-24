@@ -1,0 +1,25 @@
+fullnameOverride:
+
+images:
+  server:
+    repository: infmonkeys/monkey-tools-internet
+    tag: 0.0.2
+    pullPolicy: IfNotPresent
+    pullSecrets: 
+
+server:
+  service:
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+  resources: {}
+
+tavily:
+  apikey:
+
+jinaai:
+  apikey:
+
+proxy:
+  enabled: false
+  url: ""

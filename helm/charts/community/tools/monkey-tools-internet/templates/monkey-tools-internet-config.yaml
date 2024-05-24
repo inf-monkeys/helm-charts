@@ -1,0 +1,17 @@
+immutable: false
+kind: ConfigMap
+metadata:
+  name: monkey-tools-internet
+apiVersion: v1
+data:
+  config.yaml: |
+    port: 3000
+
+    tavily:
+    {{- toYaml .Values.tavily | nindent 6 }}
+
+    jinaai:
+    {{- toYaml .Values.jinaai | nindent 6 }}
+
+    proxy:
+    {{- toYaml .Values.proxy | nindent 6 }}
