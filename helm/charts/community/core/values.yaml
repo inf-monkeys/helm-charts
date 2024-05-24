@@ -99,8 +99,10 @@ server:
     appUrl: http://localhost:3000
     customization:
       title: 猴子无限
-      logo: https://static.aside.fun/static/vines.svg
-      favicon: https://static.infmonkeys.com/upload/favicon.svg
+      logo:
+        light: https://static.infmonkeys.com/logo/InfMonkeys-logo-light.svg
+        dark: https://static.infmonkeys.com/logo/InfMonkeys-logo-dark.svg
+      favicon: https://static.infmonkeys.com/logo/InfMonkeys-ICO.svg
       colors:
         primary: "#52ad1f"
 

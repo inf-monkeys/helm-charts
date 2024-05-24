@@ -5,7 +5,8 @@ metadata:
 apiVersion: v1
 data:
   config.yaml: |
-    port: 5000
+    server:
+      port: 5000
 
     tavily:
     {{- toYaml .Values.tavily | nindent 6 }}
