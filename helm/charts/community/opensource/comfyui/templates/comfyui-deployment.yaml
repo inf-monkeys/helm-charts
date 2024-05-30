@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+{{ include "comfyui.ud.annotations" . | indent 4 }}
+    descriptions: comfyui
+  labels:
+{{- include "comfyui.labels" . | nindent 4 }}
+    component: comfyui
+{{ include "comfyui.ud.labels" . | indent 4 }}
+  name: {{ template "comfyui.comfyui.fullname" . }}
+spec:
+  replicas: {{ .Values.comfyui.replicas }}
+  selector:
+    matchLabels:
+{{- include "comfyui.selectorLabels" . | nindent 6 }}
+      component: comfyui
+  template:
+    metadata:
+      annotations:
+{{ include "comfyui.ud.annotations" . | indent 8 }}
+      labels:
+{{- include "comfyui.selectorLabels" . | nindent 8 }}
+        component: comfyui
+{{ include "comfyui.ud.labels" . | indent 8 }}
+    spec:
+      enableServiceLinks: false
+      {{- if .Values.images.comfyui.pullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.images.comfyui.pullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - image: "{{ .Values.images.comfyui.repository }}:{{ .Values.images.comfyui.tag }}"
+          imagePullPolicy: "{{ .Values.images.comfyui.pullPolicy }}"
+          args:
+            {{- toYaml .Values.comfyui.args | nindent 12 }}
+          name: comfyui
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.comfyui.resources | nindent 12 }}
+          env:
+            {{- toYaml .Values.comfyui.env | nindent 12 }}

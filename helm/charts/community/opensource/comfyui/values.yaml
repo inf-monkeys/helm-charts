@@ -1,0 +1,57 @@
+fullnameOverride:
+
+images:
+  comfyui:
+    repository: infmonkeys/comfyui
+    tag: 0.0.2-gpu
+    pullPolicy: IfNotPresent
+    pullSecrets: 
+
+comfyui:
+  replicas: 1
+  resources:
+    limits: 
+      cpu: '4'
+      memory: 64Gi
+      nvidia.com/gpu: 1
+    requests:
+      cpu: '4'
+      memory: 64Gi
+
+  env:
+    # proxy configuration
+    - name: PROXYCHAINS_PROXY_SERVER
+      # value: http 127.0.0.1 7890
+      value: ""
+
+    # s3 configuration
+    - name: S3_ENABLED
+      value: true
+    - name: S3_ENDPOINT_URL
+      value: 
+    - name: S3_ACCESS_KEY_ID
+      value:
+    - name: S3_SECRET_ACCESS_KEY
+      value:
+    - name: S3_REGION
+      value:
+    - name: S3_BUCKET
+      value:
+    - name: S3_PUBLIC_ACCESS_URL
+      value:
+    - name: S3_ADDRESSING_STYLE
+      value: virtual
+
+# ClusterIP Mode
+service:
+  type: ClusterIP
+  port: 8000
+  clusterIP: ""
+  labels: 
+  annotations:
+
+# NodePort Mode
+# service:
+#   type: NodePort
+#   port: 8000
+#   nodePort: 30080
