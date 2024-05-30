@@ -46,6 +46,19 @@ comfyui 运行依赖 GPU 资源，如果你的 k8s 集群已经配置好了，�
 | `env.S3_PUBLIC_ACCESS_URL`     | Bucket 名称，请使用公开的 bucket，以便前端能够访问到。                                                                  | ``       |
 | `env.S3_ADDRESSING_STYLE`      | Addressing style                                                                                                        | `auto`   |
 
+#### PVCs
+
+你需要提前创建好 4 个 PVCs:
+
+> 如果不挂载 pvc 会导致容器重启时历史数据（模型、节点、输入输出文件等）丢失。
+
+- `comfyui-models`: 用于存储模型文件。
+- `comfyui-custom-nodes`: 用于存储自定义节点。
+- `comfyui-input`: 用于存储输入文件。
+- `comfyui-output`: 用于输出输出文件。
+
+你可以在 `values.yaml` 中的 `volume` 修改对应的 `claimName`。
+
 ## 安装
 
 1. 安装 chart

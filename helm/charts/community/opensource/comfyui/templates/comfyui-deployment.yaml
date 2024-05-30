@@ -45,3 +45,25 @@ spec:
             {{- toYaml .Values.comfyui.resources | nindent 12 }}
           env:
             {{- toYaml .Values.comfyui.env | nindent 12 }}
+          volumeMounts:
+            - mountPath: /app/ComfyUI/models
+              name: comfyui-models
+            - mountPath: /app/ComfyUI/custom_nodes
+              name: comfyui-custom-nodes
+            - mountPath: /app/ComfyUI/input
+              name: comfyui-input
+            - mountPath: /app/ComfyUI/output
+              name: comfyui-output
+      volumes:
+        - name: comfyui-models
+          persistentVolumeClaim:
+            claimName: {{ .Values.volume.models.claimName }}
+        - name: comfyui-custom-nodes
+          persistentVolumeClaim:
+            claimName: {{ .Values.volume.customNodes.claimName }}
+        - name: comfyui-input
+          persistentVolumeClaim:
+            claimName: {{ .Values.volume.input.claimName }}
+        - name: comfyui-output
+          persistentVolumeClaim:
+            claimName: {{ .Values.volume.output.claimName }}
