@@ -78,3 +78,5 @@ volume:
     claimName: comfyui-output
   venv:
     claimName: comfyui-venv
+  huggingface:
+    claimName: comfyui-huggingface

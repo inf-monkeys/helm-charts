@@ -74,6 +74,7 @@ comfyui 运行依赖 GPU 资源，如果你的 k8s 集群已经配置好了，�
 - `comfyui-input`: 用于存储输入文件。
 - `comfyui-output`: 用于存储输出文件。
 - `comfyui-venv`: 用于存储 Python 依赖。
+- `comfyui-huggingface`: 用于存储 huggingface 的模型。
 
 你可以在 `values.yaml` 中的 `volume` 修改对应的 `claimName`。
 
