@@ -19,33 +19,44 @@ comfyui:
       memory: 64Gi
 
   env:
-    # proxy configuration
-    - name: PROXYCHAINS_PROXY_SERVER
-      # value: http 127.0.0.1 7890
+    # Use external proxy
+    - name: http_proxy
+      value: ""
+    - name: https_proxy
+      value: ""
+
+    # Use internal proxy
+    - name: CLASH_SUBSCRIPTION_URL
+      value: ""
+    - name: CLASH_SECRET
       value: ""
 
     # s3 configuration
     - name: S3_ENABLED
-      value: true
+      value: "true"
     - name: S3_ENDPOINT_URL
-      value:
+      value: ""
     - name: S3_ACCESS_KEY_ID
-      value:
+      value: ""
     - name: S3_SECRET_ACCESS_KEY
-      value:
+      value: ""
     - name: S3_REGION
-      value:
+      value: ""
     - name: S3_BUCKET
-      value:
+      value: ""
     - name: S3_PUBLIC_ACCESS_URL
-      value:
+      value: ""
     - name: S3_ADDRESSING_STYLE
-      value: virtual
+      value: "virtual"
+
+    # Auto update comfyfile
+    - name: AUTO_UPGRADE_COMFYFILE
+      value: "true"
 
 # ClusterIP Mode
 service:
   type: ClusterIP
-  port: 8000
+  port: 8188
   clusterIP: ""
   labels:
   annotations:
@@ -53,8 +64,8 @@ service:
 # NodePort Mode
 # service:
 #   type: NodePort
-#   port: 8000
-#   nodePort: 30080
+#   port: 8188
+#   nodePort: 30818
 
 volume:
   models:
@@ -65,3 +76,5 @@ volume:
     claimName: comfyui-input
   output:
     claimName: comfyui-output
+  venv:
+    claimName: comfyui-venv

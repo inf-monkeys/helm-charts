@@ -4,11 +4,11 @@ metadata:
   name: {{ template "comfyui.comfyui.fullname" . }}
   labels:
 {{ include "comfyui.labels" . | indent 4 }}
-{{- if .Values.comfyui.service.labels }}
-{{ toYaml .Values.comfyui.service.labels | indent 4 }}
+{{- if .Values.service.labels }}
+{{ toYaml .Values.service.labels | indent 4 }}
 {{- end }}
     component: "comfyui"
-{{- with .Values.comfyui.service.annotations }}
+{{- with .Values.service.annotations }}
   annotations:
 {{ toYaml . | indent 4 }}
 {{- end }}

@@ -29,33 +29,51 @@ comfyui 运行依赖 GPU 资源，如果你的 k8s 集群已经配置好了，�
 
 #### 代理
 
-| 参数                           | 描述                                                                                                                    | 默认值 |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------ |
-| `env.PROXYCHAINS_PROXY_SERVER` | HTTP 代理。如果设置，将会使用 proxychains 作为请求代理，格式为 `http proxy_host proxy_port`, 如 `http 127.0.0.1 7890`。 | `""`   |
+##### 使用外部代理
+
+| 参数              | 描述                                                               | 默认值 |
+| ----------------- | ------------------------------------------------------------------ | ------ |
+| `env.http_proxy`  | 填写 proxy 地址，使用外置的 http proxy。如 `http://127.0.0.1:7890` | `""`   |
+| `env.https_proxy` | 填写 proxy 地址，使用外置的 http proxy。如 `http://127.0.0.1:7890` | `""`   |
+
+##### 使用内部代理
+
+| 参数                         | 描述             | 默认值 |
+| ---------------------------- | ---------------- | ------ |
+| `env.CLASH_SUBSCRIPTION_URL` | Clash 的订阅地址 |
+| `env.CLASH_SECRET`           | 没有可不填。     |
+
 
 #### S3 对象存储
 
-| 参数                           | 描述                                                                                                                    | 默认值 |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------ |
-| `env.S3_ENABLED`               | 是否开启 S3。                                                                                                           | `"true"` |
-| `env.S3_ENDPOINT_URL`          | S3 访问地址。                                                                                                           | `""`     |
-| `env.S3_ACCESS_KEY_ID`         | AccessKeyID                                                                                                             | ``       |
-| `env.S3_SECRET_ACCESS_KEY`     | Secret Access Key                                                                                                       | ``       |
-| `env.S3_REGION`                | 区域, minio 填 `us-esat-1`                                                                                              | ``       |
-| `env.S3_BUCKET`                | Bucket 名称，请使用公开的 bucket，以便前端能够访问到。                                                                  | ``       |
-| `env.S3_PUBLIC_ACCESS_URL`     | Bucket 名称，请使用公开的 bucket，以便前端能够访问到。                                                                  | ``       |
-| `env.S3_ADDRESSING_STYLE`      | Addressing style                                                                                                        | `auto`   |
+| 参数                       | 描述                                                     | 默认值   |
+| -------------------------- | -------------------------------------------------------- | -------- |
+| `env.S3_ENABLED`           | 是否开启 S3。                                            | `"true"` |
+| `env.S3_ENDPOINT_URL`      | S3 访问地址。                                            | `""`     |
+| `env.S3_ACCESS_KEY_ID`     | AccessKeyID                                              | ``       |
+| `env.S3_SECRET_ACCESS_KEY` | Secret Access Key                                        | ``       |
+| `env.S3_REGION`            | 区域, minio 填 `us-esat-1`                               | ``       |
+| `env.S3_BUCKET`            | Bucket 名称，请使用公开的 bucket，以便前端能够访问到。   | ``       |
+| `env.S3_PUBLIC_ACCESS_URL` | Bucket 名称，请使用公开的 bucket，以便前端能够访问到。   | ``       |
+| `env.S3_ADDRESSING_STYLE`  | Addressing style，可选值为 `path`, `virtual` 和 `auto`。 | `auto`   |
+
+#### 其他
+
+| 参数                         | 描述                                                                                                                                            | 默认值    |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `env.AUTO_UPGRADE_COMFYFILE` | 是否自动更新 https://github.com/inf-monkeys/Comfyfile 插件，这样当 comfyfile 更新时不需要重新构建镜像，但是这要求运行环境有网络且能访问 github. | `"false"` |
 
 #### PVCs
 
-你需要提前创建好 4 个 PVCs:
+你需要提前创建好 5 个 PVCs:
 
-> 如果不挂载 pvc 会导致容器重启时历史数据（模型、节点、输入输出文件等）丢失。
+> 如果不挂载 pvc 会导致容器重启时历史数据（模型、节点、Python 依赖、输入输出文件等）丢失。
 
 - `comfyui-models`: 用于存储模型文件。
 - `comfyui-custom-nodes`: 用于存储自定义节点。
 - `comfyui-input`: 用于存储输入文件。
-- `comfyui-output`: 用于输出输出文件。
+- `comfyui-output`: 用于存储输出文件。
+- `comfyui-venv`: 用于存储 Python 依赖。
 
 你可以在 `values.yaml` 中的 `volume` 修改对应的 `claimName`。
 

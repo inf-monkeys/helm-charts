@@ -54,6 +54,8 @@ spec:
               name: comfyui-input
             - mountPath: /app/ComfyUI/output
               name: comfyui-output
+            - mountPath: /app/ComfyUI/venv
+              name: comfyui-venv
       volumes:
         - name: comfyui-models
           persistentVolumeClaim:
@@ -67,3 +69,6 @@ spec:
         - name: comfyui-output
           persistentVolumeClaim:
             claimName: {{ .Values.volume.output.claimName }}
+        - name: comfyui-venv
+          persistentVolumeClaim:
+            claimName: {{ .Values.volume.venv.claimName }}
