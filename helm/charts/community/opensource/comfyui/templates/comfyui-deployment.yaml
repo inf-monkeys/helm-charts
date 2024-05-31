@@ -54,7 +54,7 @@ spec:
               name: comfyui-input
             - mountPath: /app/ComfyUI/output
               name: comfyui-output
-            - mountPath: /venv
+            - mountPath: /app/ComfyUI/venv
               name: comfyui-venv
             - mountPath: /root/.cache/huggingface
               name: comfyui-huggingface
