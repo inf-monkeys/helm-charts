@@ -39,7 +39,7 @@ spec:
           name: comfyui
           ports:
             - name: http
-              containerPort: 8000
+              containerPort: 8188
               protocol: TCP
           resources:
             {{- toYaml .Values.comfyui.resources | nindent 12 }}
@@ -54,7 +54,7 @@ spec:
               name: comfyui-input
             - mountPath: /app/ComfyUI/output
               name: comfyui-output
-            - mountPath: /app/ComfyUI/venv
+            - mountPath: /venv
               name: comfyui-venv
             - mountPath: /root/.cache/huggingface
               name: comfyui-huggingface
