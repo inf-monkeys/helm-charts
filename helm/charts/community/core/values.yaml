@@ -33,6 +33,14 @@ images:
     pullPolicy: IfNotPresent
     pullSecrets:
 
+  admin:
+    repository: infmonkeys/monkeys-admin
+    # To use multi tenancy version
+    # repository: infmonkeys/monkeys-admin-multi-tenancy
+    tag: 0.0.4
+    pullPolicy: IfNotPresent
+    pullSecrets:
+
 proxy:
   enabled: true
 
@@ -107,9 +115,10 @@ server:
         primary: "#52ad1f"
 
   # For multi tenant
-  # server:
+  # servers:
   #   - appId: monkeys
   #     appUrl: http://localhost:3000
+  #     host: localhost:3000
   #     customization:
   #       title: 猴子无限
   #       logo: https://static.aside.fun/static/vines.svg
@@ -118,6 +127,7 @@ server:
   #         primary: "#52ad1f"
   #   - appId: monkeys2
   #     appUrl: http://localhost:3001
+  #     host: localhost:3001
   #     customization:
   #       title: 猴子无限
   #       logo: https://static.aside.fun/static/vines.svg
@@ -151,6 +161,69 @@ web:
     annotations: {}
     labels: {}
     clusterIP: ""
+
+admin:
+  enabled: false
+  replicas: 1
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []
+
+  service:
+    port: 3000
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+
+  # For single tenant
+  server:
+    # Defaults to monkeys, will use as table name prefix and etc, you can change to your own.
+    appId: monkeys
+    # Change this to public visible url
+    appUrl: http://localhost:3000
+    auth:
+      enabled: true
+      defaultAdmin:
+        email: admin@example.com
+        password: monkeys123
+    customization:
+      title: 猴子无限
+      logo:
+        light: https://static.infmonkeys.com/logo/InfMonkeys-logo-light.svg
+        dark: https://static.infmonkeys.com/logo/InfMonkeys-logo-dark.svg
+      favicon: https://static.infmonkeys.com/logo/InfMonkeys-ICO.svg
+      colors:
+        primary: "#52ad1f"
+
+  # For multi tenant version
+  # servers:
+  #   - appId: monkeys
+  #     host: localhost:3000
+  #     auth:
+  #       enabled: true
+  #       defaultAdmin:
+  #         email: admin@example.com
+  #         password: monkeys123
+  #     customization:
+  #       title: 猴子无限
+  #       logo: https://static.aside.fun/static/vines.svg
+  #       favicon: https://static.infmonkeys.com/upload/favicon.svg
+  #       colors:
+  #         primary: "#52ad1f"
+  #   - appId: monkeys2
+  #     host: localhost:3001
+  #     auth:
+  #       enabled: true
+  #       defaultAdmin:
+  #         email: admin@example.com
+  #         password: monkeys123
+  #     customization:
+  #       title: 猴子无限
+  #       logo: https://static.aside.fun/static/vines.svg
+  #       favicon: https://static.infmonkeys.com/upload/favicon.svg
+  #       colors:
+  #         primary: "#52ad1f"
+
 
 conductor:
   replicas: 1
