@@ -80,3 +80,7 @@ data:
 
     tools:
     {{- toYaml .Values.server.tools | nindent 6 }}
+
+    paymentServer:
+      enabled: {{ .Values.admin.enabled }}
+      baseUrl: http://{{ template "monkeys.admin.fullname" . }}:{{ .Values.admin.service.port }}
