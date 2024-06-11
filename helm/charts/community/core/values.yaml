@@ -37,7 +37,7 @@ images:
     repository: infmonkeys/monkeys-admin
     # To use multi tenancy version
     # repository: infmonkeys/monkeys-admin-multi-tenancy
-    tag: 0.0.4
+    tag: 0.0.5
     pullPolicy: IfNotPresent
     pullSecrets:
 
