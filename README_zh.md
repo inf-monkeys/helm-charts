@@ -106,8 +106,10 @@ Monkey Tools 采用插件化设计，每个 monkey tool 有自己独立的 helm 
 - [monkey-tools-midjourney](./helm/charts/community/tools/monkey-tools-midjourney/README_zh.md)
 - [monkey-tools-comfyui](./helm/charts/community/tools/monkey-tools-comfyui/README_zh.md)
 - [monkey-tools-internet](./helm/charts/community/tools/monkey-tools-internet/README_zh.md)
+- [monkey-tools-social-media](./helm/charts/community/tools/monkey-tools-social-media/README_zh.md)
 
 
 ### 安装开源组件
 
 - [vllm-openai](./helm/charts/community/opensource/vllm/README_zh.md)
+- [comfyui](./helm/charts/community/opensource/comfyui/README_zh.md)

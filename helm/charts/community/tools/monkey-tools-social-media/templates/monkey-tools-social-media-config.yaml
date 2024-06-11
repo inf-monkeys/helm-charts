@@ -1,0 +1,18 @@
+immutable: false
+kind: ConfigMap
+metadata:
+  name: monkey-tools-social-media
+apiVersion: v1
+data:
+  config.yaml: |
+    server:
+      port: 5000
+
+    proxy:
+    {{- toYaml .Values.proxy | nindent 6 }}
+
+    jinaai:
+    {{- toYaml .Values.jinaai | nindent 6 }}
+
+    rsa:
+    {{- toYaml .Values.rsa | nindent 6 }}

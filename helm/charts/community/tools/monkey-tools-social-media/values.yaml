@@ -1,0 +1,34 @@
+fullnameOverride:
+
+images:
+  server:
+    repository: infmonkeys/monkey-tools-social-media
+    tag: 0.0.2
+    pullPolicy: IfNotPresent
+    pullSecrets: 
+
+server:
+  service:
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+  resources: {}
+
+proxy:
+  enabled: false
+  url: ""
+
+rsa:
+  private_key: |
+    -----BEGIN PRIVATE KEY-----
+    MIISQwIBADANBgkqhkiG9w0BAQEFAASCEi0wghIpAgEAAoIEAQCvLOFBAfikpa9Z
+    ...
+    sFIYG1CQsb/kbCMwf9ji8Z5g2qySBbA=
+    -----END PRIVATE KEY-----
+
+  public_key: |
+    -----BEGIN PUBLIC KEY-----
+    MIIEIjANBgkqhkiG9w0BAQEFAAOCBA8AMIIECgKCBAEAryzhQQH4pKWvWXaGowqd
+    ...
+    4wIDAQAB
+    -----END PUBLIC KEY-----

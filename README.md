@@ -92,7 +92,10 @@ Tools is by plug-in design, you can install as many tools as you like. Here are 
 - [monkey-tools-midjourney](./helm/charts/community/tools/monkey-tools-midjourney/README.md)
 - [monkey-tools-comfyui](./helm/charts/community/tools/monkey-tools-comfyui/README.md)
 - [monkey-tools-internet](./helm/charts/community/tools/monkey-tools-internet/README.md)
+- [monkey-tools-social-media](./helm/charts/community/tools/monkey-tools-social-media/README.md)
+
 
 ### Install OpenSource Components
 
-- [vllm-openai](./helm/charts/community/opensource/vllm/README_zh.md)
+- [vllm-openai](./helm/charts/community/opensource/vllm/README.md)
+- [comfyui](./helm/charts/community/opensource/comfyui/README.md)
