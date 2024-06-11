@@ -10,24 +10,13 @@
 
 ### 镜像版本
 
-| 参数                        | 描述                          | 默认值                             |
-| --------------------------- | ----------------------------- | ---------------------------------- |
+| 参数                        | 描述                          | 默认值                                 |
+| --------------------------- | ----------------------------- | -------------------------------------- |
 | `images.server.repository`  | 镜像地址                      | `infmonkeys/monkey-tools-social-media` |
-| `images.server.tag`         | 版本号                        | `""`                               |
-| `images.server.pullSecrets` | 拉取镜像的 secret，没有可留空 | `""`                               |
-| `images.server.pullPolicy`  | 镜像拉取策略                  | `IfNotPresent`                     |
+| `images.server.tag`         | 版本号                        | `""`                                   |
+| `images.server.pullSecrets` | 拉取镜像的 secret，没有可留空 | `""`                                   |
+| `images.server.pullPolicy`  | 镜像拉取策略                  | `IfNotPresent`                         |
 
-### Tavily API 配置
-
-| 参数            | 描述           | 默认值 |
-| --------------- | -------------- | ------ |
-| `tavily.apikey` | Tavily Api Key | ``     |
-
-### Jina.ai API 配置
-
-| 参数            | 描述                                                                        | 默认值 |
-| --------------- | --------------------------------------------------------------------------- | ------ |
-| `jinaai.apikey` | Jina.ai Api Key, 可不填，Jina.ai 允许不适应 ApiKey 访问，但是会有频率限制。 | ``     |
 
 ### 代理配置
 
@@ -35,8 +24,6 @@
 | --------------- | -------------- | ------- |
 | `proxy.enabled` | 是否开启代理。 | `false` |
 | `proxy.url`     | 代理地址       | `""`    |
-
-
 
 ## 安装
 

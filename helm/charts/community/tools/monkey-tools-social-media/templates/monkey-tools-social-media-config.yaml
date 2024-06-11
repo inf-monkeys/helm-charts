@@ -11,8 +11,5 @@ data:
     proxy:
     {{- toYaml .Values.proxy | nindent 6 }}
 
-    jinaai:
-    {{- toYaml .Values.jinaai | nindent 6 }}
-
     rsa:
     {{- toYaml .Values.rsa | nindent 6 }}
