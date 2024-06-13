@@ -58,6 +58,11 @@ data:
           include proxy.conf;
         }
 
+        location /v1 {
+          proxy_pass http://{{ template "monkeys.server.fullname" . }}:{{ .Values.server.service.port }};
+          include proxy.conf;
+        }
+
         location /admin {
           proxy_pass http://{{ template "monkeys.admin.fullname" . }}:{{ .Values.admin.service.port }};
           include proxy.conf;
