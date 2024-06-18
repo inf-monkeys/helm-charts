@@ -1,0 +1,127 @@
+apiVersion: v1
+entries:
+  comfyui:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-06-18T04:13:26.944918308Z"
+    description: A Helm chart for comfyui
+    digest: 05026926eada294cc7e6077ccdad29b58a058e51fa23c1dee1522ce400563a0c
+    name: comfyui
+    type: application
+    urls:
+    - https://github.com/inf-monkeys/helm-charts/releases/download/comfyui-0.1.0/comfyui-0.1.0.tgz
+    version: 0.1.0
+  monkey-tools-bepipred30-predictor:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-06-18T04:13:27.04988512Z"
+    description: A Helm chart for monkey-tools-bepipred30-predictor
+    digest: 5b5ef38e6c7bc3a557caff1435ca3b751b3d187c3ba130acb5861b8049022875
+    name: monkey-tools-bepipred30-predictor
+    type: application
+    urls:
+    - https://github.com/inf-monkeys/helm-charts/releases/download/monkey-tools-bepipred30-predictor-0.1.0/monkey-tools-bepipred30-predictor-0.1.0.tgz
+    version: 0.1.0
+  monkey-tools-internet:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-06-18T04:13:27.218759051Z"
+    description: A Helm chart for monkey-tools-internet
+    digest: 4224cf2b0a08c682547729c9091ca37e4632e7f607e03351f7311b53464fbd95
+    name: monkey-tools-internet
+    type: application
+    urls:
+    - https://github.com/inf-monkeys/helm-charts/releases/download/monkey-tools-internet-0.1.0/monkey-tools-internet-0.1.0.tgz
+    version: 0.1.0
+  monkey-tools-knowledge-base:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-06-18T04:13:27.344606045Z"
+    description: A Helm chart for monkey-tools-knowledge-base
+    digest: 4da725f2049b312a54f77170f37e486e9b5bb2547d0eae93b4ab24d2fb75c9f7
+    name: monkey-tools-knowledge-base
+    type: application
+    urls:
+    - https://github.com/inf-monkeys/helm-charts/releases/download/monkey-tools-knowledge-base-0.1.0/monkey-tools-knowledge-base-0.1.0.tgz
+    version: 0.1.0
+  monkey-tools-midjourney:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-06-18T04:13:27.437400426Z"
+    description: A Helm chart for monkey-tools-midjourney
+    digest: 9b73fc81b77ed5a4b86fe3f06e0b9301b7c79d9135dd7e6da7bed5b8809e7e42
+    name: monkey-tools-midjourney
+    type: application
+    urls:
+    - https://github.com/inf-monkeys/helm-charts/releases/download/monkey-tools-midjourney-0.1.0/monkey-tools-midjourney-0.1.0.tgz
+    version: 0.1.0
+  monkey-tools-sandbox:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-06-18T04:13:27.564295927Z"
+    description: A Helm chart for monkey-tools-sandbox
+    digest: 48ecd3c59e66764307956b75e57d9a3b2f7c51dc869005887a8ec17a45ee1a0e
+    name: monkey-tools-sandbox
+    type: application
+    urls:
+    - https://github.com/inf-monkeys/helm-charts/releases/download/monkey-tools-sandbox-0.1.0/monkey-tools-sandbox-0.1.0.tgz
+    version: 0.1.0
+  monkey-tools-social-media:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-06-18T04:13:27.673261516Z"
+    description: A Helm chart for monkey-tools-social-media
+    digest: 1395eb2e7d7f8fa42a478018fc3e343571623a2c0c3cf1159a4b85224898591c
+    name: monkey-tools-social-media
+    type: application
+    urls:
+    - https://github.com/inf-monkeys/helm-charts/releases/download/monkey-tools-social-media-0.1.0/monkey-tools-social-media-0.1.0.tgz
+    version: 0.1.0
+  monkeys:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-06-18T04:13:27.812451838Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      tags:
+      - elasticsearch
+      version: 7.17.3
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - postgres
+      version: 12.5.6
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - redis
+      version: 16.13.2
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - minio
+      version: 14.1.4
+    description: A Helm chart for Monkeys platform.
+    digest: 7444025e6f5c0b3b692da7d9d04342145a8e490636ac463dc37b39f263618077
+    name: monkeys
+    type: application
+    urls:
+    - https://github.com/inf-monkeys/helm-charts/releases/download/monkeys-0.1.0/monkeys-0.1.0.tgz
+    version: 0.1.0
+  vllm:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-06-18T04:13:27.956670314Z"
+    description: A Helm chart for vllm
+    digest: 5aa261db8a89f1df59d824676a9ab24b60163d8a4eddb3ae988f6a26c9f2e021
+    name: vllm
+    type: application
+    urls:
+    - https://github.com/inf-monkeys/helm-charts/releases/download/vllm-0.1.0/vllm-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-06-18T04:13:27.956681465Z"
