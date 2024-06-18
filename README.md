@@ -39,6 +39,10 @@ helm install monkeys monkeys/core -n monkeys --create-namespace
 
 #### Check status
 
+> By default monkeys use internal middleware (postgres, elasticsearch, redis, etc), It may take some time to wait for middlewares startup.
+
+Check installation progress by:
+
 ```sh
 kubectl get pods -n monkeys
 kubectl get svc -n monkeys
@@ -64,9 +68,9 @@ And if your service is behide a firewall, no forget to open that port.
 
 ### Update configuration
 
-Create a new values file, `prod-values.yaml` for example.
+Create a new values file, `prod-core-values.yaml` for example.
 
-For example if you want to modify server image version, add this to `prod-values.yaml`:
+For example if you want to modify server image version, add this to `prod-core-values.yaml`:
 
 ```yaml
 images:
@@ -77,8 +81,10 @@ images:
 Then run:
 
 ```sh
-helm upgrade monkeys --values ./prod-values.yaml --namespace monkeys
+helm upgrade monkeys --values ./prod-core-values.yaml --namespace monkeys
 ```
+
+For the complete list of configuration options, see: [Core Helm Chart](./charts/core/README.md)
 
 #### Uninstall
 
@@ -90,16 +96,16 @@ helm uninstall monkeys -n monkeys
 
 Tools is by plug-in design, you can install as many tools as you like. Here are the list of avaiable tools:
 
-- [monkey-tools-knowledge-base](./helm/charts/community/tools/monkey-tools-knowledge-base/README.md)
-- [monkey-tools-sandbox](./helm/charts/community/tools/monkey-tools-sandbox/README.md)
-- [monkey-tools-BepiPred3.0-Predictor](./helm/charts/community/tools/monkey-tools-BepiPred3.0-Predictor/README.md)
-- [monkey-tools-midjourney](./helm/charts/community/tools/monkey-tools-midjourney/README.md)
-- [monkey-tools-comfyui](./helm/charts/community/tools/monkey-tools-comfyui/README.md)
-- [monkey-tools-internet](./helm/charts/community/tools/monkey-tools-internet/README.md)
-- [monkey-tools-social-media](./helm/charts/community/tools/monkey-tools-social-media/README.md)
+- [monkey-tools-knowledge-base](./charts/monkey-tools-knowledge-base/README.md)
+- [monkey-tools-sandbox](./charts/monkey-tools-sandbox/README.md)
+- [monkey-tools-BepiPred3.0-Predictor](./charts/monkey-tools-BepiPred3.0-Predictor/README.md)
+- [monkey-tools-midjourney](./charts/monkey-tools-midjourney/README.md)
+- [monkey-tools-comfyui](./charts/monkey-tools-comfyui/README.md)
+- [monkey-tools-internet](./charts/monkey-tools-internet/README.md)
+- [monkey-tools-social-media](./charts/monkey-tools-social-media/README.md)
 
 
 ### Install OpenSource Components
 
-- [vllm-openai](./helm/charts/community/opensource/vllm/README.md)
-- [comfyui](./helm/charts/community/opensource/comfyui/README.md)
+- [vllm-openai](./charts/vllm/README.md)
+- [comfyui](./charts/comfyui/README.md)

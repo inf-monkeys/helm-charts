@@ -7,10 +7,10 @@ data:
   config.yaml: |
     # Server config
     server:
-    {{- toYaml .Values.server.server | nindent 6 }}
+    {{- toYaml .Values.server.site | nindent 6 }}
 
     servers:
-    {{- toYaml .Values.server.servers | nindent 6 }}
+    {{- toYaml .Values.server.sites | nindent 6 }}
 
     # Database Config
     {{- if .Values.postgresql.enabled }}
@@ -76,10 +76,10 @@ data:
       baseUrl: http://{{ template "monkeys.conductor.fullname" . }}:8080/api
 
     models:
-    {{- toYaml .Values.server.models | nindent 6 }}
+    {{- toYaml .Values.server.llmModels | nindent 6 }}
 
     tools:
-    {{- toYaml .Values.server.tools | nindent 6 }}
+    {{- toYaml .Values.tools | nindent 6 }}
 
     paymentServer:
       enabled: {{ .Values.admin.enabled }}

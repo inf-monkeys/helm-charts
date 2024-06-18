@@ -1,10 +1,27 @@
+
 <div align="center">
 
-# 配置项说明文档<!-- omit in toc -->
+# 核心服务 Helm Chart<!-- omit in toc -->
 
 </div>
 
-- [业务配置](#业务配置)
+中文 | [English](./README.md)
+
+
+# 目录<!-- omit in toc -->
+
+- [镜像地址与版本](#镜像地址与版本)
+- [服务配置](#服务配置)
+  - [ClusterIP 模式示例](#clusterip-模式示例)
+  - [NodePort 模式示例](#nodeport-模式示例)
+- [站点配置](#站点配置)
+- [大语言模型配置](#大语言模型配置)
+  - [语言模型配置项说明](#语言模型配置项说明)
+- [预制工具](#预制工具)
+  - [工具配置项说明](#工具配置项说明)
+- [管理后台配置](#管理后台配置)
+- [Clash 代理](#clash-代理)
+- [副本数](#副本数)
 - [中间件配置](#中间件配置)
   - [Postgres 数据库](#postgres-数据库)
     - [使用内置数据库](#使用内置数据库)
@@ -23,39 +40,193 @@
   - [MinIO(S3) 存储](#minios3-存储)
     - [使用内置 Minio 存储](#使用内置-minio-存储)
     - [使用外部 S3 存储](#使用外部-s3-存储)
-- [服务配置](#服务配置)
-  - [ClusterIP 模式示例](#clusterip-模式示例)
-  - [NodePort 模式示例](#nodeport-模式示例)
-- [语言模型配置项说明](#语言模型配置项说明)
 
 
-## 业务配置
+## 镜像地址与版本
 
-| 参数                                                     | 描述                                                                                             | 默认值                                             |
-| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------- |
-| `images.server.repository`                               | [monkeys](https://github.com/inf-monkeys/monkeys) 服务 Docker 镜像地址                           | `infmonkeys/monkeys`                               |
-| `images.server.tag`                                      | 版本号号                                                                                         |                                                    |
-| `images.server.pullPolicy`                               | 镜像拉取策略                                                                                     | `IfNotPresent`                                     |
-| `images.web.repository`                                  | [前端](https://github.com/inf-monkeys/monkeys/tree/main/ui) Docker 镜像地址                      | `infmonkeys/monkeys-ui`                            |
-| `images.web.tag`                                         | 版本号                                                                                           |                                                    |
-| `images.web.pullPolicy`                                  | 镜像拉取策略                                                                                     |
-| `images.conductor.repository`                            | 流程编排引擎 [conductor](https://github.com/inf-monkeys/conductor) 的镜像地址                    | `infmonkeys/conductor`                             |
-| `images.conductor.tag`                                   | 版本号                                                                                           | `1.0.0`                                            |
-| `proxy.enabled`                                          | 是否使用 nginx 作为反向代理，用于同一前后端域名，根据路径转发到对应的服务。                      | `true`                                             |
-| `proxy.replicas`                                         | 副本数                                                                                           | `1`                                                |
-| `server.replicas`                                        | 副本数                                                                                           | `1`                                                |
-| `server.server.appId`                                    | 此次部署服务的唯一 ID，将会作为数据库表、redis key 的前缀。                                      | `monkeys`                                          |
-| `server.server.appUrl`                                   | 对外可访问的连接，此配置项会影响到 OIDC 单点登录跳转以及自定义触发器，除此之外不会影响其他功能。 | `http://localhost:3000`                            |
-| `server.server.customization.title`                      | 网站标题。                                                                                       | `猴子无限`                                         |
-| `server.server.customization.logoUrl`                    | 左上角 Logo 图标。                                                                               | `https://static.aside.fun/static/vines.svg`        |
-| `server.server.customization.faviconUrl`                 | 浏览器 Favicon 图标                                                                              | `https://static.infmonkeys.com/upload/favicon.svg` |
-| `server.server.customization.colors.primary`             | 主颜色                                                                                           | `#52ad1f`                                          |
-| `server.server.customization.colors.secondary`           | Secondary 颜色                                                                                   | `#16161a`                                          |
-| `server.server.customization.colors.secondaryBackground` | Secondary 背景颜色                                                                               | `#212121`                                          |
-| `server.auth.enabled`                                    | 启用的认证方式，默认只启用密码登录和 APIKey 接口认证。                                           | `password,apikey`                                  |
-| `server.models`                                          | 启用的语言模型，详细配置请见[语言模型配置项说明](#语言模型配置项说明)                            | `[]`                                               |
-| `web.replicas`                                           | 前端副本数                                                                                       | `1`                                                |
-| `conductor.replicas`                                     | Conductor 副本数                                                                                 | `1`                                                |
+| 参数                           | 描述                                                                          | 默认值                     |
+| ------------------------------ | ----------------------------------------------------------------------------- | -------------------------- |
+| `images.server.repository`     | [monkeys](https://github.com/inf-monkeys/monkeys) 服务 Docker 镜像地址        | `infmonkeys/monkeys`       |
+| `images.server.tag`            | 版本号号                                                                      | `latest`                   |
+| `images.server.pullPolicy`     | 镜像拉取策略                                                                  | `IfNotPresent`             |
+| `images.server.pullSecrets`    | 镜像拉取密钥                                                                  | `""`                       |
+| `images.web.repository`        | [前端](https://github.com/inf-monkeys/monkeys/tree/main/ui) Docker 镜像地址   | `infmonkeys/monkeys-ui`    |
+| `images.web.tag`               | 版本号                                                                        | `latest`                   |
+| `images.web.pullPolicy`        | 镜像拉取策略                                                                  | `IfNotPresent`             |
+| `images.web.pullSecrets`       | 镜像拉取密钥                                                                  | `""`                       |
+| `images.conductor.repository`  | 流程编排引擎 [conductor](https://github.com/inf-monkeys/conductor) 的镜像地址 | `infmonkeys/conductor`     |
+| `images.conductor.tag`         | 版本号                                                                        | `latest`                   |
+| `images.conductor.pullPolicy`  | 镜像拉取策略                                                                  | `IfNotPresent`             |
+| `images.conductor.pullSecrets` | 镜像拉取密钥                                                                  | `""`                       |
+| `images.admin.repository`      | 管理后台的镜像地址                                                            | `infmonkeys/monkeys-admin` |
+| `images.admin.tag`             | 版本号                                                                        | `latest`                   |
+| `images.admin.pullPolicy`      | 镜像拉取策略                                                                  | `IfNotPresent`             |
+| `images.admin.pullSecrets`     | 镜像拉取密钥                                                                  | `""`                       |
+| `images.clash.repository`      | Clash 代理服务的镜像地址                                                      | `infmonkeys/clash`         |
+| `images.clash.tag`             | 版本号                                                                        | `latest`                   |
+| `images.clash.pullPolicy`      | 镜像拉取策略                                                                  | `IfNotPresent`             |
+| `images.clash.pullSecrets`     | 镜像拉取密钥                                                                  | `""`                       |
+| `images.busybox.repository`    | Clash 代理服务的镜像地址                                                      | `infmonkeys/clash`         |
+| `images.busybox.tag`           | 版本号                                                                        | `latest`                   |
+| `images.busybox.pullPolicy`    | 镜像拉取策略                                                                  | `IfNotPresent`             |
+| `images.busybox.pullSecrets`   | 镜像拉取密钥                                                                  | `""`                       |
+
+
+
+## 服务配置
+
+默认情况下，使用 ClusterIP 模式，可以 `monkeys-core-proxy`（Nginx 反向代理）`svc` 的 `80` 端口对外暴露服务。
+
+| 参数                | 描述                        | 默认值      |
+| ------------------- | --------------------------- | ----------- |
+| `service.type`      | `ClusterIP` 或者 `NodePort` | `ClusterIP` |
+| `service.port`      | Proxy 组件(Nginx) 暴露端口  | `80`        |
+| `service.clusterIP` | ClusterIP                   | `""`        |
+| `service.nodePort`  | Node Port 端口              | `""`        |
+
+
+### ClusterIP 模式示例
+
+```yaml
+service:
+  type: ClusterIP
+  port: 80
+  clusterIP: ""
+```
+
+### NodePort 模式示例
+
+```yaml
+service:
+  type: NodePort
+  port: 80
+  nodePort: 30080
+```
+
+
+## 站点配置
+
+自定义你的站点，比应用 ID、对外访问地址、标题、Logo、认证方式等。
+
+| 参数                                       | 描述                                                                                             | 默认值                                                         |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------- |
+| `server.site.appId`                        | 此次部署服务的唯一 ID，将会作为数据库表、redis key 的前缀。                                      | `monkeys`                                                      |
+| `server.site.appUrl`                       | 对外可访问的连接，此配置项会影响到 OIDC 单点登录跳转以及自定义触发器，除此之外不会影响其他功能。 | `http://localhost:3000`                                        |
+| `server.site.customization.title`          | 网站标题。                                                                                       | `猴子无限`                                                     |
+| `server.site.customization.logo.light`     | 左上角 Logo 图标(Light 模型)。                                                                   | `https://static.infmonkeys.com/logo/InfMonkeys-logo-light.svg` |
+| `server.site.customization.logo.dark`      | 左上角 Logo 图标(Dark 模型)。                                                                    | `https://static.infmonkeys.com/logo/InfMonkeys-logo-dark.svg`  |
+| `server.site.customization.favicon`        | 浏览器 Favicon 图标                                                                              | `https://static.infmonkeys.com/logo/InfMonkeys-ICO.svg`        |
+| `server.site.customization.colors.primary` | 主颜色                                                                                           | `#52ad1f`                                                      |
+| `server.auth.enabled`                      | 启用的认证方式，默认只启用密码登录。                                                             | `password`                                                     |
+
+## 大语言模型配置
+
+| 参数        | 描述                                                                  | 默认值 |
+| ----------- | --------------------------------------------------------------------- | ------ |
+| `llmModels` | 启用的语言模型，详细配置请见[语言模型配置项说明](#语言模型配置项说明) | `[]`   |
+
+### 语言模型配置项说明
+
+你可以按照下面的配置添加任意符合 OpenAI 标准的大语言模型：
+
+| 参数                      | 描述                                                                                                                                                                                                                                                    | 默认值  |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `model`                   | model name，如 `gpt-3.5-turbo`                                                                                                                                                                                                                          |         |
+| `baseURL`                 | 访问地址，如 `https://api.openai.com/v1`                                                                                                                                                                                                                |         |
+| `apiKey`                  | APIKey，如果没有可不填。                                                                                                                                                                                                                                |         |
+| `type`                    | 此模型的类型，可选值为 `chat_completions` 和 `completions`，分别表示是一个对话模型还是文本补全模型。不填则表示两种方式都支持。                                                                                                                          | `""`    |
+| `autoMergeSystemMessages` | 是否自动合并多条 System Messages，通过 VLLM 部署的模型，不能连续传多条为同一个 `role` 的 `message`，如果有多条 System Message（通过知识库自动设置、大语言模型节点手动设置预制 Prompt、API 调用或第三方工具手动传入 `system` message），需要合并为一条。 | `false` |
+| `defaultParams`           | 默认请求参数，比如一些模型如 `Qwen/Qwen-7B-Chat-Int4`，需要设置 top 参数。                                                                                                                                                                              |         |
+
+
+以下是一个示例：
+
+```yaml
+models:
+  - model: gpt-3.5-turbo
+    baseURL: https://api.openai.com/v1
+    apiKey: xxxxxxxxxxxxxx
+    type:
+      - chat_completions
+  - model: davinci-002
+    baseURL: https://api.openai.com/v1
+    apiKey: xxxxxxxxxxxxxx
+    type:
+      - completions
+  - model: Qwen/Qwen-7B-Chat-Int4
+    baseURL: http://127.0.0.1:8000/v1
+    apiKey: token-abc123
+    autoMergeSystemMessages: true
+    defaultParams:
+      stop:
+        - <|im_start|>
+        - <|im_end|>
+```
+
+## 预制工具
+
+| 参数    | 描述                                                               | 默认值 |
+| ------- | ------------------------------------------------------------------ | ------ |
+| `tools` | 启用的预制工具。（不同的工具请通过其相应的 Helm Chart 来进行安装） | `[]`   |
+
+
+### 工具配置项说明
+
+你可以使用 Monkeys 提供的其他工具（一般以 `monkey-tools-` 开头）的 Helm 来安装，或者使用现成的[满足 Monkeys 标准](https://inf-monkeys.github.io/docs/zh-cn/tools/build-custom-tools/)的在线服务。
+
+| 参数          | 描述                                                                 | 默认值                                                  |
+| ------------- | -------------------------------------------------------------------- | ------------------------------------------------------- |
+| `name`        | 工具唯一标志，如 `knowledge-base`                                    |                                                         |
+| `manifestUrl` | 工具的 Manifest JSON 地址，需确保 Monkeys 服务环境能够访问到此连接。 | `http://monkey-tools-knowledge-base:5000/manifest.json` |
+
+以下是一个示例：
+
+
+```yaml
+tools:
+  - name: knowledge-base
+    manifestUrl: http://monkey-tools-knowledge-base:5000/manifest.json
+```
+
+## 管理后台配置
+
+自定义管理后台，比应用 ID、对外访问地址、标题、Logo、认证方式等。
+
+| 参数                                      | 描述                                                                                               | 默认值                                                         |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `admin.site.appId`                        | 此次部署服务的唯一 ID，将会作为数据库表、redis key 的前缀。必须要和 `server.site.appId` 保持一致。 | `monkeys`                                                      |
+| `admin.site.customization.title`          | 网站标题。                                                                                         | `猴子无限`                                                     |
+| `admin.site.customization.logo.light`     | 左上角 Logo 图标(Light 模型)。                                                                     | `https://static.infmonkeys.com/logo/InfMonkeys-logo-light.svg` |
+| `admin.site.customization.logo.dark`      | 左上角 Logo 图标(Dark 模型)。                                                                      | `https://static.infmonkeys.com/logo/InfMonkeys-logo-dark.svg`  |
+| `admin.site.customization.favicon`        | 浏览器 Favicon 图标                                                                                | `https://static.infmonkeys.com/logo/InfMonkeys-ICO.svg`        |
+| `admin.site.customization.colors.primary` | 主颜色                                                                                             | `#52ad1f`                                                      |
+| `admin.site.auth.enabled`                 | 是否开启认证                                                                                       | `true`                                                         |
+| `admin.site.auth.defaultAdmin.email`      | 默认邮箱                                                                                           | `admin@example.com`                                            |
+| `admin.site.auth.defaultAdmin.password`   | 默认密码。                                                                                         | `monkeys123`                                                   |
+
+
+## Clash 代理
+
+某些功能可能科学上网才能访问对应服务，比如 `github`、`huggingface` 模型等。
+
+| 参数                    | 描述                                 | 默认值  |
+| ----------------------- | ------------------------------------ | ------- |
+| `clash.enabled`         | 是否启用 Clash 代理服务。            | `false` |
+| `clash.subscriptionUrl` | Clash 订阅地址                       | `""`    |
+| `clash.secret`          | Clash 订阅地址的密钥，没有可以不填。 | `""`    |
+
+
+## 副本数
+
+通过以下配置控制每个 Depolyment 的副本数：
+
+| 参数                 | 描述             | 默认值 |
+| -------------------- | ---------------- | ------ |
+| `proxy.replicas`     | 副本数           | `1`    |
+| `server.replicas`    | 副本数           | `1`    |
+| `web.replicas`       | 前端副本数       | `1`    |
+| `conductor.replicas` | Conductor 副本数 | `1`    |
+| `clash.replicas`     | Clash 副本数     | `1`    |
 
 ## 中间件配置
 
@@ -244,70 +415,3 @@ sentinels:
 | `externalS3.bucket`          | Bucket 名称，请使用公开的 bucket，以便前端能够访问到。                                              | `""`    |
 | `externalS3.publicAccessUrl` | 请填写外部（浏览器）可访问的地址，一般为 Bucket 配置的 CDN 地址，如 `https://static.infmonkeys.com` | `31900` |
 
-
-
-## 服务配置
-
-
-| 参数                | 描述                        | 默认值      |
-| ------------------- | --------------------------- | ----------- |
-| `service.type`      | `ClusterIP` 或者 `NodePort` | `ClusterIP` |
-| `service.port`      | Proxy 组件(Nginx) 暴露端口  | `80`        |
-| `service.clusterIP` | ClusterIP                   | `""`        |
-| `service.nodePort`  | Node Port 端口              | `""`        |
-
-
-### ClusterIP 模式示例
-
-```yaml
-service:
-  type: ClusterIP
-  port: 80
-  clusterIP: ""
-```
-
-### NodePort 模式示例
-
-```yaml
-service:
-  type: NodePort
-  port: 80
-  nodePort: 30080
-```
-
-## 语言模型配置项说明
-
-你可以按照下面的配置添加任意符合 OpenAI 标准的大语言模型：
-
-| 参数            | 描述                                                                                                                           | 默认值 |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------ |
-| `model`         | model name，如 `gpt-3.5-turbo`                                                                                                 |        |
-| `baseURL`       | 访问地址，如 `https://api.openai.com/v1`                                                                                       |        |
-| `apiKey`        | APIKey，如果没有可不填。                                                                                                       |        |
-| `type`          | 此模型的类型，可选值为 `chat_completions` 和 `completions`，分别表示是一个对话模型还是文本补全模型。不填则表示两种方式都支持。 | `""`   |
-| `defaultParams` | 默认请求参数，比如一些模型如 `Qwen/Qwen-7B-Chat-Int4`，需要设置 top 参数。                                                     |        |
-
-
-
-以下是一个示例：
-
-```yaml
-models:
-  - model: gpt-3.5-turbo
-    baseURL: https://api.openai.com/v1
-    apiKey: xxxxxxxxxxxxxx
-    type:
-      - chat_completions
-  - model: davinci-002
-    baseURL: https://api.openai.com/v1
-    apiKey: xxxxxxxxxxxxxx
-    type:
-      - completions
-  - model: Qwen/Qwen-7B-Chat-Int4
-    baseURL: http://127.0.0.1:8000/v1
-    apiKey: token-abc123
-    defaultParams:
-      stop:
-        - <|im_start|>
-        - <|im_end|>
-```

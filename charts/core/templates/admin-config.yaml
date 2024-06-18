@@ -8,10 +8,10 @@ data:
   config.yaml: |
     # Server config
     server:
-    {{- toYaml .Values.admin.server | nindent 6 }}
+    {{- toYaml .Values.admin.site | nindent 6 }}
 
     servers:
-    {{- toYaml .Values.admin.servers | nindent 6 }}
+    {{- toYaml .Values.admin.sites | nindent 6 }}
 
     # Database Config
     {{- if .Values.postgresql.enabled }}

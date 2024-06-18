@@ -30,37 +30,24 @@
 
 ### 安装核心服务
 
-1. 安装 Chart 依赖
+#### 安装 Chart
 
 ```sh
-git clone https://github.com/inf-monkeys/monkeys-cloud
-cd monkeys-cloud/helm/charts/community/core
+# 添加 Chart 依赖
+helm repo add monkeys https://inf-monkeys.github.io/helm-charts
 
-helm repo add bitnami https://charts.bitnami.com/bitnami
-helm repo add elastic https://helm.elastic.co
-helm dependency build
+# 安装核心服务
+helm install monkeys monkeys/core -n monkeys --create-namespace
 ```
 
-2. 修改配置项
-
-**请详细阅读配置项中的内容。**
-
-完整配置项请见: [配置项列表](./CONFIGURATION_zh.md)
-
-3. 安装 Chart
-
-```sh
-helm install monkeys --namespace monkeys . --values ./values.yaml --create-namespace
-```
-
-4. 检查运行状态
+#### 检查运行状态
 
 ```sh
 kubectl get pods -n monkeys
 kubectl get svc -n monkeys
 ```
 
-5. 访问服务
+#### 访问服务
 
 
 默认情况下 `values.yaml` 使用 ClusterIP 模式, 你可以通过 **monkeys-proxy** service 访问 monkeys web ui:
@@ -70,7 +57,7 @@ kubectl get svc -n monkeys
 kubectl get pods -n monkeys
 
 # Port Forward monkey-proxy-xxxx-xxxx Pod, in this example use local machine's 8080 port.
-kubectl port-forward --address 0.0.0.0 monkey-proxy-xxxx-xxxx 8080:80 -n monkeys
+kubectl port-forward --address 0.0.0.0 monkey--core-proxy-xxxx-xxxx 8080:80 -n monkeys
 
 # Try
 curl http://localhost:8080
@@ -80,9 +67,9 @@ curl http://localhost:8080
 
 ### 更新配置
 
-创建一个新的 Values yaml 文件, 比如 `prod-values.yaml`。
+创建一个新的 Values yaml 文件, 比如 `prod-core-values.yaml`。
 
-比如说你需要更新 server 的镜像，添加下面的内容到 `prod-values.yaml` 中:
+比如说你需要更新 server 的镜像，添加下面的内容到 `prod-core-values.yaml` 中:
 
 ```yaml
 images:
@@ -93,23 +80,25 @@ images:
 然后执行：
 
 ```sh
-helm upgrade monkeys .  --namespace monkeys --values ./values.yaml --values ./prod-values.yaml
+helm upgrade monkeys .  --namespace monkeys --values ./prod-core-values.yaml
 ```
+
+完整的配置项列表请见：[核心服务](./charts/core/README_zh.md)
 
 ### 安装 Monkey Tools
 
 Monkey Tools 采用插件化设计，每个 monkey tool 有自己独立的 helm chart，你可以阅读对应的文档：
 
-- [monkey-tools-knowledge-base](./helm/charts/community/tools/monkey-tools-knowledge-base/README_zh.md)
-- [monkey-tools-sandbox](./helm/charts/community/tools/monkey-tools-sandbox/README_zh.md)
-- [monkey-tools-BepiPred3.0-Predictor](./helm/charts/community/tools/monkey-tools-BepiPred3.0-Predictor/README_zh.md)
-- [monkey-tools-midjourney](./helm/charts/community/tools/monkey-tools-midjourney/README_zh.md)
-- [monkey-tools-comfyui](./helm/charts/community/tools/monkey-tools-comfyui/README_zh.md)
-- [monkey-tools-internet](./helm/charts/community/tools/monkey-tools-internet/README_zh.md)
-- [monkey-tools-social-media](./helm/charts/community/tools/monkey-tools-social-media/README_zh.md)
+- [monkey-tools-knowledge-base](./charts/monkey-tools-knowledge-base/README_zh.md)
+- [monkey-tools-sandbox](./charts/monkey-tools-sandbox/README_zh.md)
+- [monkey-tools-BepiPred3.0-Predictor](./charts/monkey-tools-BepiPred3.0-Predictor/README_zh.md)
+- [monkey-tools-midjourney](./charts/monkey-tools-midjourney/README_zh.md)
+- [monkey-tools-comfyui](./charts/monkey-tools-comfyui/README_zh.md)
+- [monkey-tools-internet](./charts/monkey-tools-internet/README_zh.md)
+- [monkey-tools-social-media](./charts/monkey-tools-social-media/README_zh.md)
 
 
 ### 安装开源组件
 
-- [vllm-openai](./helm/charts/community/opensource/vllm/README_zh.md)
-- [comfyui](./helm/charts/community/opensource/comfyui/README_zh.md)
+- [vllm-openai](./charts/vllm/README_zh.md)
+- [comfyui](./charts/comfyui/README_zh.md)
