@@ -27,24 +27,24 @@ You must have the following components installed on your machine, if not, read s
 
 ### Install the core service
 
-1. Install the chart
+#### Install chart
 
 ```sh
 # Add the helm repo
 helm repo add monkeys https://inf-monkeys.github.io/helm-charts
 
 # Install monkeys core service
-helm install monkeys monkeys/core
+helm install monkeys monkeys/core -n monkeys --create-namespace
 ```
 
-2. Check status
+#### Check status
 
 ```sh
-kubectl get pods
-kubectl get svc
+kubectl get pods -n monkeys
+kubectl get svc -n monkeys
 ```
 
-3. Visit the service
+#### Visit the service
 
 
 By default `values.yaml` uses ClusterIP mode, you can visit monkeys web ui through **monkeys-proxy** service:
@@ -62,19 +62,6 @@ curl http://localhost:8080
 
 And if your service is behide a firewall, no forget to open that port.
 
-
-### Install tools
-
-Tools is by plug-in design, you can install as many tools as you like. Here are the list of avaiable tools:
-
-- [monkey-tools-knowledge-base](./helm/charts/community/tools/monkey-tools-knowledge-base/README.md)
-- [monkey-tools-sandbox](./helm/charts/community/tools/monkey-tools-sandbox/README.md)
-- [monkey-tools-BepiPred3.0-Predictor](./helm/charts/community/tools/monkey-tools-BepiPred3.0-Predictor/README.md)
-- [monkey-tools-midjourney](./helm/charts/community/tools/monkey-tools-midjourney/README.md)
-- [monkey-tools-comfyui](./helm/charts/community/tools/monkey-tools-comfyui/README.md)
-- [monkey-tools-internet](./helm/charts/community/tools/monkey-tools-internet/README.md)
-- [monkey-tools-social-media](./helm/charts/community/tools/monkey-tools-social-media/README.md)
-
 ### Update configuration
 
 Create a new values file, `prod-values.yaml` for example.
@@ -90,8 +77,26 @@ images:
 Then run:
 
 ```sh
-helm upgrade monkeys . --values ./values.yaml --values ./prod-values.yaml --namespace monkeys
+helm upgrade monkeys --values ./prod-values.yaml --namespace monkeys
 ```
+
+#### Uninstall
+
+```sh
+helm uninstall monkeys -n monkeys
+```
+
+### Install tools
+
+Tools is by plug-in design, you can install as many tools as you like. Here are the list of avaiable tools:
+
+- [monkey-tools-knowledge-base](./helm/charts/community/tools/monkey-tools-knowledge-base/README.md)
+- [monkey-tools-sandbox](./helm/charts/community/tools/monkey-tools-sandbox/README.md)
+- [monkey-tools-BepiPred3.0-Predictor](./helm/charts/community/tools/monkey-tools-BepiPred3.0-Predictor/README.md)
+- [monkey-tools-midjourney](./helm/charts/community/tools/monkey-tools-midjourney/README.md)
+- [monkey-tools-comfyui](./helm/charts/community/tools/monkey-tools-comfyui/README.md)
+- [monkey-tools-internet](./helm/charts/community/tools/monkey-tools-internet/README.md)
+- [monkey-tools-social-media](./helm/charts/community/tools/monkey-tools-social-media/README.md)
 
 
 ### Install OpenSource Components
