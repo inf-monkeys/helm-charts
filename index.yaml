@@ -14,6 +14,41 @@ entries:
   core:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-06-18T04:44:41.58406767Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      tags:
+      - elasticsearch
+      version: 7.17.3
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - postgres
+      version: 12.5.6
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - redis
+      version: 16.13.2
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - minio
+      version: 14.1.4
+    description: A Helm chart for Monkeys core service.
+    digest: 14e7ce7d136a473ac817d2187919ef3f4f0b76bf777fc3def3bf237eb18e68d8
+    name: core
+    type: application
+    urls:
+    - https://github.com/inf-monkeys/helm-charts/releases/download/core-0.1.2/core-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-06-18T04:35:30.870400242Z"
     dependencies:
     - condition: elasticsearch.enabled
@@ -107,6 +142,16 @@ entries:
   monkey-tools-knowledge-base:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-06-18T04:44:41.697531898Z"
+    description: A Helm chart for monkey-tools-knowledge-base
+    digest: ca57ee0e04e054532adde969867a929c45ed4195155b9f79f9434c3c6941e838
+    name: monkey-tools-knowledge-base
+    type: application
+    urls:
+    - https://github.com/inf-monkeys/helm-charts/releases/download/monkey-tools-knowledge-base-0.1.1/monkey-tools-knowledge-base-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-06-18T04:13:27.344606045Z"
     description: A Helm chart for monkey-tools-knowledge-base
     digest: 4da725f2049b312a54f77170f37e486e9b5bb2547d0eae93b4ab24d2fb75c9f7
@@ -195,4 +240,4 @@ entries:
     urls:
     - https://github.com/inf-monkeys/helm-charts/releases/download/vllm-0.1.0/vllm-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-18T04:35:30.870413968Z"
+generated: "2024-06-18T04:44:41.697552286Z"
