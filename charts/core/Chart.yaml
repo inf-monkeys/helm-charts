@@ -1,6 +1,6 @@
 apiVersion: v2
-name: monkeys
-description: A Helm chart for Monkeys platform.
+name: core
+description: A Helm chart for Monkeys core service.
 
 # A chart can be either an 'application' or a 'library' chart.
 #

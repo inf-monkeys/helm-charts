@@ -30,11 +30,11 @@ You must have the following components installed on your machine, if not, read s
 1. Install the chart
 
 ```sh
+# Add the helm repo
 helm repo add monkeys https://inf-monkeys.github.io/helm-charts
-helm repo add bitnami https://charts.bitnami.com/bitnami
-helm repo add elastic https://helm.elastic.co
-helm dependency build
-helm install monkeys . --values ./values.yaml
+
+# Install monkeys core service
+helm install monkeys monkeys/core
 ```
 
 2. Check status
@@ -62,6 +62,19 @@ curl http://localhost:8080
 
 And if your service is behide a firewall, no forget to open that port.
 
+
+### Install tools
+
+Tools is by plug-in design, you can install as many tools as you like. Here are the list of avaiable tools:
+
+- [monkey-tools-knowledge-base](./helm/charts/community/tools/monkey-tools-knowledge-base/README.md)
+- [monkey-tools-sandbox](./helm/charts/community/tools/monkey-tools-sandbox/README.md)
+- [monkey-tools-BepiPred3.0-Predictor](./helm/charts/community/tools/monkey-tools-BepiPred3.0-Predictor/README.md)
+- [monkey-tools-midjourney](./helm/charts/community/tools/monkey-tools-midjourney/README.md)
+- [monkey-tools-comfyui](./helm/charts/community/tools/monkey-tools-comfyui/README.md)
+- [monkey-tools-internet](./helm/charts/community/tools/monkey-tools-internet/README.md)
+- [monkey-tools-social-media](./helm/charts/community/tools/monkey-tools-social-media/README.md)
+
 ### Update configuration
 
 Create a new values file, `prod-values.yaml` for example.
@@ -79,18 +92,6 @@ Then run:
 ```sh
 helm upgrade monkeys . --values ./values.yaml --values ./prod-values.yaml --namespace monkeys
 ```
-
-### Install tools
-
-Tools is by plug-in design, you can install as many tools as you like. Here are the list of avaiable tools:
-
-- [monkey-tools-knowledge-base](./helm/charts/community/tools/monkey-tools-knowledge-base/README.md)
-- [monkey-tools-sandbox](./helm/charts/community/tools/monkey-tools-sandbox/README.md)
-- [monkey-tools-BepiPred3.0-Predictor](./helm/charts/community/tools/monkey-tools-BepiPred3.0-Predictor/README.md)
-- [monkey-tools-midjourney](./helm/charts/community/tools/monkey-tools-midjourney/README.md)
-- [monkey-tools-comfyui](./helm/charts/community/tools/monkey-tools-comfyui/README.md)
-- [monkey-tools-internet](./helm/charts/community/tools/monkey-tools-internet/README.md)
-- [monkey-tools-social-media](./helm/charts/community/tools/monkey-tools-social-media/README.md)
 
 
 ### Install OpenSource Components
