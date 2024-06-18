@@ -16,6 +16,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Add Repo
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo add elastic https://helm.elastic.co
+
       - name: Configure Git
         run: |
           git config user.name "$GITHUB_ACTOR"
