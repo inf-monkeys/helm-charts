@@ -5,13 +5,13 @@ images:
     repository: infmonkeys/monkeys
     # To use multi tenancy version
     # repository: infmonkeys/monkeys-multi-tenancy
-    tag: 0.0.54
+    tag: 0.0.94
     pullPolicy: IfNotPresent
     pullSecrets: 
   
   web:
     repository: infmonkeys/monkeys-ui
-    tag: 0.0.54
+    tag: 0.0.94
     pullPolicy: IfNotPresent
     pullSecrets: 
 
