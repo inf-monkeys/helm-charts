@@ -30,9 +30,7 @@ You must have the following components installed on your machine, if not, read s
 1. Install the chart
 
 ```sh
-git clone https://github.com/inf-monkeys/monkeys-cloud
-cd monkeys-cloud/helm/charts/community/core
-
+helm repo add monkeys https://inf-monkeys.github.io/helm-charts
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo add elastic https://helm.elastic.co
 helm dependency build
