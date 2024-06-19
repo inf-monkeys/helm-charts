@@ -6,7 +6,7 @@ fullnameOverride:
 images:
   server:
     registry: docker.io
-    image: infmonkeys/monkeys
+    repository: infmonkeys/monkeys
     # To use multi tenancy version
     # repository: infmonkeys/monkeys-multi-tenancy
     tag: latest
@@ -15,14 +15,14 @@ images:
   
   web:
     registry: docker.io
-    image: infmonkeys/monkeys-ui
+    repository: infmonkeys/monkeys-ui
     tag: latest
     pullPolicy: IfNotPresent
     pullSecrets: 
 
   admin:
     registry: docker.io
-    image: infmonkeys/monkeys-admin
+    repository: infmonkeys/monkeys-admin
     # To use multi tenancy version
     # repository: infmonkeys/monkeys-admin-multi-tenancy
     tag: latest
@@ -31,28 +31,28 @@ images:
 
   conductor:
     registry: docker.io
-    image: infmonkeys/conductor
+    repository: infmonkeys/conductor
     tag: latest
     pullPolicy: IfNotPresent
     pullSecrets: 
 
   busybox:
     registry: docker.io
-    image: busybox
+    repository: busybox
     tag: latest
     pullPolicy: IfNotPresent
     pullSecrets: 
 
   clash:
     registry: docker.io
-    image: infmonkeys/clash
+    repository: infmonkeys/clash
     tag: latest
     pullPolicy: IfNotPresent
     pullSecrets:
 
   nginx:
     registry: docker.io
-    image: nginx
+    repository: nginx
     tag: latest
     pullPolicy: IfNotPresent
     pullSecrets:

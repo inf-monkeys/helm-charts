@@ -43,7 +43,7 @@ spec:
       {{- end }}
       {{- end }}
       containers:
-      - image: "{{ .Values.images.clash.registry }}/{{ .Values.images.clash.image }}:{{ .Values.images.clash.tag }}"
+      - image: "{{ .Values.images.clash.registry }}/{{ .Values.images.clash.repository }}:{{ .Values.images.clash.tag }}"
         imagePullPolicy: "{{ .Values.images.clash.pullPolicy }}"
         name: clash
         env:
