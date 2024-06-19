@@ -12,9 +12,9 @@ data:
     # Database persistence model.
     {{- if .Values.postgresql.enabled }}
     conductor.db.type=postgres
-    spring.datasource.url=jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/{{ .Values.postgresql.global.postgresql.auth.database }}
-    spring.datasource.username={{ .Values.postgresql.global.postgresql.auth.username }}
-    spring.datasource.password={{ .Values.postgresql.global.postgresql.auth.password }}
+    spring.datasource.url=jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/{{ .Values.postgresql.auth.conductorDatabase }}
+    spring.datasource.username={{ .Values.postgresql.auth.username }}
+    spring.datasource.password={{ .Values.postgresql.auth.password }}
     {{- else if .Values.externalConductorPostgresql.enabled }}
     conductor.db.type=postgres
     spring.datasource.url=jdbc:postgresql://{{ .Values.externalConductorPostgresql.host }}:{{ .Values.externalConductorPostgresql.port }}/{{ .Values.externalConductorPostgresql.database }}

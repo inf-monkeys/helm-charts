@@ -32,7 +32,7 @@ spec:
       {{- end }}
       {{- end }}
       containers:
-        - image: "{{ .Values.images.web.repository }}:{{ .Values.images.web.tag }}"
+        - image: "{{ .Values.images.web.registry }}/{{ .Values.images.web.image }}:{{ .Values.images.web.tag }}"
           imagePullPolicy: "{{ .Values.images.web.pullPolicy }}"
           name: web
           ports:

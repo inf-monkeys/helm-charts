@@ -6,11 +6,15 @@ apiVersion: v1
 data:
   config.yaml: |
     # Server config
+    {{- if .Values.server.site }}
     server:
-    {{- toYaml .Values.server.server | nindent 6 }}
+    {{- toYaml .Values.server.site | nindent 6 }}
+    {{- end }}
 
+    {{- if .Values.server.sites }}
     servers:
-    {{- toYaml .Values.server.servers | nindent 6 }}
+    {{- toYaml .Values.server.sites | nindent 6 }}
+    {{- end }}
 
     # Database Config
     {{- if .Values.postgresql.enabled }}
@@ -18,9 +22,9 @@ data:
       type: postgres
       host: {{ .Release.Name }}-postgresql
       port: 5432
-      username: {{ .Values.postgresql.global.postgresql.auth.username }}
-      password: {{ .Values.postgresql.global.postgresql.auth.password }}
-      database: {{ .Values.postgresql.global.postgresql.auth.database }}
+      username: {{ .Values.postgresql.auth.username }}
+      password: {{ .Values.postgresql.auth.password }}
+      database: {{ .Values.postgresql.auth.monkeysDatabase }}
     {{- else if .Values.externalPostgresql.enabled }}
     database:
       type: postgres
@@ -75,12 +79,18 @@ data:
     conductor:
       baseUrl: http://{{ template "monkeys.conductor.fullname" . }}:8080/api
 
+    {{- if .Values.llmModels }}
     models:
-    {{- toYaml .Values.server.models | nindent 6 }}
+    {{- toYaml .Values.llmModels | nindent 6 }}
+    {{- end }}
 
+    {{- if .Values.tools }}
     tools:
-    {{- toYaml .Values.server.tools | nindent 6 }}
+    {{- toYaml .Values.tools | nindent 6 }}
+    {{- end }}
 
+    {{- if .Values.admin.enabled }}
     paymentServer:
       enabled: {{ .Values.admin.enabled }}
       baseUrl: http://{{ template "monkeys.admin.fullname" . }}:{{ .Values.admin.service.port }}
+    {{- end }}

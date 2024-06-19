@@ -63,15 +63,12 @@ data:
           include proxy.conf;
         }
 
+        {{- if and .Values.admin.enabled}}
         location /admin {
           proxy_pass http://{{ template "monkeys.admin.fullname" . }}:{{ .Values.admin.service.port }};
           include proxy.conf;
         }
-
-        location /conductor {
-          proxy_pass http://{{ template "monkeys.conductor.fullname" . }}:{{ .Values.conductor.service.port }};
-          include proxy.conf;
-        }
+        {{- end}}
 
         location /openapi {
           proxy_pass http://{{ template "monkeys.server.fullname" . }}:{{ .Values.server.service.port }};
