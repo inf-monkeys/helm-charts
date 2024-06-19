@@ -27,6 +27,7 @@ You must have the following components installed on your machine, if not, read s
 
 ### Install the core service
 
+- [Core Service Helm Chart](./charts/core/README.md)
 
 ### Install tools
 
