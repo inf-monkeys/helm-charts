@@ -30,60 +30,7 @@
 
 ### 安装核心服务
 
-#### 安装 Chart
-
-```sh
-# 添加 Chart 依赖
-helm repo add monkeys https://inf-monkeys.github.io/helm-charts
-
-# 安装核心服务
-helm install monkeys monkeys/core -n monkeys --create-namespace
-```
-
-#### 检查运行状态
-
-```sh
-kubectl get pods -n monkeys
-kubectl get svc -n monkeys
-```
-
-#### 访问服务
-
-
-默认情况下 `values.yaml` 使用 ClusterIP 模式, 你可以通过 **monkeys-proxy** service 访问 monkeys web ui:
-
-```sh
-# Get current pod list
-kubectl get pods -n monkeys
-
-# Port Forward monkey-proxy-xxxx-xxxx Pod, in this example use local machine's 8080 port.
-kubectl port-forward --address 0.0.0.0 monkey--core-proxy-xxxx-xxxx 8080:80 -n monkeys
-
-# Try
-curl http://localhost:8080
-```
-
-如果你的服务运行在防火墙后面，请不要忘记打开防火墙。
-
-### 更新配置
-
-创建一个新的 Values yaml 文件, 比如 `prod-core-values.yaml`。
-
-比如说你需要更新 server 的镜像，添加下面的内容到 `prod-core-values.yaml` 中:
-
-```yaml
-images:
-  server:
-    tag: some-new-tag
-```
-
-然后执行：
-
-```sh
-helm upgrade monkeys .  --namespace monkeys --values ./prod-core-values.yaml
-```
-
-完整的配置项列表请见：[核心服务](./charts/core/README_zh.md)
+- [核心服务 Helm Chart](./charts/core/README_zh.md)
 
 ### 安装 Monkey Tools
 

@@ -9,7 +9,12 @@
 
 # Table of Contents<!-- omit in toc -->
 
-- [Image Addresses and Versions](#image-addresses-and-versions)
+- [Install](#install)
+  - [Check status](#check-status)
+  - [Visit the service](#visit-the-service)
+  - [Update configuration](#update-configuration)
+  - [Uninstall](#uninstall)
+- [Images](#images)
 - [Service Configuration](#service-configuration)
   - [ClusterIP Mode Example](#clusterip-mode-example)
   - [NodePort Mode Example](#nodeport-mode-example)
@@ -40,46 +45,123 @@
     - [Using External S3 Storage](#using-external-s3-storage)
 
 
-## Image Addresses and Versions
+## Install
 
-| Parameter                      | Description                                                            | Default Value             |
-| ------------------------------ | ---------------------------------------------------------------------- | ------------------------- |
-| `images.server.repository`     | [monkeys](https://github.com/inf-monkeys/monkeys) service Docker image | `infmonkeys/monkeys`      |
-| `images.server.tag`            | Version                                                                | `latest`                  |
-| `images.server.pullPolicy`     | Image pull policy                                                      | `IfNotPresent`            |
-| `images.server.pullSecrets`    | Image pull secrets                                                     | `""`                      |
-| `images.web.repository`        | [Frontend](https://github.com/inf-monkeys/monkeys/tree/main/ui) image  | `infmonkeys/monkeys-ui`   |
-| `images.web.tag`               | Version                                                                | `latest`                  |
-| `images.web.pullPolicy`        | Image pull policy                                                      | `IfNotPresent`            |
-| `images.web.pullSecrets`       | Image pull secrets                                                     | `""`                      |
-| `images.conductor.repository`  | [conductor](https://github.com/inf-monkeys/conductor) engine image     | `infmonkeys/conductor`    |
-| `images.conductor.tag`         | Version                                                                | `latest`                  |
-| `images.conductor.pullPolicy`  | Image pull policy                                                      | `IfNotPresent`            |
-| `images.conductor.pullSecrets` | Image pull secrets                                                     | `""`                      |
-| `images.admin.repository`      | Admin dashboard image                                                  | `infmonkeys/monkeys-admin`|
-| `images.admin.tag`             | Version                                                                | `latest`                  |
-| `images.admin.pullPolicy`      | Image pull policy                                                      | `IfNotPresent`            |
-| `images.admin.pullSecrets`     | Image pull secrets                                                     | `""`                      |
-| `images.clash.repository`      | Clash proxy service image                                              | `infmonkeys/clash`        |
-| `images.clash.tag`             | Version                                                                | `latest`                  |
-| `images.clash.pullPolicy`      | Image pull policy                                                      | `IfNotPresent`            |
-| `images.clash.pullSecrets`     | Image pull secrets                                                     | `""`                      |
-| `images.busybox.repository`    | BusyBox image                                                          | `infmonkeys/clash`        |
-| `images.busybox.tag`           | Version                                                                | `latest`                  |
-| `images.busybox.pullPolicy`    | Image pull policy                                                      | `IfNotPresent`            |
-| `images.busybox.pullSecrets`   | Image pull secrets                                                     | `""`                      |
+```sh
+# Add the helm repo
+helm repo add monkeys https://inf-monkeys.github.io/helm-charts
+
+# Install monkeys core service
+helm install monkeys monkeys/core -n monkeys --create-namespace
+```
+
+### Check status
+
+> By default monkeys use internal middleware (postgres, elasticsearch, redis, etc), It may take some time to wait for middlewares startup.
+
+Check installation progress by:
+
+```sh
+kubectl get pods -n monkeys
+kubectl get svc -n monkeys
+```
+
+### Visit the service
+
+
+By default `values.yaml` uses ClusterIP mode, you can visit monkeys web ui through **monkeys-proxy** service:
+
+```sh
+# Get current pod list
+kubectl get pods 
+
+# Port Forward monkey-core-proxy-xxxx-xxxx Pod, in this example use local machine's 8080 port.
+kubectl port-forward --address 0.0.0.0 monkey-core-proxy-xxxx-xxxx 8080:80 -n monkeys
+
+# Try
+curl http://localhost:8080
+```
+
+And if your service is behide a firewall, no forget to open that port.
+
+### Update configuration
+
+Create a new values file, `prod-core-values.yaml` for example.
+
+For example if you want to modify server image version, add this to `prod-core-values.yaml`:
+
+```yaml
+images:
+  server:
+    tag: some-new-tag
+```
+
+Then run:
+
+```sh
+helm upgrade monkeys --values ./prod-core-values.yaml --namespace monkeys
+```
+
+For the complete list of configuration options, see: [Core Helm Chart](./charts/core/README.md)
+
+### Uninstall
+
+```sh
+helm uninstall monkeys -n monkeys
+```
+
+
+## Images
+
+| Parameter                      | Description                                                            | Default Value              |
+| ------------------------------ | ---------------------------------------------------------------------- | -------------------------- |
+| `images.server.registry`       | Docker Registry                                                        | `docker.io`                |
+| `images.server.image`          | [monkeys](https://github.com/inf-monkeys/monkeys) service Docker image | `infmonkeys/monkeys`       |
+| `images.server.tag`            | Version                                                                | `latest`                   |
+| `images.server.pullPolicy`     | Image pull policy                                                      | `IfNotPresent`             |
+| `images.server.pullSecrets`    | Image pull secrets                                                     | `""`                       |
+| `images.web.registry`          | Docker Registry                                                        | `docker.io`                |
+| `images.web.image`             | [Frontend](https://github.com/inf-monkeys/monkeys/tree/main/ui) image  | `infmonkeys/monkeys-ui`    |
+| `images.web.tag`               | Version                                                                | `latest`                   |
+| `images.web.pullPolicy`        | Image pull policy                                                      | `IfNotPresent`             |
+| `images.web.pullSecrets`       | Image pull secrets                                                     | `""`                       |
+| `images.conductor.registry`    | Docker Registry                                                        | `docker.io`                |
+| `images.conductor.image`       | [conductor](https://github.com/inf-monkeys/conductor) engine image     | `infmonkeys/conductor`     |
+| `images.conductor.tag`         | Version                                                                | `latest`                   |
+| `images.conductor.pullPolicy`  | Image pull policy                                                      | `IfNotPresent`             |
+| `images.conductor.pullSecrets` | Image pull secrets                                                     | `""`                       |
+| `images.admin.registry`        | Docker Registry                                                        | `docker.io`                |
+| `images.admin.image`           | Admin dashboard image                                                  | `infmonkeys/monkeys-admin` |
+| `images.admin.tag`             | Version                                                                | `latest`                   |
+| `images.admin.pullPolicy`      | Image pull policy                                                      | `IfNotPresent`             |
+| `images.admin.pullSecrets`     | Image pull secrets                                                     | `""`                       |
+| `images.clash.registry`        | Docker Registry                                                        | `docker.io`                |
+| `images.clash.image`           | Clash proxy service image                                              | `infmonkeys/clash`         |
+| `images.clash.tag`             | Version                                                                | `latest`                   |
+| `images.clash.pullPolicy`      | Image pull policy                                                      | `IfNotPresent`             |
+| `images.clash.pullSecrets`     | Image pull secrets                                                     | `""`                       |
+| `images.busybox.registry`      | Docker Registry                                                        | `docker.io`                |
+| `images.busybox.image`         | BusyBox image                                                          | `busybox`                  |
+| `images.busybox.tag`           | Version                                                                | `latest`                   |
+| `images.busybox.pullPolicy`    | Image pull policy                                                      | `IfNotPresent`             |
+| `images.busybox.pullSecrets`   | Image pull secrets                                                     | `""`                       |
+| `images.nginx.registry`        | Docker Registry                                                        | `docker.io`                |
+| `images.nginx.image`           | Nginx image                                                            | `nginx`                    |
+| `images.nginx.tag`             | Version                                                                | `latest`                   |
+| `images.nginx.pullPolicy`      | Image pull policy                                                      | `IfNotPresent`             |
+| `images.nginx.pullSecrets`     | Image pull secrets                                                     | `""`                       |
 
 
 ## Service Configuration
 
 By default, the service uses ClusterIP mode and exposes services on port `80` of the `monkeys-core-proxy` (Nginx reverse proxy) `svc`.
 
-| Parameter            | Description                    | Default Value |
-| -------------------- | ------------------------------ | ------------- |
-| `service.type`       | `ClusterIP` or `NodePort`      | `ClusterIP`   |
-| `service.port`       | Proxy component (Nginx) port   | `80`          |
-| `service.clusterIP`  | ClusterIP                      | `""`          |
-| `service.nodePort`   | Node Port                      | `""`          |
+| Parameter           | Description                  | Default Value |
+| ------------------- | ---------------------------- | ------------- |
+| `service.type`      | `ClusterIP` or `NodePort`    | `ClusterIP`   |
+| `service.port`      | Proxy component (Nginx) port | `80`          |
+| `service.clusterIP` | ClusterIP                    | `""`          |
+| `service.nodePort`  | Node Port                    | `""`          |
 
 ### ClusterIP Mode Example
 
@@ -102,34 +184,34 @@ service:
 
 Customize your site with Application ID, external URL, title, logo, authentication methods, etc.
 
-| Parameter                                  | Description                                                                                                  | Default Value                                                    |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
-| `server.site.appId`                        | Unique ID for the deployment, used as prefix for database tables and redis keys.                              | `monkeys`                                                        |
-| `server.site.appUrl`                       | External URL, affects OIDC SSO and custom triggers, other functionalities are not affected.                   | `http://localhost:3000`                                          |
-| `server.site.customization.title`          | Website title                                                                                                | `Infinite Monkeys`                                               |
-| `server.site.customization.logo.light`     | Top-left logo (Light mode)                                                                                   | `https://static.infmonkeys.com/logo/InfMonkeys-logo-light.svg`   |
-| `server.site.customization.logo.dark`      | Top-left logo (Dark mode)                                                                                    | `https://static.infmonkeys.com/logo/InfMonkeys-logo-dark.svg`    |
-| `server.site.customization.favicon`        | Browser Favicon                                                                                              | `https://static.infmonkeys.com/logo/InfMonkeys-ICO.svg`          |
-| `server.site.customization.colors.primary` | Primary color                                                                                                | `#52ad1f`                                                        |
-| `server.auth.enabled`                      | Enabled authentication methods, defaults to password login only                                              | `password`                                                       |
+| Parameter                                  | Description                                                                                 | Default Value                                                  |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `server.site.appId`                        | Unique ID for the deployment, used as prefix for database tables and redis keys.            | `monkeys`                                                      |
+| `server.site.appUrl`                       | External URL, affects OIDC SSO and custom triggers, other functionalities are not affected. | `http://localhost:3000`                                        |
+| `server.site.customization.title`          | Website title                                                                               | `Infinite Monkeys`                                             |
+| `server.site.customization.logo.light`     | Top-left logo (Light mode)                                                                  | `https://static.infmonkeys.com/logo/InfMonkeys-logo-light.svg` |
+| `server.site.customization.logo.dark`      | Top-left logo (Dark mode)                                                                   | `https://static.infmonkeys.com/logo/InfMonkeys-logo-dark.svg`  |
+| `server.site.customization.favicon`        | Browser Favicon                                                                             | `https://static.infmonkeys.com/logo/InfMonkeys-ICO.svg`        |
+| `server.site.customization.colors.primary` | Primary color                                                                               | `#52ad1f`                                                      |
+| `server.auth.enabled`                      | Enabled authentication methods, defaults to password login only                             | `password`                                                     |
 
 ## LLMModel Configuration
 
-| Parameter      | Description                                                                | Default Value |
-| -------------- | -------------------------------------------------------------------------- | ------------- |
-| `llmModels`    | Enabled language models, see [Language Model Configuration Details](#language-model-configuration-details) for details | `[]`          |
+| Parameter   | Description                                                                                                            | Default Value |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------- | ------------- |
+| `llmModels` | Enabled language models, see [Language Model Configuration Details](#language-model-configuration-details) for details | `[]`          |
 
 
 You can add any OpenAI-compatible LLMmodels with the following configuration:
 
-| Parameter                   | Description                                                                                                                                              | Default Value |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| `model`                     | Model name, e.g., `gpt-3.5-turbo`                                                                                                                         |               |
-| `baseURL`                   | Access URL, e.g., `https://api.openai.com/v1`                                                                                                             |               |
-| `apiKey`                    | API Key, optional                                                                                                                                         |               |
-| `type`                      | Model type, `chat_completions` or `completions`, for chat or text completion models. Leave empty to support both.                                         | `""`          |
-| `autoMergeSystemMessages`   | Automatically merge multiple System Messages. Required for VLLM models that cannot handle multiple system messages for the same `role`.                    | `false`       |
-| `defaultParams`             | Default request parameters, e.g., `top` parameters for specific models like `Qwen/Qwen-7B-Chat-Int4`.                                                     |               |
+| Parameter                 | Description                                                                                                                             | Default Value |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| `model`                   | Model name, e.g., `gpt-3.5-turbo`                                                                                                       |               |
+| `baseURL`                 | Access URL, e.g., `https://api.openai.com/v1`                                                                                           |               |
+| `apiKey`                  | API Key, optional                                                                                                                       |               |
+| `type`                    | Model type, `chat_completions` or `completions`, for chat or text completion models. Leave empty to support both.                       | `""`          |
+| `autoMergeSystemMessages` | Automatically merge multiple System Messages. Required for VLLM models that cannot handle multiple system messages for the same `role`. | `false`       |
+| `defaultParams`           | Default request parameters, e.g., `top` parameters for specific models like `Qwen/Qwen-7B-Chat-Int4`.                                   |               |
 
 Here are an example: 
 
@@ -158,18 +240,18 @@ models:
 
 ## Pre-built Tools
 
-| Parameter | Description                                                      | Default Value |
-| --------- | ---------------------------------------------------------------- | ------------- |
+| Parameter | Description                                                                                     | Default Value |
+| --------- | ----------------------------------------------------------------------------------------------- | ------------- |
 | `tools`   | Enabled pre-built tools. (Different tools should be installed via their respective Helm Charts) | `[]`          |
 
 ### Tool Configuration Details
 
 You can use other tools provided by Monkeys (usually prefixed with `monkey-tools-`) via Helm, or use existing online services that meet the [Monkeys standard](https://inf-monkeys.github.io/docs/zh-cn/tools/build-custom-tools/).
 
-| Parameter      | Description                                                                     | Default Value                                              |
-| -------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| `name`         | Unique identifier for the tool, e.g., `knowledge-base`                          |                                                            |
-| `manifestUrl`  | URL of the tool's Manifest JSON, ensure that the Monkeys service environment can access this URL. | `http://monkey-tools-knowledge-base:5000/manifest.json`    |
+| Parameter     | Description                                                                                       | Default Value                                           |
+| ------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| `name`        | Unique identifier for the tool, e.g., `knowledge-base`                                            |                                                         |
+| `manifestUrl` | URL of the tool's Manifest JSON, ensure that the Monkeys service environment can access this URL. | `http://monkey-tools-knowledge-base:5000/manifest.json` |
 
 
 Here are an example: 
@@ -186,39 +268,39 @@ tools:
 
 Customize the admin dashboard with Application ID, external URL, title, logo, authentication methods, etc.
 
-| Parameter                                  | Description                                                                                                  | Default Value                                                    |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
-| `admin.site.appId`                         | Unique ID for the deployment, used as prefix for database tables and redis keys. Must match `server.site.appId`. | `monkeys`                                                        |
-| `admin.site.customization.title`           | Website title                                                                                                | `Infinite Monkeys`                                               |
-| `admin.site.customization.logo.light`      | Top-left logo (Light mode)                                                                                   | `https://static.infmonkeys.com/logo/InfMonkeys-logo-light.svg`   |
-| `admin.site.customization.logo.dark`       | Top-left logo (Dark mode)                                                                                    | `https://static.infmonkeys.com/logo/InfMonkeys-logo-dark.svg`    |
-| `admin.site.customization.favicon`         | Browser Favicon                                                                                              | `https://static.infmonkeys.com/logo/InfMonkeys-ICO.svg`          |
-| `admin.site.customization.colors.primary`  | Primary color                                                                                                | `#52ad1f`                                                        |
-| `admin.site.auth.enabled`                  | Enable authentication                                                                                        | `true`                                                           |
-| `admin.site.auth.defaultAdmin.email`       | Default email                                                                                                | `admin@example.com`                                              |
-| `admin.site.auth.defaultAdmin.password`    | Default password                                                                                             | `monkeys123`                                                     |
+| Parameter                                 | Description                                                                                                      | Default Value                                                  |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `admin.site.appId`                        | Unique ID for the deployment, used as prefix for database tables and redis keys. Must match `server.site.appId`. | `monkeys`                                                      |
+| `admin.site.customization.title`          | Website title                                                                                                    | `Infinite Monkeys`                                             |
+| `admin.site.customization.logo.light`     | Top-left logo (Light mode)                                                                                       | `https://static.infmonkeys.com/logo/InfMonkeys-logo-light.svg` |
+| `admin.site.customization.logo.dark`      | Top-left logo (Dark mode)                                                                                        | `https://static.infmonkeys.com/logo/InfMonkeys-logo-dark.svg`  |
+| `admin.site.customization.favicon`        | Browser Favicon                                                                                                  | `https://static.infmonkeys.com/logo/InfMonkeys-ICO.svg`        |
+| `admin.site.customization.colors.primary` | Primary color                                                                                                    | `#52ad1f`                                                      |
+| `admin.site.auth.enabled`                 | Enable authentication                                                                                            | `true`                                                         |
+| `admin.site.auth.defaultAdmin.email`      | Default email                                                                                                    | `admin@example.com`                                            |
+| `admin.site.auth.defaultAdmin.password`   | Default password                                                                                                 | `monkeys123`                                                   |
 
 ## Clash Proxy
 
 Some functionalities might require internet access to reach specific services like `github` and `huggingface` models.
 
-| Parameter                | Description                              | Default Value |
-| ------------------------ | ---------------------------------------- | ------------- |
-| `clash.enabled`          | Enable Clash proxy service.              | `false`       |
-| `clash.subscriptionUrl`  | Clash subscription URL                   | `""`          |
-| `clash.secret`           | Secret for the Clash subscription URL, optional. | `""`          |
+| Parameter               | Description                                      | Default Value |
+| ----------------------- | ------------------------------------------------ | ------------- |
+| `clash.enabled`         | Enable Clash proxy service.                      | `false`       |
+| `clash.subscriptionUrl` | Clash subscription URL                           | `""`          |
+| `clash.secret`          | Secret for the Clash subscription URL, optional. | `""`          |
 
 ## Replicas
 
 Control the number of replicas for each deployment with the following configuration:
 
-| Parameter               | Description         | Default Value |
-| ----------------------- | ------------------- | ------------- |
-| `proxy.replicas`        | Number of replicas  | `1`           |
-| `server.replicas`       | Number of replicas  | `1`           |
-| `web.replicas`          | Frontend replicas   | `1`           |
-| `conductor.replicas`    | Conductor replicas  | `1`           |
-| `clash.replicas`        | Clash replicas      | `1`           |
+| Parameter            | Description        | Default Value |
+| -------------------- | ------------------ | ------------- |
+| `proxy.replicas`     | Number of replicas | `1`           |
+| `server.replicas`    | Number of replicas | `1`           |
+| `web.replicas`       | Frontend replicas  | `1`           |
+| `conductor.replicas` | Conductor replicas | `1`           |
+| `clash.replicas`     | Clash replicas     | `1`           |
 
 ## Middleware Configuration
 
@@ -226,13 +308,25 @@ Control the number of replicas for each deployment with the following configurat
 
 #### Using Built-in Database
 
-| Parameter                                            | Description                                                                                                            | Default Value |
-| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------- |
-| `postgresql.enabled`                                 | Enable built-in database. If set to true, a new PostgreSQL instance will be created (not highly available). If you have an existing database, set to false. | `true`        |
-| `postgresql.global.postgresql.auth.postgresPassword` | Postgres user password                                                                                                 | `monkeys123`  |
-| `postgresql.global.postgresql.auth.username`         | Username to be created                                                                                                 | `monkeys`     |
-| `postgresql.global.postgresql.auth.password`         | Password for the created user                                                                                          | `monkeys123`  |
-| `postgresql.global.postgresql.auth.database`         | Database to be created                                                                                                 | `monkeys`     |
+| Parameter                           | Description                                                                                                                                                 | Default Value |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| `postgresql.enabled`                | Enable built-in database. If set to true, a new PostgreSQL instance will be created (not highly available). If you have an existing database, set to false. | `true`        |
+| `postgresql.auth.postgresPassword`  | Postgres user password                                                                                                                                      | `monkeys123`  |
+| `postgresql.auth.username`          | Username to be created                                                                                                                                      | `monkeys`     |
+| `postgresql.auth.password`          | Password for the created user                                                                                                                               | `monkeys123`  |
+| `postgresql.auth.monkeysDatabase`   | Monkeys Server Database                                                                                                                                     | `monkeys`     |
+| `postgresql.auth.conductorDatabase` | Conductor Server Database                                                                                                                                   | `conductor`   |
+| `postgresql.primary.initdb.scripts` | Init db scripts                                                                                                                                             | See below     |
+
+Database init scripts:
+
+```yaml
+scripts:
+  setup.sql: |
+    CREATE DATABASE monkeys;
+    CREATE DATABASE conductor;
+```
+
 
 #### Using External Database
 
@@ -240,25 +334,25 @@ Control the number of replicas for each deployment with the following configurat
 
 ##### Monkeys Business Database
 
-| Parameter                       | Description                    | Default Value |
-| ------------------------------- | ------------------------------ | ------------- |
-| `externalPostgresql.enabled`    | Use external database          | `false`       |
-| `externalPostgresql.host`       | Host or IP address             | `""`          |
-| `externalPostgresql.port`       | Port                           | `5432`        |
-| `externalPostgresql.username`   | Username                       | `""`          |
-| `externalPostgresql.password`   | Password                       | `""`          |
-| `externalPostgresql.database`   | Database                       | `""`          |
+| Parameter                     | Description           | Default Value |
+| ----------------------------- | --------------------- | ------------- |
+| `externalPostgresql.enabled`  | Use external database | `false`       |
+| `externalPostgresql.host`     | Host or IP address    | `""`          |
+| `externalPostgresql.port`     | Port                  | `5432`        |
+| `externalPostgresql.username` | Username              | `""`          |
+| `externalPostgresql.password` | Password              | `""`          |
+| `externalPostgresql.database` | Database              | `""`          |
 
 ##### Conductor Database
 
-| Parameter                               | Description                    | Default Value |
-| --------------------------------------- | ------------------------------ | ------------- |
-| `externalConductorPostgresql.enabled`   | Use external database          | `false`       |
-| `externalConductorPostgresql.host`      | Host or IP address             | `""`          |
-| `externalConductorPostgresql.port`      | Port                           | `5432`        |
-| `externalConductorPostgresql.username`  | Username                       | `""`          |
-| `externalConductorPostgresql.password`  | Password                       | `""`          |
-| `externalConductorPostgresql.database`  | Database                       | `""`          |
+| Parameter                              | Description           | Default Value |
+| -------------------------------------- | --------------------- | ------------- |
+| `externalConductorPostgresql.enabled`  | Use external database | `false`       |
+| `externalConductorPostgresql.host`     | Host or IP address    | `""`          |
+| `externalConductorPostgresql.port`     | Port                  | `5432`        |
+| `externalConductorPostgresql.username` | Username              | `""`          |
+| `externalConductorPostgresql.password` | Password              | `""`          |
+| `externalConductorPostgresql.database` | Database              | `""`          |
 
 ### Elasticsearch 7 
 
@@ -266,58 +360,58 @@ We use ES7 to store Conductor workflow execution data.
 
 #### Using Built-in Elasticsearch 7
 
-| Parameter                           | Description                                                                                                                                                     | Default Value                                    |
-| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| `elasticsearch.enabled`             | Enable built-in Elasticsearch. If set to true, a new Elasticsearch 7 instance will be created (not highly available). If you have an existing Elasticsearch 7, set to false. | `true`                                          |
-| `elasticsearch.replicas`            | Number of replicas                                                                                                                                              | `1`                                             |
-| `elasticsearch.image`               | Image address                                                                                                                                                   | `docker.elastic.co/elasticsearch/elasticsearch` |
-| `elasticsearch.imageTag`            | Version, must be version 7                                                                                                                                      | `7.17.3`                                        |
-| `elasticsearch.minimumMasterNodes`  | Minimum number of master nodes                                                                                                                                  | `1`                                             |
-| `elasticsearch.esMajorVersion`      | Major version of Elasticsearch, must be 7                                                                                                                       | `7`                                             |
-| `elasticsearch.secret.password`     | Password                                                                                                                                                        | `monkeys123`                                    |
-| `elasticsearch.indexReplicasCount`  | Number of index replicas                                                                                                                                        | `0`                                             |
-| `elasticsearch.clusterHealthColor`  | Cluster health color indicator                                                                                                                                  | `yellow`                                        |
+| Parameter                          | Description                                                                                                                                                                  | Default Value                                   |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| `elasticsearch.enabled`            | Enable built-in Elasticsearch. If set to true, a new Elasticsearch 7 instance will be created (not highly available). If you have an existing Elasticsearch 7, set to false. | `true`                                          |
+| `elasticsearch.replicas`           | Number of replicas                                                                                                                                                           | `1`                                             |
+| `elasticsearch.image`              | Image address                                                                                                                                                                | `docker.elastic.co/elasticsearch/elasticsearch` |
+| `elasticsearch.imageTag`           | Version, must be version 7                                                                                                                                                   | `7.17.3`                                        |
+| `elasticsearch.minimumMasterNodes` | Minimum number of master nodes                                                                                                                                               | `1`                                             |
+| `elasticsearch.esMajorVersion`     | Major version of Elasticsearch, must be 7                                                                                                                                    | `7`                                             |
+| `elasticsearch.secret.password`    | Password                                                                                                                                                                     | `monkeys123`                                    |
+| `elasticsearch.indexReplicasCount` | Number of index replicas                                                                                                                                                     | `0`                                             |
+| `elasticsearch.clusterHealthColor` | Cluster health color indicator                                                                                                                                               | `yellow`                                        |
 
 #### Using External Elasticsearch 7
 
-| Parameter                              | Description                                | Default Value |
-| -------------------------------------- | ------------------------------------------ | ------------- |
-| `externalElasticsearch.enabled`        | Enable external Elasticsearch, must be version 7 | `true`        |
-| `externalElasticsearch.indexReplicasCount` | Number of workflow data replicas          | `0`           |
-| `externalElasticsearch.clusterHealthColor` | Cluster health color indicator            | `yellow`      |
-| `externalElasticsearch.url`            | Connection URL                             | `""`          |
-| `externalElasticsearch.username`       | Username                                   | `""`          |
-| `externalElasticsearch.password`       | Password                                   | `""`          |
+| Parameter                                  | Description                                      | Default Value |
+| ------------------------------------------ | ------------------------------------------------ | ------------- |
+| `externalElasticsearch.enabled`            | Enable external Elasticsearch, must be version 7 | `true`        |
+| `externalElasticsearch.indexReplicasCount` | Number of workflow data replicas                 | `0`           |
+| `externalElasticsearch.clusterHealthColor` | Cluster health color indicator                   | `yellow`      |
+| `externalElasticsearch.url`                | Connection URL                                   | `""`          |
+| `externalElasticsearch.username`           | Username                                         | `""`          |
+| `externalElasticsearch.password`           | Password                                         | `""`          |
 
 
 ### Redis
 
 #### Using Built-in Redis
 
-| Parameter                | Description                                                                                                          | Default Value |
-| ------------------------ | -------------------------------------------------------------------------------------------------------------------- | ------------- |
-| `redis.enabled`          | Enable built-in Redis. If set to true, a new Redis instance will be created (not highly available). If you have an existing Redis, set to false. | `true`        |
-| `redis.architecture`     | Deployment architecture, currently only supports `standalone` mode.                                                  | `standalone`  |
-| `redis.global.password`  | Password                                                                                                             | `monkeys123`  |
+| Parameter               | Description                                                                                                                                      | Default Value |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
+| `redis.enabled`         | Enable built-in Redis. If set to true, a new Redis instance will be created (not highly available). If you have an existing Redis, set to false. | `true`        |
+| `redis.architecture`    | Deployment architecture, currently only supports `standalone` mode.                                                                              | `standalone`  |
+| `redis.global.password` | Password                                                                                                                                         | `monkeys123`  |
 
 #### Using External Redis
 
 ##### Standalone Redis
 
-| Parameter                | Description                                                                                  | Default Value                 |
-| ------------------------ | -------------------------------------------------------------------------------------------- | ----------------------------- |
-| `externalRedis.enabled`  | Use external Redis                                                                           | `false`                       |
-| `externalRedis.mode`     | Redis deployment architecture                                                                | `standalone`                  |
-| `externalRedis.url`      | Redis connection URL, e.g., `redis://@localhost:6379/0`. Example with password: `redis://:password@localhost:6379/0` | `redis://localhost:6379/0`    |
+| Parameter               | Description                                                                                                          | Default Value              |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------- | -------------------------- |
+| `externalRedis.enabled` | Use external Redis                                                                                                   | `false`                    |
+| `externalRedis.mode`    | Redis deployment architecture                                                                                        | `standalone`               |
+| `externalRedis.url`     | Redis connection URL, e.g., `redis://@localhost:6379/0`. Example with password: `redis://:password@localhost:6379/0` | `redis://localhost:6379/0` |
 
 ##### Redis Cluster
 
-| Parameter                       | Description                  | Default Value |
-| ------------------------------- | ---------------------------- | ------------- |
-| `externalRedis.enabled`         | Use external Redis           | `false`       |
-| `externalRedis.mode`            | Redis deployment architecture| `cluster`     |
-| `externalRedis.nodes`           | Redis cluster nodes list     | `""`          |
-| `externalRedis.options.password`| Password                     | `""`          |
+| Parameter                        | Description                   | Default Value |
+| -------------------------------- | ----------------------------- | ------------- |
+| `externalRedis.enabled`          | Use external Redis            | `false`       |
+| `externalRedis.mode`             | Redis deployment architecture | `cluster`     |
+| `externalRedis.nodes`            | Redis cluster nodes list      | `""`          |
+| `externalRedis.options.password` | Password                      | `""`          |
 
 Example of Redis cluster nodes list:
 
@@ -339,13 +433,13 @@ nodes:
 
 ###### Redis Sentinel
 
-| Parameter                       | Description                  | Default Value |
-| ------------------------------- | ---------------------------- | ------------- |
-| `externalRedis.enabled`         | Use external Redis           | `false`       |
-| `externalRedis.mode`            | Redis deployment architecture| `sentinel`    |
-| `externalRedis.sentinels`       | Redis sentinel nodes list    | `""`          |
-| `externalRedis.sentinelName`    | Redis sentinel name          | `""`          |
-| `externalRedis.options.password`| Password                     | `""`          |
+| Parameter                        | Description                   | Default Value |
+| -------------------------------- | ----------------------------- | ------------- |
+| `externalRedis.enabled`          | Use external Redis            | `false`       |
+| `externalRedis.mode`             | Redis deployment architecture | `sentinel`    |
+| `externalRedis.sentinels`        | Redis sentinel nodes list     | `""`          |
+| `externalRedis.sentinelName`     | Redis sentinel name           | `""`          |
+| `externalRedis.options.password` | Password                      | `""`          |
 
 Example of Redis sentinel nodes list:
 
@@ -362,18 +456,18 @@ sentinels:
 
 > This mode uses the root user and password as accessKey. Recommended for quick testing only.
 
-| Parameter                 | Description                                                                                                                                        | Default Value   |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
-| `minio.enabled`           | Enable built-in Minio. If set to true, a new Minio instance will be created (not highly available). If you have an existing Minio or any S3-compatible storage, set to false. | `true`          |
-| `minio.isPrivate`         | Is it a private repository                                                                                                                         | `false`         |
-| `minio.mode`              | Deployment architecture, currently only supports `standalone` mode.                                                                                | `standalone`    |
-| `minio.defaultBuckets`    | Default Bucket names to create, separated by commas.                                                                                               | `monkeys-static`|
-| `minio.auth.rootUser`     | Root username                                                                                                                                      | `minio`         |
-| `minio.auth.rootPassword` | Root password                                                                                                                                      | `monkeys123`    |
-| `minio.service.type`      | Minio Service mode, this Minio needs to be accessible externally (via browser), defaults to `Nodeport` mode.                                        | `NodePort`      |
-| `minio.service.nodePorts.api` | Minio API port mapped to the host port                                                                                                          | `31900`         |
-| `minio.service.nodePorts.console` | Minio Console port mapped to the host port                                                                                                  | `31901`         |
-| `minio.endpoint`          | Minio API endpoint accessible externally. You might need to change it to the host server IP + API Node Port.                                       | `http://127.0.0.1:31900` |
+| Parameter                         | Description                                                                                                                                                                   | Default Value            |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| `minio.enabled`                   | Enable built-in Minio. If set to true, a new Minio instance will be created (not highly available). If you have an existing Minio or any S3-compatible storage, set to false. | `true`                   |
+| `minio.isPrivate`                 | Is it a private repository                                                                                                                                                    | `false`                  |
+| `minio.mode`                      | Deployment architecture, currently only supports `standalone` mode.                                                                                                           | `standalone`             |
+| `minio.defaultBuckets`            | Default Bucket names to create, separated by commas.                                                                                                                          | `monkeys-static`         |
+| `minio.auth.rootUser`             | Root username                                                                                                                                                                 | `minio`                  |
+| `minio.auth.rootPassword`         | Root password                                                                                                                                                                 | `monkeys123`             |
+| `minio.service.type`              | Minio Service mode, this Minio needs to be accessible externally (via browser), defaults to `Nodeport` mode.                                                                  | `NodePort`               |
+| `minio.service.nodePorts.api`     | Minio API port mapped to the host port                                                                                                                                        | `31900`                  |
+| `minio.service.nodePorts.console` | Minio Console port mapped to the host port                                                                                                                                    | `31901`                  |
+| `minio.endpoint`                  | Minio API endpoint accessible externally. You might need to change it to the host server IP + API Node Port.                                                                  | `http://127.0.0.1:31900` |
 
 After startup, you should be able to access the Minio management console at the host IP + port (31901) with the above set credentials.
 
@@ -388,15 +482,15 @@ After startup, you should be able to access the Minio management console at the 
 
 #### Using External S3 Storage
 
-| Parameter                  | Description                                                                                                | Default Value |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------- |
-| `externalS3.enabled`       | Use external S3-compatible storage such as Minio, AWS S3, etc.                                             | `false`       |
-| `externalS3.isPrivate`     | Is it a private repository                                                                                 | `false`       |
-| `externalS3.forcePathStyle`| Use path-style endpoint, typically set to `true` when using Minio                                          | `false`       |
-| `externalS3.endpoint`      | Endpoint URL                                                                                               | `""`          |
-| `externalS3.accessKeyId`   | Access Key ID                                                                                              | `""`          |
-| `externalS3.secretAccessKey`| Secret Access Key                                                                                          | `""`          |
-| `externalS3.region`        | Region                                                                                                     | `""`          |
-| `externalS3.bucket`        | Bucket name, use a public bucket to allow frontend access                                                  | `""`          |
-| `externalS3.publicAccessUrl`| Publicly accessible URL, typically the CDN URL for the bucket, e.g., `https://static.infmonkeys.com`       | `31900`       |
+| Parameter                    | Description                                                                                          | Default Value |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------- | ------------- |
+| `externalS3.enabled`         | Use external S3-compatible storage such as Minio, AWS S3, etc.                                       | `false`       |
+| `externalS3.isPrivate`       | Is it a private repository                                                                           | `false`       |
+| `externalS3.forcePathStyle`  | Use path-style endpoint, typically set to `true` when using Minio                                    | `false`       |
+| `externalS3.endpoint`        | Endpoint URL                                                                                         | `""`          |
+| `externalS3.accessKeyId`     | Access Key ID                                                                                        | `""`          |
+| `externalS3.secretAccessKey` | Secret Access Key                                                                                    | `""`          |
+| `externalS3.region`          | Region                                                                                               | `""`          |
+| `externalS3.bucket`          | Bucket name, use a public bucket to allow frontend access                                            | `""`          |
+| `externalS3.publicAccessUrl` | Publicly accessible URL, typically the CDN URL for the bucket, e.g., `https://static.infmonkeys.com` | `31900`       |
 

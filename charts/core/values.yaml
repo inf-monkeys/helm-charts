@@ -5,7 +5,8 @@ fullnameOverride:
 ###################################
 images:
   server:
-    repository: infmonkeys/monkeys
+    registry: docker.io
+    image: infmonkeys/monkeys
     # To use multi tenancy version
     # repository: infmonkeys/monkeys-multi-tenancy
     tag: latest
@@ -13,13 +14,15 @@ images:
     pullSecrets: 
   
   web:
-    repository: infmonkeys/monkeys-ui
+    registry: docker.io
+    image: infmonkeys/monkeys-ui
     tag: latest
     pullPolicy: IfNotPresent
     pullSecrets: 
 
   admin:
-    repository: infmonkeys/monkeys-admin
+    registry: docker.io
+    image: infmonkeys/monkeys-admin
     # To use multi tenancy version
     # repository: infmonkeys/monkeys-admin-multi-tenancy
     tag: latest
@@ -27,34 +30,38 @@ images:
     pullSecrets:
 
   conductor:
-    repository: infmonkeys/conductor
+    registry: docker.io
+    image: infmonkeys/conductor
     tag: latest
     pullPolicy: IfNotPresent
     pullSecrets: 
 
   busybox:
-    repository: busybox
+    registry: docker.io
+    image: busybox
     tag: latest
     pullPolicy: IfNotPresent
     pullSecrets: 
 
   clash:
-    repository: infmonkeys/clash
+    registry: docker.io
+    image: infmonkeys/clash
     tag: latest
     pullPolicy: IfNotPresent
     pullSecrets:
 
+  nginx:
+    registry: docker.io
+    image: nginx
+    tag: latest
+    pullPolicy: IfNotPresent
+    pullSecrets:
 
 ###################################
 # Nginx reverse proxy
 ###################################
 proxy:
   enabled: true
-
-  image:
-    repository: nginx
-    tag: latest
-    pullPolicy: IfNotPresent
 
   replicas: 1
   resources: {}
@@ -235,21 +242,23 @@ admin:
 ###################################
 # BuiltIn Tools
 ###################################
-tools:
-  # - name: knowledge-base
-  #   manifestUrl: http://monkey-tools-knowledge-base:5000/manifest.json
+tools: []
+# tools:
+#   - name: knowledge-base
+#     manifestUrl: http://monkey-tools-knowledge-base:5000/manifest.json
 
 ###################################
 # LLM Models
 ###################################
-llmModels:
-  # - model:
-  #     - gpt-3.5-turbo
-  #     - gpt-4-0613
-  #   baseURL: https://api.openai.com/v1
-  #   apiKey: sk-xxxxxxxxxxxxxxxxxxxx
-  #   type:
-  #     - chat_completions
+llmModels: []
+# llmModels:
+#   - model:
+#       - gpt-3.5-turbo
+#       - gpt-4-0613
+#     baseURL: https://api.openai.com/v1
+#     apiKey: sk-xxxxxxxxxxxxxxxxxxxx
+#     type:
+#       - chat_completions
 
 ###################################
 # Conductor
@@ -287,13 +296,22 @@ clash:
 postgresql:
   # If not enabled, will use sqlite as fallback.
   enabled: true
-  global:
-    postgresql:
-      auth:
-        postgresPassword: "monkeys123"
-        username: "monkeys"
-        password: "monkeys123"
-        database: "monkeys"
+  image:
+    debug: true
+  auth:
+    postgresPassword: "monkeys123"
+    username: "monkeys"
+    password: "monkeys123"
+    monkeysDatabase: "monkeys"
+    conductorDatabase: "conductor"
+  primary:
+    initdb:
+      user: monkeys
+      password: monkeys123
+      scripts:
+        setup.sql: |
+          CREATE DATABASE monkeys;
+          CREATE DATABASE conductor;
 
 ###################################
 # External postgres

@@ -10,6 +10,12 @@
 
 # 目录<!-- omit in toc -->
 
+- [安装](#安装)
+  - [安装 Chart](#安装-chart)
+  - [检查运行状态](#检查运行状态)
+  - [访问服务](#访问服务)
+  - [更新配置](#更新配置)
+  - [卸载](#卸载)
 - [镜像地址与版本](#镜像地址与版本)
 - [服务配置](#服务配置)
   - [ClusterIP 模式示例](#clusterip-模式示例)
@@ -42,34 +48,107 @@
     - [使用外部 S3 存储](#使用外部-s3-存储)
 
 
+## 安装
+
+### 安装 Chart
+
+```sh
+# 添加 Chart 依赖
+helm repo add monkeys https://inf-monkeys.github.io/helm-charts
+
+# 安装核心服务
+helm install monkeys monkeys/core -n monkeys --create-namespace
+```
+
+### 检查运行状态
+
+```sh
+kubectl get pods -n monkeys
+kubectl get svc -n monkeys
+```
+
+### 访问服务
+
+
+默认情况下 `values.yaml` 使用 ClusterIP 模式, 你可以通过 **monkeys-proxy** service 访问 monkeys web ui:
+
+```sh
+# Get current pod list
+kubectl get pods -n monkeys
+
+# Port Forward monkey-proxy-xxxx-xxxx Pod, in this example use local machine's 8080 port.
+kubectl port-forward --address 0.0.0.0 monkey--core-proxy-xxxx-xxxx 8080:80 -n monkeys
+
+# Try
+curl http://localhost:8080
+```
+
+如果你的服务运行在防火墙后面，请不要忘记打开防火墙。
+
+### 更新配置
+
+创建一个新的 Values yaml 文件, 比如 `prod-core-values.yaml`。
+
+比如说你需要更新 server 的镜像，添加下面的内容到 `prod-core-values.yaml` 中:
+
+```yaml
+images:
+  server:
+    tag: some-new-tag
+```
+
+然后执行：
+
+```sh
+helm upgrade monkeys .  --namespace monkeys --values ./prod-core-values.yaml
+```
+
+### 卸载
+
+```sh
+helm uninstall monkeys -n monkeys
+```
+
+
 ## 镜像地址与版本
 
 | 参数                           | 描述                                                                          | 默认值                     |
 | ------------------------------ | ----------------------------------------------------------------------------- | -------------------------- |
-| `images.server.repository`     | [monkeys](https://github.com/inf-monkeys/monkeys) 服务 Docker 镜像地址        | `infmonkeys/monkeys`       |
+| `images.server.registry`       | 镜像 Registry                                                                 | `docker.io`                |
+| `images.server.image`          | [monkeys](https://github.com/inf-monkeys/monkeys) 服务 Docker 镜像地址        | `infmonkeys/monkeys`       |
 | `images.server.tag`            | 版本号号                                                                      | `latest`                   |
 | `images.server.pullPolicy`     | 镜像拉取策略                                                                  | `IfNotPresent`             |
 | `images.server.pullSecrets`    | 镜像拉取密钥                                                                  | `""`                       |
-| `images.web.repository`        | [前端](https://github.com/inf-monkeys/monkeys/tree/main/ui) Docker 镜像地址   | `infmonkeys/monkeys-ui`    |
+| `images.web.registry`          | 镜像 Registry                                                                 | `docker.io`                |
+| `images.web.image`             | [前端](https://github.com/inf-monkeys/monkeys/tree/main/ui) Docker 镜像地址   | `infmonkeys/monkeys-ui`    |
 | `images.web.tag`               | 版本号                                                                        | `latest`                   |
 | `images.web.pullPolicy`        | 镜像拉取策略                                                                  | `IfNotPresent`             |
 | `images.web.pullSecrets`       | 镜像拉取密钥                                                                  | `""`                       |
-| `images.conductor.repository`  | 流程编排引擎 [conductor](https://github.com/inf-monkeys/conductor) 的镜像地址 | `infmonkeys/conductor`     |
+| `images.conductor.registry`    | 镜像 Registry                                                                 | `docker.io`                |
+| `images.conductor.image`       | 流程编排引擎 [conductor](https://github.com/inf-monkeys/conductor) 的镜像地址 | `infmonkeys/conductor`     |
 | `images.conductor.tag`         | 版本号                                                                        | `latest`                   |
 | `images.conductor.pullPolicy`  | 镜像拉取策略                                                                  | `IfNotPresent`             |
 | `images.conductor.pullSecrets` | 镜像拉取密钥                                                                  | `""`                       |
-| `images.admin.repository`      | 管理后台的镜像地址                                                            | `infmonkeys/monkeys-admin` |
+| `images.admin.registry`        | 镜像 Registry                                                                 | `docker.io`                |
+| `images.admin.image`           | 管理后台的镜像地址                                                            | `infmonkeys/monkeys-admin` |
 | `images.admin.tag`             | 版本号                                                                        | `latest`                   |
 | `images.admin.pullPolicy`      | 镜像拉取策略                                                                  | `IfNotPresent`             |
 | `images.admin.pullSecrets`     | 镜像拉取密钥                                                                  | `""`                       |
-| `images.clash.repository`      | Clash 代理服务的镜像地址                                                      | `infmonkeys/clash`         |
+| `images.clash.registry`        | 镜像 Registry                                                                 | `docker.io`                |
+| `images.clash.image`           | Clash 代理服务的镜像地址                                                      | `infmonkeys/clash`         |
 | `images.clash.tag`             | 版本号                                                                        | `latest`                   |
 | `images.clash.pullPolicy`      | 镜像拉取策略                                                                  | `IfNotPresent`             |
 | `images.clash.pullSecrets`     | 镜像拉取密钥                                                                  | `""`                       |
-| `images.busybox.repository`    | Clash 代理服务的镜像地址                                                      | `infmonkeys/clash`         |
+| `images.busybox.registry`      | 镜像 Registry                                                                 | `docker.io`                |
+| `images.busybox.image`         | Clash 代理服务的镜像地址                                                      | `busybox`                  |
 | `images.busybox.tag`           | 版本号                                                                        | `latest`                   |
 | `images.busybox.pullPolicy`    | 镜像拉取策略                                                                  | `IfNotPresent`             |
 | `images.busybox.pullSecrets`   | 镜像拉取密钥                                                                  | `""`                       |
+| `images.nginx.registry`        | 镜像 Registry                                                                 | `docker.io`                |
+| `images.nginx.image`           | Nginx 的镜像地址                                                              | `nginx`                    |
+| `images.nginx.tag`             | 版本号                                                                        | `latest`                   |
+| `images.nginx.pullPolicy`      | 镜像拉取策略                                                                  | `IfNotPresent`             |
+| `images.nginx.pullSecrets`     | 镜像拉取密钥                                                                  | `""`                       |
 
 
 
@@ -234,14 +313,24 @@ tools:
 
 #### 使用内置数据库
 
-| 参数                                                 | 描述                                                                                                                              | 默认值       |
-| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------ |
-| `postgresql.enabled`                                 | 是否启用内置数据库。如果设置为 true，将会创建一个新的 postgresql 实例（不保证高可用），如果你有其他现成的数据库，请设置为 false。 | `true`       |
-| `postgresql.global.postgresql.auth.postgresPassword` | Postgres 用户密码                                                                                                                 | `monkeys123` |
-| `postgresql.global.postgresql.auth.username`         | 创建的用户名                                                                                                                      | `monkeys`    |
-| `postgresql.global.postgresql.auth.password`         | 创建用户的密码                                                                                                                    | `monkeys123` |
-| `postgresql.global.postgresql.auth.database`         | 创建的 database                                                                                                                   | `monkeys`    |
+| 参数                                | 描述                                                                                                                              | 默认值       |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| `postgresql.enabled`                | 是否启用内置数据库。如果设置为 true，将会创建一个新的 postgresql 实例（不保证高可用），如果你有其他现成的数据库，请设置为 false。 | `true`       |
+| `postgresql.auth.postgresPassword`  | Postgres 用户密码                                                                                                                 | `monkeys123` |
+| `postgresql.auth.username`          | 创建的用户名                                                                                                                      | `monkeys`    |
+| `postgresql.auth.password`          | 创建用户的密码                                                                                                                    | `monkeys123` |
+| `postgresql.auth.database`          | Monkeys Server 的 database                                                                                                        | `monkeys`    |
+| `postgresql.auth.conductorDatabase` | Conductor 的 database                                                                                                             | `conductor`  |
+| `postgresql.primary.initdb.scripts` | 初始化脚本，用于创建对应的数据库。                                                                                                | 见下文。     |
 
+数据库初始化脚本：
+
+```yaml
+scripts:
+  setup.sql: |
+    CREATE DATABASE monkeys;
+    CREATE DATABASE conductor;
+```
 
 #### 使用外置数据库
 
@@ -376,15 +465,14 @@ sentinels:
 
 > 此模式会使用 root 用户和密码作为 accessKey，只推荐在快速测试时使用。
 
-| 参数                      | 描述                                                                                                                                                          | 默认值           |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| `minio.enabled`           | 是否启用内置的 Minio。如果设置为 true，将会创建一个新的 Minio 实例（不保证高可用），如果你有其他现成的 Minio 或者任意满足 S3 协议的对象存储，请设置为 false。 | `true`           |
-| `minio.isPrivate`         | 是否为私有仓库                                                                                                                                                | `false`          |
-| `minio.mode`              | 部署架构，目前只支持 `standalone` 单机模式。                                                                                                                  | `standalone`     |
-| `minio.defaultBuckets`    | 默认创建的 Bucket Name，可以用逗号分隔。                                                                                                                      | `monkeys-static` |
-| `minio.auth.rootUser`     | Root 用户名                                                                                                                                                   | `minio`          |
-| `minio.auth.rootPassword` | Root 用户密码                                                                                                                                                 | `monkeys123`     |
-
+| 参数                              | 描述                                                                                                                                                          | 默认值                   |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| `minio.enabled`                   | 是否启用内置的 Minio。如果设置为 true，将会创建一个新的 Minio 实例（不保证高可用），如果你有其他现成的 Minio 或者任意满足 S3 协议的对象存储，请设置为 false。 | `true`                   |
+| `minio.isPrivate`                 | 是否为私有仓库                                                                                                                                                | `false`                  |
+| `minio.mode`                      | 部署架构，目前只支持 `standalone` 单机模式。                                                                                                                  | `standalone`             |
+| `minio.defaultBuckets`            | 默认创建的 Bucket Name，可以用逗号分隔。                                                                                                                      | `monkeys-static`         |
+| `minio.auth.rootUser`             | Root 用户名                                                                                                                                                   | `minio`                  |
+| `minio.auth.rootPassword`         | Root 用户密码                                                                                                                                                 | `monkeys123`             |
 | `minio.service.type`              | Minio Service 模式，次 Minio 需要能够被外部（浏览器）访问，默认使用 `Nodeport` 模式。                                                                         | `NodePort`               |
 | `minio.service.nodePorts.api`     | Minio API 端口挂载到宿主机的端口                                                                                                                              | `31900`                  |
 | `minio.service.nodePorts.console` | Minio Console 端口使用宿主机的端口                                                                                                                            | `31901`                  |

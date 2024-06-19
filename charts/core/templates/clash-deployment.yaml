@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   annotations:
 {{ include "monkeys.ud.annotations" . | indent 4 }}
-    descriptions: nginx clash
+    descriptions: clash
   labels:
 {{- include "monkeys.labels" . | nindent 4 }}
     component: clash
@@ -43,9 +43,9 @@ spec:
       {{- end }}
       {{- end }}
       containers:
-      - image: "{{ .Values.images.clash.repository }}:{{ .Values.images.clash.tag }}"
+      - image: "{{ .Values.images.clash.registry }}/{{ .Values.images.clash.image }}:{{ .Values.images.clash.tag }}"
         imagePullPolicy: "{{ .Values.images.clash.pullPolicy }}"
-        name: nginx
+        name: clash
         env:
         {{- if .Values.clash.extraEnv }}
           {{- toYaml .Values.clash.extraEnv | nindent 8 }}
