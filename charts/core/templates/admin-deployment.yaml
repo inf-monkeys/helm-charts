@@ -35,14 +35,12 @@ spec:
       initContainers:
       {{- if .Values.postgresql.enabled }}
       - name: wait-for-postgres
-        registry: {{ .Values.images.busybox.registry }}
-        image: {{ .Values.images.busybox.image }}:{{ .Values.images.busybox.tag }}
+        image: {{ .Values.images.busybox.registry }}/{{ .Values.images.busybox.repository }}:{{ .Values.images.busybox.tag }}
         command: ['sh', '-c', 'until nc -z {{ .Release.Name }}-postgresql 5432; do echo waiting for postgres; sleep 2; done;']
         imagePullPolicy: {{ .Values.images.busybox.imagePullPolicy }}
       {{- end }}
       containers:
-        - image: "{{ .Values.images.admin.image }}:{{ .Values.images.admin.tag }}"
-          registry: {{ .Values.images.busybox.registry }}
+        - image: "{{ .Values.images.busybox.registry }}/{{ .Values.images.admin.repository }}:{{ .Values.images.admin.tag }}"
           imagePullPolicy: "{{ .Values.images.admin.pullPolicy }}"
           name: admin
           ports:

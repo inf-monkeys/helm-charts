@@ -43,7 +43,7 @@ spec:
       {{- end }}
       {{- end }}
       containers:
-      - image: "{{ .Values.images.nginx.registry }}/{{ .Values.images.nginx.image }}:{{ .Values.images.nginx.tag }}"
+      - image: "{{ .Values.images.nginx.registry }}/{{ .Values.images.nginx.repository }}:{{ .Values.images.nginx.tag }}"
         imagePullPolicy: "{{ .Values.images.nginx.pullPolicy }}"
         name: nginx
         env:

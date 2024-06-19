@@ -116,37 +116,37 @@ helm uninstall monkeys -n monkeys
 | Parameter                      | Description                                                            | Default Value              |
 | ------------------------------ | ---------------------------------------------------------------------- | -------------------------- |
 | `images.server.registry`       | Docker Registry                                                        | `docker.io`                |
-| `images.server.image`          | [monkeys](https://github.com/inf-monkeys/monkeys) service Docker image | `infmonkeys/monkeys`       |
+| `images.server.repository`          | [monkeys](https://github.com/inf-monkeys/monkeys) service Docker image | `infmonkeys/monkeys`       |
 | `images.server.tag`            | Version                                                                | `latest`                   |
 | `images.server.pullPolicy`     | Image pull policy                                                      | `IfNotPresent`             |
 | `images.server.pullSecrets`    | Image pull secrets                                                     | `""`                       |
 | `images.web.registry`          | Docker Registry                                                        | `docker.io`                |
-| `images.web.image`             | [Frontend](https://github.com/inf-monkeys/monkeys/tree/main/ui) image  | `infmonkeys/monkeys-ui`    |
+| `images.web.repository`             | [Frontend](https://github.com/inf-monkeys/monkeys/tree/main/ui) image  | `infmonkeys/monkeys-ui`    |
 | `images.web.tag`               | Version                                                                | `latest`                   |
 | `images.web.pullPolicy`        | Image pull policy                                                      | `IfNotPresent`             |
 | `images.web.pullSecrets`       | Image pull secrets                                                     | `""`                       |
 | `images.conductor.registry`    | Docker Registry                                                        | `docker.io`                |
-| `images.conductor.image`       | [conductor](https://github.com/inf-monkeys/conductor) engine image     | `infmonkeys/conductor`     |
+| `images.conductor.repository`       | [conductor](https://github.com/inf-monkeys/conductor) engine image     | `infmonkeys/conductor`     |
 | `images.conductor.tag`         | Version                                                                | `latest`                   |
 | `images.conductor.pullPolicy`  | Image pull policy                                                      | `IfNotPresent`             |
 | `images.conductor.pullSecrets` | Image pull secrets                                                     | `""`                       |
 | `images.admin.registry`        | Docker Registry                                                        | `docker.io`                |
-| `images.admin.image`           | Admin dashboard image                                                  | `infmonkeys/monkeys-admin` |
+| `images.admin.repository`           | Admin dashboard image                                                  | `infmonkeys/monkeys-admin` |
 | `images.admin.tag`             | Version                                                                | `latest`                   |
 | `images.admin.pullPolicy`      | Image pull policy                                                      | `IfNotPresent`             |
 | `images.admin.pullSecrets`     | Image pull secrets                                                     | `""`                       |
 | `images.clash.registry`        | Docker Registry                                                        | `docker.io`                |
-| `images.clash.image`           | Clash proxy service image                                              | `infmonkeys/clash`         |
+| `images.clash.repository`           | Clash proxy service image                                              | `infmonkeys/clash`         |
 | `images.clash.tag`             | Version                                                                | `latest`                   |
 | `images.clash.pullPolicy`      | Image pull policy                                                      | `IfNotPresent`             |
 | `images.clash.pullSecrets`     | Image pull secrets                                                     | `""`                       |
 | `images.busybox.registry`      | Docker Registry                                                        | `docker.io`                |
-| `images.busybox.image`         | BusyBox image                                                          | `busybox`                  |
+| `images.busybox.repository`         | BusyBox image                                                          | `busybox`                  |
 | `images.busybox.tag`           | Version                                                                | `latest`                   |
 | `images.busybox.pullPolicy`    | Image pull policy                                                      | `IfNotPresent`             |
 | `images.busybox.pullSecrets`   | Image pull secrets                                                     | `""`                       |
 | `images.nginx.registry`        | Docker Registry                                                        | `docker.io`                |
-| `images.nginx.image`           | Nginx image                                                            | `nginx`                    |
+| `images.nginx.repository`           | Nginx image                                                            | `nginx`                    |
 | `images.nginx.tag`             | Version                                                                | `latest`                   |
 | `images.nginx.pullPolicy`      | Image pull policy                                                      | `IfNotPresent`             |
 | `images.nginx.pullSecrets`     | Image pull secrets                                                     | `""`                       |
@@ -364,7 +364,7 @@ We use ES7 to store Conductor workflow execution data.
 | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
 | `elasticsearch.enabled`            | Enable built-in Elasticsearch. If set to true, a new Elasticsearch 7 instance will be created (not highly available). If you have an existing Elasticsearch 7, set to false. | `true`                                          |
 | `elasticsearch.replicas`           | Number of replicas                                                                                                                                                           | `1`                                             |
-| `elasticsearch.image`              | Image address                                                                                                                                                                | `docker.elastic.co/elasticsearch/elasticsearch` |
+| `elasticsearch.repository`              | Image address                                                                                                                                                                | `docker.elastic.co/elasticsearch/elasticsearch` |
 | `elasticsearch.imageTag`           | Version, must be version 7                                                                                                                                                   | `7.17.3`                                        |
 | `elasticsearch.minimumMasterNodes` | Minimum number of master nodes                                                                                                                                               | `1`                                             |
 | `elasticsearch.esMajorVersion`     | Major version of Elasticsearch, must be 7                                                                                                                                    | `7`                                             |
