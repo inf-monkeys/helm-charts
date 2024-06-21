@@ -1,0 +1,7 @@
+- "{{ .images.server.registry }}/{{ .images.server.repository }}:{{ .images.server.tag }}"
+- "{{ .images.web.registry }}/{{ .images.web.repository }}:{{ .images.web.tag }}"
+- "{{ .images.admin.registry }}/{{ .images.admin.repository }}:{{ .images.admin.tag }}"
+- "{{ .images.conductor.registry }}/{{ .images.conductor.repository }}:{{ .images.conductor.tag }}"
+- "{{ .images.busybox.registry }}/{{ .images.busybox.repository }}:{{ .images.busybox.tag }}"
+- "{{ .images.clash.registry }}/{{ .images.clash.repository }}:{{ .images.clash.tag }}"
+- "{{ .images.nginx.registry }}/{{ .images.nginx.repository }}:{{ .images.nginx.tag }}"
