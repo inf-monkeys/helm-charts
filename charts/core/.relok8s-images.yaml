@@ -5,3 +5,4 @@
 - "{{ .images.busybox.registry }}/{{ .images.busybox.repository }}:{{ .images.busybox.tag }}"
 - "{{ .images.clash.registry }}/{{ .images.clash.repository }}:{{ .images.clash.tag }}"
 - "{{ .images.nginx.registry }}/{{ .images.nginx.repository }}:{{ .images.nginx.tag }}"
+- "{{ .images.oneapi.registry }}/{{ .images.oneapi.repository }}:{{ .images.oneapi.tag }}"

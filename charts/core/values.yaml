@@ -36,6 +36,13 @@ images:
     pullPolicy: IfNotPresent
     pullSecrets: 
 
+  oneapi:
+    registry: docker.io
+    repository: justsong/one-api
+    tag: latest
+    pullPolicy: IfNotPresent
+    pullSecrets: 
+
   busybox:
     registry: docker.io
     repository: busybox
@@ -240,6 +247,22 @@ admin:
   #         primary: "#52ad1f"
 
 ###################################
+# OneAPI
+###################################
+oneapi:
+  enabled: true
+  rootUsername: root
+  rootPassword: "123456"
+
+###################################
+# External OneAPI
+###################################
+externalOneapi:
+  enabled: false
+  baseURL: http:127.0.0.1:3000
+  rootToken: "37383627c8daxxxxxxxx78ae3e453923c2"
+
+###################################
 # BuiltIn Tools
 ###################################
 tools: []
@@ -304,6 +327,7 @@ postgresql:
     password: "monkeys123"
     monkeysDatabase: "monkeys"
     conductorDatabase: "conductor"
+    oneapiDatabase: "oneapi"
   primary:
     initdb:
       user: monkeys
@@ -312,6 +336,7 @@ postgresql:
         setup.sql: |
           CREATE DATABASE monkeys;
           CREATE DATABASE conductor;
+          CREATE DATABASE oneapi;
 
 ###################################
 # External postgres
@@ -326,7 +351,7 @@ externalPostgresql:
   password: monkeys123
   database: monkeys
 
-# For conductor, we recommand use separate database for conductor
+# For conductor
 externalConductorPostgresql:
   enabled: false
   host: 127.0.0.1
@@ -334,6 +359,15 @@ externalConductorPostgresql:
   username: monkeys
   password: monkeys123
   database: conductor
+
+# For OneAPI
+externalOneapiPostgresql:
+  enabled: false
+  host: 127.0.0.1
+  port: 5432
+  username: monkeys
+  password: monkeys123
+  database: oneapi
 
 ###################################
 # BuiltIn elasticsearch
