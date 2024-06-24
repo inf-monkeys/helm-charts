@@ -19,7 +19,10 @@
   - [ClusterIP Mode Example](#clusterip-mode-example)
   - [NodePort Mode Example](#nodeport-mode-example)
 - [Site Configuration](#site-configuration)
-- [LLMModel Configuration](#llmmodel-configuration)
+- [Built-IN LLM Models](#built-in-llm-models)
+- [OneAPI Service Configuration](#oneapi-service-configuration)
+  - [Using the Built-in OneAPI Service](#using-the-built-in-oneapi-service)
+  - [Using an External OneAPI Service](#using-an-external-oneapi-service)
 - [Pre-built Tools](#pre-built-tools)
   - [Tool Configuration Details](#tool-configuration-details)
 - [Admin Dashboard Configuration](#admin-dashboard-configuration)
@@ -113,43 +116,48 @@ helm uninstall monkeys -n monkeys
 
 ## Images
 
-| Parameter                      | Description                                                            | Default Value              |
-| ------------------------------ | ---------------------------------------------------------------------- | -------------------------- |
-| `images.server.registry`       | Docker Registry                                                        | `docker.io`                |
-| `images.server.repository`          | [monkeys](https://github.com/inf-monkeys/monkeys) service Docker image | `infmonkeys/monkeys`       |
-| `images.server.tag`            | Version                                                                | `latest`                   |
-| `images.server.pullPolicy`     | Image pull policy                                                      | `IfNotPresent`             |
-| `images.server.pullSecrets`    | Image pull secrets                                                     | `""`                       |
-| `images.web.registry`          | Docker Registry                                                        | `docker.io`                |
-| `images.web.repository`             | [Frontend](https://github.com/inf-monkeys/monkeys/tree/main/ui) image  | `infmonkeys/monkeys-ui`    |
-| `images.web.tag`               | Version                                                                | `latest`                   |
-| `images.web.pullPolicy`        | Image pull policy                                                      | `IfNotPresent`             |
-| `images.web.pullSecrets`       | Image pull secrets                                                     | `""`                       |
-| `images.conductor.registry`    | Docker Registry                                                        | `docker.io`                |
-| `images.conductor.repository`       | [conductor](https://github.com/inf-monkeys/conductor) engine image     | `infmonkeys/conductor`     |
-| `images.conductor.tag`         | Version                                                                | `latest`                   |
-| `images.conductor.pullPolicy`  | Image pull policy                                                      | `IfNotPresent`             |
-| `images.conductor.pullSecrets` | Image pull secrets                                                     | `""`                       |
-| `images.admin.registry`        | Docker Registry                                                        | `docker.io`                |
-| `images.admin.repository`           | Admin dashboard image                                                  | `infmonkeys/monkeys-admin` |
-| `images.admin.tag`             | Version                                                                | `latest`                   |
-| `images.admin.pullPolicy`      | Image pull policy                                                      | `IfNotPresent`             |
-| `images.admin.pullSecrets`     | Image pull secrets                                                     | `""`                       |
-| `images.clash.registry`        | Docker Registry                                                        | `docker.io`                |
-| `images.clash.repository`           | Clash proxy service image                                              | `infmonkeys/clash`         |
-| `images.clash.tag`             | Version                                                                | `latest`                   |
-| `images.clash.pullPolicy`      | Image pull policy                                                      | `IfNotPresent`             |
-| `images.clash.pullSecrets`     | Image pull secrets                                                     | `""`                       |
-| `images.busybox.registry`      | Docker Registry                                                        | `docker.io`                |
-| `images.busybox.repository`         | BusyBox image                                                          | `busybox`                  |
-| `images.busybox.tag`           | Version                                                                | `latest`                   |
-| `images.busybox.pullPolicy`    | Image pull policy                                                      | `IfNotPresent`             |
-| `images.busybox.pullSecrets`   | Image pull secrets                                                     | `""`                       |
-| `images.nginx.registry`        | Docker Registry                                                        | `docker.io`                |
-| `images.nginx.repository`           | Nginx image                                                            | `nginx`                    |
-| `images.nginx.tag`             | Version                                                                | `latest`                   |
-| `images.nginx.pullPolicy`      | Image pull policy                                                      | `IfNotPresent`             |
-| `images.nginx.pullSecrets`     | Image pull secrets                                                     | `""`                       |
+| Parameter                      | Description                                                             | Default Value              |
+| ------------------------------ | ----------------------------------------------------------------------- | -------------------------- |
+| `images.server.registry`       | Docker Registry                                                         | `docker.io`                |
+| `images.server.repository`     | [monkeys](https://github.com/inf-monkeys/monkeys) service Docker image  | `infmonkeys/monkeys`       |
+| `images.server.tag`            | Version                                                                 | `latest`                   |
+| `images.server.pullPolicy`     | Image pull policy                                                       | `IfNotPresent`             |
+| `images.server.pullSecrets`    | Image pull secrets                                                      | `""`                       |
+| `images.web.registry`          | Docker Registry                                                         | `docker.io`                |
+| `images.web.repository`        | [Frontend](https://github.com/inf-monkeys/monkeys/tree/main/ui) image   | `infmonkeys/monkeys-ui`    |
+| `images.web.tag`               | Version                                                                 | `latest`                   |
+| `images.web.pullPolicy`        | Image pull policy                                                       | `IfNotPresent`             |
+| `images.web.pullSecrets`       | Image pull secrets                                                      | `""`                       |
+| `images.conductor.registry`    | Docker Registry                                                         | `docker.io`                |
+| `images.conductor.repository`  | [conductor](https://github.com/inf-monkeys/conductor) engine image      | `infmonkeys/conductor`     |
+| `images.conductor.tag`         | Version                                                                 | `latest`                   |
+| `images.conductor.pullPolicy`  | Image pull policy                                                       | `IfNotPresent`             |
+| `images.conductor.pullSecrets` | Image pull secrets                                                      | `""`                       |
+| `images.oneapi.registry`       | Image Registry                                                          | `docker.io`                |
+| `images.oneapi.repository`     | Image repository for [one-api](https://github.com/songquanpeng/one-api) | `justsong/one-api`         |
+| `images.oneapi.tag`            | Version                                                                 | `latest`                   |
+| `images.oneapi.pullPolicy`     | Image pull policy                                                       | `IfNotPresent`             |
+| `images.oneapi.pullSecrets`    | Image pull secrets                                                      | `""`                       |
+| `images.admin.registry`        | Docker Registry                                                         | `docker.io`                |
+| `images.admin.repository`      | Admin dashboard image                                                   | `infmonkeys/monkeys-admin` |
+| `images.admin.tag`             | Version                                                                 | `latest`                   |
+| `images.admin.pullPolicy`      | Image pull policy                                                       | `IfNotPresent`             |
+| `images.admin.pullSecrets`     | Image pull secrets                                                      | `""`                       |
+| `images.clash.registry`        | Docker Registry                                                         | `docker.io`                |
+| `images.clash.repository`      | Clash proxy service image                                               | `infmonkeys/clash`         |
+| `images.clash.tag`             | Version                                                                 | `latest`                   |
+| `images.clash.pullPolicy`      | Image pull policy                                                       | `IfNotPresent`             |
+| `images.clash.pullSecrets`     | Image pull secrets                                                      | `""`                       |
+| `images.busybox.registry`      | Docker Registry                                                         | `docker.io`                |
+| `images.busybox.repository`    | BusyBox image                                                           | `busybox`                  |
+| `images.busybox.tag`           | Version                                                                 | `latest`                   |
+| `images.busybox.pullPolicy`    | Image pull policy                                                       | `IfNotPresent`             |
+| `images.busybox.pullSecrets`   | Image pull secrets                                                      | `""`                       |
+| `images.nginx.registry`        | Docker Registry                                                         | `docker.io`                |
+| `images.nginx.repository`      | Nginx image                                                             | `nginx`                    |
+| `images.nginx.tag`             | Version                                                                 | `latest`                   |
+| `images.nginx.pullPolicy`      | Image pull policy                                                       | `IfNotPresent`             |
+| `images.nginx.pullSecrets`     | Image pull secrets                                                      | `""`                       |
 
 
 ## Service Configuration
@@ -195,7 +203,9 @@ Customize your site with Application ID, external URL, title, logo, authenticati
 | `server.site.customization.colors.primary` | Primary color                                                                               | `#52ad1f`                                                      |
 | `server.auth.enabled`                      | Enabled authentication methods, defaults to password login only                             | `password`                                                     |
 
-## LLMModel Configuration
+## Built-IN LLM Models
+
+You can configure the built-in large language model, which can be used by all teams within the system.​⬤
 
 | Parameter   | Description                                                                                                            | Default Value |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------- | ------------- |
@@ -237,6 +247,30 @@ models:
         - <|im_end|>
 ```
 
+
+## OneAPI Service Configuration
+
+If you need users to configure their own large language models, you need to deploy [one-api](https://github.com/songquanpeng/one-api) (this Helm Chart will automatically start the one-api service by default).
+
+### Using the Built-in OneAPI Service
+
+The default username and password for [one-api](https://github.com/songquanpeng/one-api) are `root` and `123456` (**cannot be customized, please do not modify.**). Monkeys will use this account and password to create a Token, thereby [making API calls](https://github.com/songquanpeng/one-api/blob/main/docs/API.md).
+
+| Parameter             | Description                                     | Default Value |
+| --------------------- | ----------------------------------------------- | ------------- |
+| `oneapi.enabled`      | Whether to start the built-in `OneAPI` service. | `true`        |
+| `oneapi.rootUsername` | Default root username                           | `root`        |
+| `oneapi.rootPassword` | Default root password                           | `123456`      |
+
+### Using an External OneAPI Service
+
+You can also use an external OneAPI service:
+
+| Parameter                  | Description                                                                                                                            | Default Value |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| `externalOneapi.enabled`   | Whether to start the built-in `OneAPI` service.                                                                                        | `false`       |
+| `externalOneapi.baseURL`   | Service address, such as `http://127.0.0.1:3000`, do not include a trailing `\`.                                                       | `""`          |
+| `externalOneapi.rootToken` | Root user's token, see [this document](https://github.com/songquanpeng/one-api/blob/main/docs/API.md) for details on how to obtain it. | `123456`      |
 
 ## Pre-built Tools
 
@@ -364,7 +398,7 @@ We use ES7 to store Conductor workflow execution data.
 | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
 | `elasticsearch.enabled`            | Enable built-in Elasticsearch. If set to true, a new Elasticsearch 7 instance will be created (not highly available). If you have an existing Elasticsearch 7, set to false. | `true`                                          |
 | `elasticsearch.replicas`           | Number of replicas                                                                                                                                                           | `1`                                             |
-| `elasticsearch.repository`              | Image address                                                                                                                                                                | `docker.elastic.co/elasticsearch/elasticsearch` |
+| `elasticsearch.repository`         | Image address                                                                                                                                                                | `docker.elastic.co/elasticsearch/elasticsearch` |
 | `elasticsearch.imageTag`           | Version, must be version 7                                                                                                                                                   | `7.17.3`                                        |
 | `elasticsearch.minimumMasterNodes` | Minimum number of master nodes                                                                                                                                               | `1`                                             |
 | `elasticsearch.esMajorVersion`     | Major version of Elasticsearch, must be 7                                                                                                                                    | `7`                                             |

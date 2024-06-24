@@ -48,11 +48,19 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
-Create a default fully qualified server name.
+Create a default fully qualified conductor name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "monkeys.conductor.fullname" -}}
 {{ template "monkeys.fullname" . }}-conductor
+{{- end -}}
+
+{{/*
+Create a default fully qualified oneapi name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "monkeys.oneapi.fullname" -}}
+{{ template "monkeys.fullname" . }}-oneapi
 {{- end -}}
 
 {{/*

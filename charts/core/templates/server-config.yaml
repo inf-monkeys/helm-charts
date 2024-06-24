@@ -94,3 +94,18 @@ data:
       enabled: {{ .Values.admin.enabled }}
       baseUrl: http://{{ template "monkeys.admin.fullname" . }}:{{ .Values.admin.service.port }}
     {{- end }}
+
+    {{- if .Values.oneapi.enabled }}
+    oneapi:
+      enabled: true
+      baseURL: http://{{ template "monkeys.oneapi.fullname" . }}:3000
+      rootUsername: {{ .Values.oneapi.rootUsername }}
+      rootPassword: {{ .Values.oneapi.rootPassword }}
+      rootToken: {{ .Values.oneapi.rootToken }}
+    {{- else if .Values.externalOneapi.enabled }}
+    oneapi:
+      enabled: true
+      baseURL: {{ .Values.externalOneapi.baseURL }}
+      rootToken: {{ .Values.externalOneapi.rootToken }}
+    {{- else }}
+    {{- end }}

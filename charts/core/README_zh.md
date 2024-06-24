@@ -21,8 +21,11 @@
   - [ClusterIP 模式示例](#clusterip-模式示例)
   - [NodePort 模式示例](#nodeport-模式示例)
 - [站点配置](#站点配置)
-- [大语言模型配置](#大语言模型配置)
+- [内置大语言模型配置](#内置大语言模型配置)
   - [语言模型配置项说明](#语言模型配置项说明)
+- [OneAPI 大语言模型转发服务配置](#oneapi-大语言模型转发服务配置)
+  - [使用内置的 OneAPI 服务](#使用内置的-oneapi-服务)
+  - [使用外置的 OneAPI 服务](#使用外置的-oneapi-服务)
 - [预制工具](#预制工具)
   - [工具配置项说明](#工具配置项说明)
 - [管理后台配置](#管理后台配置)
@@ -115,37 +118,42 @@ helm uninstall monkeys -n monkeys
 | 参数                           | 描述                                                                          | 默认值                     |
 | ------------------------------ | ----------------------------------------------------------------------------- | -------------------------- |
 | `images.server.registry`       | 镜像 Registry                                                                 | `docker.io`                |
-| `images.server.repository`          | [monkeys](https://github.com/inf-monkeys/monkeys) 服务 Docker 镜像地址        | `infmonkeys/monkeys`       |
+| `images.server.repository`     | [monkeys](https://github.com/inf-monkeys/monkeys) 服务 Docker 镜像地址        | `infmonkeys/monkeys`       |
 | `images.server.tag`            | 版本号号                                                                      | `latest`                   |
 | `images.server.pullPolicy`     | 镜像拉取策略                                                                  | `IfNotPresent`             |
 | `images.server.pullSecrets`    | 镜像拉取密钥                                                                  | `""`                       |
 | `images.web.registry`          | 镜像 Registry                                                                 | `docker.io`                |
-| `images.web.repository`             | [前端](https://github.com/inf-monkeys/monkeys/tree/main/ui) Docker 镜像地址   | `infmonkeys/monkeys-ui`    |
+| `images.web.repository`        | [前端](https://github.com/inf-monkeys/monkeys/tree/main/ui) Docker 镜像地址   | `infmonkeys/monkeys-ui`    |
 | `images.web.tag`               | 版本号                                                                        | `latest`                   |
 | `images.web.pullPolicy`        | 镜像拉取策略                                                                  | `IfNotPresent`             |
 | `images.web.pullSecrets`       | 镜像拉取密钥                                                                  | `""`                       |
 | `images.conductor.registry`    | 镜像 Registry                                                                 | `docker.io`                |
-| `images.conductor.repository`       | 流程编排引擎 [conductor](https://github.com/inf-monkeys/conductor) 的镜像地址 | `infmonkeys/conductor`     |
+| `images.conductor.repository`  | 流程编排引擎 [conductor](https://github.com/inf-monkeys/conductor) 的镜像地址 | `infmonkeys/conductor`     |
 | `images.conductor.tag`         | 版本号                                                                        | `latest`                   |
 | `images.conductor.pullPolicy`  | 镜像拉取策略                                                                  | `IfNotPresent`             |
 | `images.conductor.pullSecrets` | 镜像拉取密钥                                                                  | `""`                       |
+| `images.oneapi.registry`       | 镜像 Registry                                                                 | `docker.io`                |
+| `images.oneapi.repository`     | [one-api](https://github.com/songquanpeng/one-api) 的镜像地址                 | `justsong/one-api`         |
+| `images.oneapi.tag`            | 版本号                                                                        | `latest`                   |
+| `images.oneapi.pullPolicy`     | 镜像拉取策略                                                                  | `IfNotPresent`             |
+| `images.oneapi.pullSecrets`    | 镜像拉取密钥                                                                  | `""`                       |
 | `images.admin.registry`        | 镜像 Registry                                                                 | `docker.io`                |
-| `images.admin.repository`           | 管理后台的镜像地址                                                            | `infmonkeys/monkeys-admin` |
+| `images.admin.repository`      | 管理后台的镜像地址                                                            | `infmonkeys/monkeys-admin` |
 | `images.admin.tag`             | 版本号                                                                        | `latest`                   |
 | `images.admin.pullPolicy`      | 镜像拉取策略                                                                  | `IfNotPresent`             |
 | `images.admin.pullSecrets`     | 镜像拉取密钥                                                                  | `""`                       |
 | `images.clash.registry`        | 镜像 Registry                                                                 | `docker.io`                |
-| `images.clash.repository`           | Clash 代理服务的镜像地址                                                      | `infmonkeys/clash`         |
+| `images.clash.repository`      | Clash 代理服务的镜像地址                                                      | `infmonkeys/clash`         |
 | `images.clash.tag`             | 版本号                                                                        | `latest`                   |
 | `images.clash.pullPolicy`      | 镜像拉取策略                                                                  | `IfNotPresent`             |
 | `images.clash.pullSecrets`     | 镜像拉取密钥                                                                  | `""`                       |
 | `images.busybox.registry`      | 镜像 Registry                                                                 | `docker.io`                |
-| `images.busybox.repository`         | Clash 代理服务的镜像地址                                                      | `busybox`                  |
+| `images.busybox.repository`    | Clash 代理服务的镜像地址                                                      | `busybox`                  |
 | `images.busybox.tag`           | 版本号                                                                        | `latest`                   |
 | `images.busybox.pullPolicy`    | 镜像拉取策略                                                                  | `IfNotPresent`             |
 | `images.busybox.pullSecrets`   | 镜像拉取密钥                                                                  | `""`                       |
 | `images.nginx.registry`        | 镜像 Registry                                                                 | `docker.io`                |
-| `images.nginx.repository`           | Nginx 的镜像地址                                                              | `nginx`                    |
+| `images.nginx.repository`      | Nginx 的镜像地址                                                              | `nginx`                    |
 | `images.nginx.tag`             | 版本号                                                                        | `latest`                   |
 | `images.nginx.pullPolicy`      | 镜像拉取策略                                                                  | `IfNotPresent`             |
 | `images.nginx.pullSecrets`     | 镜像拉取密钥                                                                  | `""`                       |
@@ -198,7 +206,9 @@ service:
 | `server.site.customization.colors.primary` | 主颜色                                                                                           | `#52ad1f`                                                      |
 | `server.auth.enabled`                      | 启用的认证方式，默认只启用密码登录。                                                             | `password`                                                     |
 
-## 大语言模型配置
+## 内置大语言模型配置
+
+你可以设置内置的大语言模型，系统内置的大语言模型所有团队都可以使用。
 
 | 参数        | 描述                                                                  | 默认值 |
 | ----------- | --------------------------------------------------------------------- | ------ |
@@ -241,6 +251,31 @@ models:
         - <|im_start|>
         - <|im_end|>
 ```
+
+## OneAPI 大语言模型转发服务配置
+
+如果你需要让用户可以配置自己的大语言模型，需要部署 [one-api](https://github.com/songquanpeng/one-api) （此 Helm Chart 默认会自动启动 one-api 服务）。
+
+### 使用内置的 OneAPI 服务
+
+[one-api](https://github.com/songquanpeng/one-api) 的默认用户名和密码为 `root` 和 `123456`（**无法自定义，请不要修改。**），Monkeys 会使用此账号密码创建 Token，从而[进行 API 调用](https://github.com/songquanpeng/one-api/blob/main/docs/API.md)。
+
+| 参数                  | 描述                           | 默认值   |
+| --------------------- | ------------------------------ | -------- |
+| `oneapi.enabled`      | 是否启动内置的 `OneAPI` 服务。 | `true`   |
+| `oneapi.rootUsername` | 默认的 root 用户名             | `root`   |
+| `oneapi.rootPassword` | 默认的 root 密码               | `123456` |
+
+### 使用外置的 OneAPI 服务
+
+你也可以使用外置的 OneAPI 服务：
+
+| 参数                       | 描述                                                                                                         | 默认值   |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------ | -------- |
+| `externalOneapi.enabled`   | 是否启动内置的 `OneAPI` 服务。                                                                               | `false`  |
+| `externalOneapi.baseURL`   | 服务地址，如 `http:127.0.0.1:3000`，最后面请不要带 `\`                                                       | `""`     |
+| `externalOneapi.rootToken` | Root 用户的 token，请见[此文档](https://github.com/songquanpeng/one-api/blob/main/docs/API.md)了解如何获取。 | `123456` |
+
 
 ## 预制工具
 
@@ -370,7 +405,7 @@ scripts:
 | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
 | `elasticsearch.enabled`            | 是否启用内置的 Elasticsearch。如果设置为 true，将会创建一个新的 elasticsearch 7 实例（不保证高可用），如果你有其他现成的 elasticsearch 7，请设置为 false。 | `true`                                          |
 | `elasticsearch.replicas`           | 副本数                                                                                                                                                     | `1`                                             |
-| `elasticsearch.repository`              | 镜像地址                                                                                                                                                   | `docker.elastic.co/elasticsearch/elasticsearch` |
+| `elasticsearch.repository`         | 镜像地址                                                                                                                                                   | `docker.elastic.co/elasticsearch/elasticsearch` |
 | `elasticsearch.imageTag`           | 版本号，大版本号必须为 7                                                                                                                                   | `7.17.3`                                        |
 | `elasticsearch.minimumMasterNodes` | 最小 master 节点数                                                                                                                                         | `1`                                             |
 | `elasticsearch.esMajorVersion`     | ES 大版本号，必须为 7。                                                                                                                                    | `7`                                             |
