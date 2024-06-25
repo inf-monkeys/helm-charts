@@ -19,6 +19,9 @@
   - [ClusterIP Mode Example](#clusterip-mode-example)
   - [NodePort Mode Example](#nodeport-mode-example)
 - [Site Configuration](#site-configuration)
+- [Authentication](#authentication)
+  - [OIDC Single Sign-On](#oidc-single-sign-on)
+  - [Phone Number Verification Code Login](#phone-number-verification-code-login)
 - [Built-IN LLM Models](#built-in-llm-models)
 - [OneAPI Service Configuration](#oneapi-service-configuration)
   - [Using the Built-in OneAPI Service](#using-the-built-in-oneapi-service)
@@ -201,7 +204,40 @@ Customize your site with Application ID, external URL, title, logo, authenticati
 | `server.site.customization.logo.dark`      | Top-left logo (Dark mode)                                                                   | `https://static.infmonkeys.com/logo/InfMonkeys-logo-dark.svg`  |
 | `server.site.customization.favicon`        | Browser Favicon                                                                             | `https://static.infmonkeys.com/logo/InfMonkeys-ICO.svg`        |
 | `server.site.customization.colors.primary` | Primary color                                                                               | `#52ad1f`                                                      |
-| `server.auth.enabled`                      | Enabled authentication methods, defaults to password login only                             | `password`                                                     |
+
+## Authentication
+
+Currently, the following three user authentication methods are supported:
+
+- `password`: Email password authentication;
+- `phone`: Phone number verification code authentication;
+- `oidc`: OIDC Single Sign-On;
+
+| Parameter                | Description                                                                 | Default Value |
+| ------------------------ | --------------------------------------------------------------------------- | ------------- |
+| `server.auth.enabled`    | Enabled authentication methods, default is password login only. Options are `password`, `oidc`, `phone` | `password`    |
+
+### OIDC Single Sign-On
+
+| Parameter                                       | Description                                                                                                      | Default Value    |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------- |
+| `server.auth.oidc.auto_signin`                  | Whether to automatically use OIDC for login when the user signs in. If set to `false`, users need to manually click the OIDC login button to proceed with OIDC authentication. | `false`          |
+| `server.auth.oidc.issuer`                       | OIDC Issuer address, e.g., `https://console.d.run/auth/realms/ghippo`                                             | `""`             |
+| `server.auth.oidc.client_id`                    | OIDC Client ID                                                                                                    | `""`             |
+| `server.auth.oidc.client_secret`                | OIDC Client Secret                                                                                                | `""`             |
+| `server.auth.oidc.scope`                        | Scope set during OIDC authorization. For Daocloud DEC, set to `openid profile email phone`                        | `openid profile` |
+| `server.auth.oidc.button_text`                  | Text for the OIDC login button                                                                                    | `Use OIDC Login` |
+| `server.auth.oidc.id_token_signed_response_alg` | OIDC ID Token encryption method                                                                                   | `RS256`          |
+
+### Phone Number Verification Code Login
+
+| Parameter                             | Description                                                 | Default Value |
+| ------------------------------------- | ----------------------------------------------------------- | ------------- |
+| `server.auth.sms.provider`            | SMS verification code service provider, currently only supports Aliyun SMS. Options are `dysms`. | `dysms`      |
+| `server.auth.sms.config.accessKeyId`  | Aliyun accessKeyId                                          | `""`         |
+| `server.auth.sms.config.accessKeySecret` | Aliyun accessKeySecret                                      | `""`         |
+| `server.auth.sms.config.signName`     | SMS signature name                                          | `""`         |
+| `server.auth.sms.config.templateCode` | SMS template code                                           | `""`         |
 
 ## Built-IN LLM Models
 
