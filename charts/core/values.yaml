@@ -342,7 +342,7 @@ clash:
 # GProductNavigator
 ###################################
 GProductNavigator:
-  enabled: true
+  enabled: false
   spec:
     name: 流程编排
     iconUrl: https://static.infmonkeys.com/favicon-gray.svg

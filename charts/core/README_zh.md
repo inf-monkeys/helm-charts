@@ -52,6 +52,8 @@
   - [MinIO(S3) 存储](#minios3-存储)
     - [使用内置 Minio 存储](#使用内置-minio-存储)
     - [使用外部 S3 存储](#使用外部-s3-存储)
+- [其他](#其他)
+  - [Daocloud DCE 菜单配置](#daocloud-dce-菜单配置)
 
 
 ## 安装
@@ -576,3 +578,18 @@ sentinels:
 | `externalS3.bucket`          | Bucket 名称，请使用公开的 bucket，以便前端能够访问到。                                              | `""`    |
 | `externalS3.publicAccessUrl` | 请填写外部（浏览器）可访问的地址，一般为 Bucket 配置的 CDN 地址，如 `https://static.infmonkeys.com` | `31900` |
 
+## 其他
+
+### Daocloud DCE 菜单配置
+
+| 参数                                   | 描述                                                    | 默认值                                                    |
+| -------------------------------------- | ------------------------------------------------------- | --------------------------------------------------------- |
+| `GProductNavigator.enabled`            | 是否启用 Daocloud DCE 菜单                              | `false`                                                   |
+| `GProductNavigator.spec.name`          | 显示名称                                                | `流程编排`                                                |
+| `GProductNavigator.spec.iconUrl`       | Logo                                                    | `[false](https://static.infmonkeys.com/favicon-gray.svg)` |
+| `GProductNavigator.spec.localizedName` | 多语言名称配置                                          | `""`                                                      |
+| `GProductNavigator.spec.url`           | 点击菜单之后的跳转地址，请修改为 Monkeys 的方访问地址。 | `"https://ai.daocloud.cn/login"`                          |
+| `GProductNavigator.spec.category`      | 类型                                                    | `modelapplication`                                        |
+| `GProductNavigator.spec.visible`       | 是否显示。                                              | `true`                                                    |
+| `GProductNavigator.spec.order`         | 排序，数字越大，越靠上。                                | `0`                                                       |
+| `GProductNavigator.spec.gproduct`      | gproduct 名称.                                          | `monkeys`                                                 |
