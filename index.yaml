@@ -14,6 +14,41 @@ entries:
   core:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-06-25T05:22:22.154799456Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      tags:
+      - elasticsearch
+      version: 7.17.3
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - postgres
+      version: 12.5.6
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - redis
+      version: 16.13.2
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - minio
+      version: 14.1.4
+    description: A Helm chart for Monkeys core service.
+    digest: 699fca1dd03c1be39f1a7c7ea9c5f3a13e66cb113b4fba546a4fadc2dbaf2501
+    name: core
+    type: application
+    urls:
+    - https://github.com/inf-monkeys/helm-charts/releases/download/core-0.1.9/core-0.1.9.tgz
+    version: 0.1.9
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-06-25T05:15:54.298649694Z"
     dependencies:
     - condition: elasticsearch.enabled
@@ -450,4 +485,4 @@ entries:
     urls:
     - https://github.com/inf-monkeys/helm-charts/releases/download/vllm-0.1.0/vllm-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-25T05:15:54.298674651Z"
+generated: "2024-06-25T05:22:22.154832148Z"
