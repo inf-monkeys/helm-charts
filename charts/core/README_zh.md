@@ -21,6 +21,9 @@
   - [ClusterIP 模式示例](#clusterip-模式示例)
   - [NodePort 模式示例](#nodeport-模式示例)
 - [站点配置](#站点配置)
+- [认证配置](#认证配置)
+  - [OIDC 单点登录](#oidc-单点登录)
+  - [手机号验证码登录](#手机号验证码登录)
 - [内置大语言模型配置](#内置大语言模型配置)
   - [语言模型配置项说明](#语言模型配置项说明)
 - [OneAPI 大语言模型转发服务配置](#oneapi-大语言模型转发服务配置)
@@ -204,7 +207,42 @@ service:
 | `server.site.customization.logo.dark`      | 左上角 Logo 图标(Dark 模型)。                                                                    | `https://static.infmonkeys.com/logo/InfMonkeys-logo-dark.svg`  |
 | `server.site.customization.favicon`        | 浏览器 Favicon 图标                                                                              | `https://static.infmonkeys.com/logo/InfMonkeys-ICO.svg`        |
 | `server.site.customization.colors.primary` | 主颜色                                                                                           | `#52ad1f`                                                      |
-| `server.auth.enabled`                      | 启用的认证方式，默认只启用密码登录。                                                             | `password`                                                     |
+
+## 认证配置
+
+目前共支持以下三种用户认证方式：
+ 
+- `password`: 邮箱密码认证；
+- `phone`: 手机号验证码认证；
+- `oidc`: OIDC 单点登录；
+
+| 参数                  | 描述                                                                     | 默认值     |
+| --------------------- | ------------------------------------------------------------------------ | ---------- |
+| `server.auth.enabled` | 启用的认证方式，默认只启用密码登录。可选值为 `password`, `oidc`, `phone` | `password` |
+
+### OIDC 单点登录
+
+| 参数                                            | 描述                                                                                                          | 默认值           |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ---------------- |
+| `server.auth.oidc.auto_signin`                  | 用户登录时是否自动使用 OIDC 进行登录，设置为 `false` 则需要用户手动点击使用 OIDC 登录按钮才会进行 OIDC 认证。 | `false`          |
+| `server.auth.oidc.issuer`                       | OIDC Issuer 地址，如 `https://console.d.run/auth/realms/ghippo`                                               | `""`             |
+| `server.auth.oidc.client_id`                    | OIDC Client ID                                                                                                | `""`             |
+| `server.auth.oidc.client_secret`                | OIDC Client Secret                                                                                            | `""`             |
+| `server.auth.oidc.scope`                        | OIDC 授权时设置的 scope, 如果是 Daocloud DEC，请设置为 `openid profile email phone`                           | `openid profile` |
+| `server.auth.oidc.button_text`                  | OIDC 登录按钮文字                                                                                             | `使用 OIDC 登录` |
+| `server.auth.oidc.id_token_signed_response_alg` | OIDC ID Token 加密方式。                                                                                      | `RS256`          |
+
+### 手机号验证码登录
+
+
+| 参数                                     | 描述                                                       | 默认值  |
+| ---------------------------------------- | ---------------------------------------------------------- | ------- |
+| `server.auth.sms.provider`               | 短信验证码服务商，当前只支持阿里云短信。可选值为 `dysms`。 | `dysms` |
+| `server.auth.sms.config.accessKeyId`     | 阿里云 accessKeyId                                         | `""`    |
+| `server.auth.sms.config.accessKeySecret` | 阿里云 accessKeySecret                                     | `""`    |
+| `server.auth.sms.config.signName`        | 短信签名名称                                               | `""`    |
+| `server.auth.sms.config.templateCode`    | 短信模板 Code                                              | `""`    |
+
 
 ## 内置大语言模型配置
 

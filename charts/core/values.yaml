@@ -164,6 +164,32 @@ server:
     enabled:
       - password
 
+  # Example: Enable OIDC SSO
+  # auth:
+  #   enabled:
+  #     - oidc
+  #   oidc:
+  #     auto_signin: false
+  #     issuer: 
+  #     client_id: 
+  #     client_secret: 
+  #     scope: openid profile
+  #     button_text: 使用 OIDC 登录
+  #     id_token_signed_response_alg: RS256  
+
+
+  # Example: Enable SMS Auth
+  # auth:
+  #   enabled:
+  #     - phone
+  #   sms:
+  #     provider: dysms
+  #     config:
+  #       accessKeyId: 
+  #       accessKeySecret: 
+  #       signName: 
+  #       templateCode: 
+
 
 ###################################
 # Monkeys Web
@@ -310,6 +336,24 @@ clash:
 
   subscriptionUrl: ""
   secret: ""
+
+
+###################################
+# GProductNavigator
+###################################
+GProductNavigator:
+  enabled: true
+  spec:
+    name: 流程编排
+    iconUrl: https://static.infmonkeys.com/favicon-gray.svg
+    localizedName:
+      zh-CN: 流程编排
+      en-US: Flow Choreography
+    url: https://ai.daocloud.cn/login
+    category: modelapplication
+    visible: true
+    order: 0
+    gproduct: monkeys
 
 
 ###################################
