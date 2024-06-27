@@ -26,6 +26,14 @@
   - [配置向量数据库](#配置向量数据库)
     - [选项一：使用 ES8 作为向量数据库](#选项一使用-es8-作为向量数据库)
     - [选项二：使用 PGVector 作为向量数据库](#选项二使用-pgvector-作为向量数据库)
+  - [Configure Business Database](#configure-business-database)
+  - [Configure Redis](#configure-redis)
+    - [Standalone Redis](#standalone-redis)
+    - [Redis Cluster](#redis-cluster)
+      - [Redis Sentinel](#redis-sentinel-1)
+  - [Configure Vector Database](#configure-vector-database)
+    - [Option 1: Using ES8 as Vector Database](#option-1-using-es8-as-vector-database)
+    - [Option 2: Using PGVector as Vector Database](#option-2-using-pgvector-as-vector-database)
 
 ## 基本信息
 
@@ -169,7 +177,7 @@ embeddingsModels:
 
   - name: daocloud
     displayName: daocloud
-    dimension: 768
+    dimension: 1024
     type: api
     apiConfig:
       url: http://localhost:5200/embeddings/FileVectorize
@@ -274,3 +282,88 @@ ES 从版本 8 开始支持向量，要求大版本号必须大于等于 8。
 | `externalPGVectorStore.enabled` | 如果使用 PGVector 作为向量数据库，需要设置为 `true`。                | `"false"` |
 | `externalPGVectorStore.url`     | 连接地址，如 `postgresql://postgres:postgres@localhost:5432/monkeys` | `""`      |
 
+### Configure Business Database
+
+> This database is used to store business data (non-vector data) and does not require pgvector to be enabled.
+
+| Parameter                             | Description                                                                                 | Default |
+| ------------------------------------- | ------------------------------------------------------------------------------------------- | ------- |
+| `externalPostgresql.url`              | Connection URL, e.g., `postgresql://monkeys:monkeys123@monkeys-postgresql:5432/monkeys`     | `""`    |
+| `externalPostgresql.pool.pool_size`   | Database connection pool size                                                               | `30`    |
+| `externalPostgresql.pool.pool_recycle`| Database connection pool recycle time, in milliseconds                                      | `3600`  |
+
+### Configure Redis
+
+This service uses Redis subscription mode to asynchronously consume tasks.
+
+#### Standalone Redis
+
+| Parameter              | Description                                                                                                 | Default         |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------- | --------------  |
+| `externalRedis.mode`   | Redis deployment architecture                                                                               | `"standalone"`  |
+| `externalRedis.url`    | Redis connection URL, e.g., `redis://@localhost:6379/0`. Example with password: `redis://:password@localhost:6379/0` | `""`            |
+
+#### Redis Cluster
+
+| Parameter                 | Description             | Default  |
+| ------------------------- | ----------------------- | -------- |
+| `externalRedis.mode`      | Redis deployment architecture     | `cluster` |
+| `externalRedis.nodes`     | Redis cluster node list  | `""`     |
+| `externalRedis.password`  | Password                 | `""`     |
+
+Example of Redis cluster node list:
+
+```yaml
+nodes:
+  - host: 127.0.0.1
+    port: 7001
+  - host: 127.0.0.1
+    port: 7002
+  - host: 127.0.0.1
+    port: 7003
+  - host: 127.0.0.1
+    port: 7004
+  - host: 127.0.0.1
+    port: 7005
+  - host: 127.0.0.1
+    port: 7006
+```
+
+##### Redis Sentinel
+
+| Parameter                      | Description             | Default     |
+| ------------------------------ | ----------------------- | ----------- |
+| `externalRedis.mode`           | Redis deployment architecture      | `sentinel`  |
+| `externalRedis.sentinels`      | Redis sentinel node list | `""`        |
+| `externalRedis.sentinelName`   | Redis sentinel name      | `""`        |
+| `externalRedis.password`       | Password                 | `""`        |
+
+Example of Redis sentinel node list:
+
+```yaml
+sentinels:
+  - host: 127.0.0.1
+    port: 7101
+```
+
+### Configure Vector Database
+
+#### Option 1: Using ES8 as Vector Database
+
+Elasticsearch supports vectors from version 8 onwards. The major version must be 8 or higher.
+
+| Parameter                                | Description                                           | Default  |
+| ---------------------------------------- | ----------------------------------------------------- | -------  |
+| `externalElasticsearchVectorStore.enabled` | If using ES8 as the vector database, set to `true`.  | `false`  |
+| `externalElasticsearchVectorStore.url`    | Connection URL, e.g., `http://elasticsearch-master:9200` | `""`     |
+| `externalElasticsearchVectorStore.username`| Username                                              | `""`     |
+| `externalElasticsearchVectorStore.password`| Password                                              | `""`     |
+
+#### Option 2: Using PGVector as Vector Database
+
+You need to install the pgvector extension on the PostgreSQL database. For details, please refer to the documentation [https://github.com/pgvector/pgvector](https://github.com/pgvector/pgvector).
+
+| Parameter                         | Description                                                           | Default    |
+| --------------------------------- | --------------------------------------------------------------------- | ---------- |
+| `externalPGVectorStore.enabled`   | If using PGVector as the vector database, set to `true`.              | `"false"`  |
+| `externalPGVectorStore.url`       | Connection URL, e.g., `postgresql://postgres:postgres@localhost:5432/monkeys` | `""`      |

@@ -40,7 +40,7 @@ embeddingsModels: []
 #     dimension: 768
 #   - name: daocloud
 #     displayName: daocloud
-#     dimension: 768
+#     dimension: 1024
 #     type: api
 #     apiConfig:
 #       url: http://localhost:5200/embeddings/FileVectorize
