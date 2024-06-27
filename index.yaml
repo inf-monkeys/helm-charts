@@ -492,6 +492,16 @@ entries:
   monkey-tools-knowledge-base:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-06-27T09:13:12.206654606Z"
+    description: A Helm chart for monkey-tools-knowledge-base
+    digest: 0c13962ba221f6d6b0e31834c48a6830a3ce3efbb75ae6a8abbf63b6fc5db212
+    name: monkey-tools-knowledge-base
+    type: application
+    urls:
+    - https://github.com/inf-monkeys/helm-charts/releases/download/monkey-tools-knowledge-base-0.1.3/monkey-tools-knowledge-base-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-06-27T08:58:06.499493386Z"
     description: A Helm chart for monkey-tools-knowledge-base
     digest: ffe4c529c6ffe1ec06b82d5de887feebee8a7253d4ea67d4bb7ee9a3cd842b70
@@ -610,4 +620,4 @@ entries:
     urls:
     - https://github.com/inf-monkeys/helm-charts/releases/download/vllm-0.1.0/vllm-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-27T08:58:06.49954369Z"
+generated: "2024-06-27T09:13:12.206708596Z"
