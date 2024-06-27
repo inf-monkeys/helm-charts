@@ -2,22 +2,20 @@ fullnameOverride:
 
 images:
   sandbox:
+    registry: docker.io
     repository: infmonkeys/monkey-tools-sandbox
-    tag: 0.0.2
+    tag: 0.0.3
     pullPolicy: IfNotPresent
     pullSecrets: 
 
   piston:
+    registry: docker.io
     repository: ghcr.io/engineer-man/piston
     tag: latest
     pullPolicy: IfNotPresent
     pullSecrets: 
 
 sandbox:
-  piston:
-    runTimeout: 3600000
-    compileTimeout: 3600000
-
   replicas: 1
   resources:
     limits:
@@ -35,8 +33,11 @@ sandbox:
     clusterIP: ""
 
 piston:
-  enabled: true
+  enabled: false
   replicas: 1
+  timeouts:
+    runTimeout: 3600000
+    compileTimeout: 3600000
   resources:
     limits:
       cpu: '2'
@@ -82,13 +83,12 @@ piston:
     clusterIP: ""
 
 ###################################
-# External redis
-# - these configs are only used when `externalRedis.enabled` is true
+# External redis: This is only required when piston is enabled
 ###################################
 # standalone example
-externalRedis:
-  mode: standalone
-  url: redis://:monkeys123@monkeys-redis-master:6379
+# externalRedis:
+#   mode: standalone
+#   url: redis://:monkeys123@monkeys-redis-master:6379
 
 # cluster example
 # externalRedis:
