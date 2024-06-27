@@ -524,6 +524,16 @@ entries:
   monkey-tools-sandbox:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-06-27T08:30:53.28769298Z"
+    description: A Helm chart for monkey-tools-sandbox
+    digest: 9f6d7c7f9b99f3f7e2fcab973c0841d462112a38f17e3d36c0c5d5991d8674ef
+    name: monkey-tools-sandbox
+    type: application
+    urls:
+    - https://github.com/inf-monkeys/helm-charts/releases/download/monkey-tools-sandbox-0.1.1/monkey-tools-sandbox-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-06-18T04:13:27.564295927Z"
     description: A Helm chart for monkey-tools-sandbox
     digest: 48ecd3c59e66764307956b75e57d9a3b2f7c51dc869005887a8ec17a45ee1a0e
@@ -590,4 +600,4 @@ entries:
     urls:
     - https://github.com/inf-monkeys/helm-charts/releases/download/vllm-0.1.0/vllm-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-27T07:58:26.003119177Z"
+generated: "2024-06-27T08:30:53.287750999Z"
