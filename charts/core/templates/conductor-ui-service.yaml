@@ -1,0 +1,29 @@
+{{- if and .Values.conductorUi.enabled}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "monkeys.conductorUi.fullname" . }}
+  labels:
+{{ include "monkeys.labels" . | indent 4 }}
+{{- if .Values.conductorUi.service.labels }}
+{{ toYaml .Values.conductorUi.service.labels | indent 4 }}
+{{- end }}
+    component: "conductor-ui"
+{{- with .Values.conductorUi.service.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+spec:
+  type: ClusterIP
+  {{- if .Values.conductorUi.service.clusterIP }}
+  clusterIP: {{ .Values.conductorUi.service.clusterIP }}
+  {{- end }}
+  ports:
+    - name: http
+      port: {{ .Values.conductorUi.service.port }}
+      protocol: TCP
+      targetPort: http
+  selector:
+{{ include "monkeys.selectorLabels" . | indent 4 }}
+    component: "conductor-ui"
+{{- end}}

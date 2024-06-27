@@ -68,6 +68,21 @@ helm repo add monkeys https://inf-monkeys.github.io/helm-charts
 helm install monkeys monkeys/core -n monkeys --create-namespace
 ```
 
+<details>
+<summary><kbd>开发模式</kbd></summary>
+
+Helm Chart 的开发者可以使用下面的命令在本地进行安装：
+
+```sh
+cd charts/core
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo add elastic https://helm.elastic.co
+helm dependency build
+helm install monkeys . --values ./values.yaml -n monkeys --create-namespace
+```
+
+</details>
+
 ### 检查运行状态
 
 ```sh
@@ -85,7 +100,7 @@ kubectl get svc -n monkeys
 kubectl get pods -n monkeys
 
 # Port Forward monkey-proxy-xxxx-xxxx Pod, in this example use local machine's 8080 port.
-kubectl port-forward --address 0.0.0.0 monkey--core-proxy-xxxx-xxxx 8080:80 -n monkeys
+kubectl port-forward --address 0.0.0.0 monkeys-core-proxy-xxxx-xxxx 8080:80 -n monkeys
 
 # Try
 curl http://localhost:8080
@@ -120,48 +135,53 @@ helm uninstall monkeys -n monkeys
 
 ## 镜像地址与版本
 
-| 参数                           | 描述                                                                          | 默认值                     |
-| ------------------------------ | ----------------------------------------------------------------------------- | -------------------------- |
-| `images.server.registry`       | 镜像 Registry                                                                 | `docker.io`                |
-| `images.server.repository`     | [monkeys](https://github.com/inf-monkeys/monkeys) 服务 Docker 镜像地址        | `infmonkeys/monkeys`       |
-| `images.server.tag`            | 版本号号                                                                      | `latest`                   |
-| `images.server.pullPolicy`     | 镜像拉取策略                                                                  | `IfNotPresent`             |
-| `images.server.pullSecrets`    | 镜像拉取密钥                                                                  | `""`                       |
-| `images.web.registry`          | 镜像 Registry                                                                 | `docker.io`                |
-| `images.web.repository`        | [前端](https://github.com/inf-monkeys/monkeys/tree/main/ui) Docker 镜像地址   | `infmonkeys/monkeys-ui`    |
-| `images.web.tag`               | 版本号                                                                        | `latest`                   |
-| `images.web.pullPolicy`        | 镜像拉取策略                                                                  | `IfNotPresent`             |
-| `images.web.pullSecrets`       | 镜像拉取密钥                                                                  | `""`                       |
-| `images.conductor.registry`    | 镜像 Registry                                                                 | `docker.io`                |
-| `images.conductor.repository`  | 流程编排引擎 [conductor](https://github.com/inf-monkeys/conductor) 的镜像地址 | `infmonkeys/conductor`     |
-| `images.conductor.tag`         | 版本号                                                                        | `latest`                   |
-| `images.conductor.pullPolicy`  | 镜像拉取策略                                                                  | `IfNotPresent`             |
-| `images.conductor.pullSecrets` | 镜像拉取密钥                                                                  | `""`                       |
-| `images.oneapi.registry`       | 镜像 Registry                                                                 | `docker.io`                |
-| `images.oneapi.repository`     | [one-api](https://github.com/songquanpeng/one-api) 的镜像地址                 | `justsong/one-api`         |
-| `images.oneapi.tag`            | 版本号                                                                        | `latest`                   |
-| `images.oneapi.pullPolicy`     | 镜像拉取策略                                                                  | `IfNotPresent`             |
-| `images.oneapi.pullSecrets`    | 镜像拉取密钥                                                                  | `""`                       |
-| `images.admin.registry`        | 镜像 Registry                                                                 | `docker.io`                |
-| `images.admin.repository`      | 管理后台的镜像地址                                                            | `infmonkeys/monkeys-admin` |
-| `images.admin.tag`             | 版本号                                                                        | `latest`                   |
-| `images.admin.pullPolicy`      | 镜像拉取策略                                                                  | `IfNotPresent`             |
-| `images.admin.pullSecrets`     | 镜像拉取密钥                                                                  | `""`                       |
-| `images.clash.registry`        | 镜像 Registry                                                                 | `docker.io`                |
-| `images.clash.repository`      | Clash 代理服务的镜像地址                                                      | `infmonkeys/clash`         |
-| `images.clash.tag`             | 版本号                                                                        | `latest`                   |
-| `images.clash.pullPolicy`      | 镜像拉取策略                                                                  | `IfNotPresent`             |
-| `images.clash.pullSecrets`     | 镜像拉取密钥                                                                  | `""`                       |
-| `images.busybox.registry`      | 镜像 Registry                                                                 | `docker.io`                |
-| `images.busybox.repository`    | Clash 代理服务的镜像地址                                                      | `busybox`                  |
-| `images.busybox.tag`           | 版本号                                                                        | `latest`                   |
-| `images.busybox.pullPolicy`    | 镜像拉取策略                                                                  | `IfNotPresent`             |
-| `images.busybox.pullSecrets`   | 镜像拉取密钥                                                                  | `""`                       |
-| `images.nginx.registry`        | 镜像 Registry                                                                 | `docker.io`                |
-| `images.nginx.repository`      | Nginx 的镜像地址                                                              | `nginx`                    |
-| `images.nginx.tag`             | 版本号                                                                        | `latest`                   |
-| `images.nginx.pullPolicy`      | 镜像拉取策略                                                                  | `IfNotPresent`             |
-| `images.nginx.pullSecrets`     | 镜像拉取密钥                                                                  | `""`                       |
+| 参数                             | 描述                                                                                     | 默认值                     |
+| -------------------------------- | ---------------------------------------------------------------------------------------- | -------------------------- |
+| `images.server.registry`         | 镜像 Registry                                                                            | `docker.io`                |
+| `images.server.repository`       | [monkeys](https://github.com/inf-monkeys/monkeys) 服务 Docker 镜像地址                   | `infmonkeys/monkeys`       |
+| `images.server.tag`              | 版本号号                                                                                 | `latest`                   |
+| `images.server.pullPolicy`       | 镜像拉取策略                                                                             | `IfNotPresent`             |
+| `images.server.pullSecrets`      | 镜像拉取密钥                                                                             | `""`                       |
+| `images.web.registry`            | 镜像 Registry                                                                            | `docker.io`                |
+| `images.web.repository`          | [前端](https://github.com/inf-monkeys/monkeys/tree/main/ui) Docker 镜像地址              | `infmonkeys/monkeys-ui`    |
+| `images.web.tag`                 | 版本号                                                                                   | `latest`                   |
+| `images.web.pullPolicy`          | 镜像拉取策略                                                                             | `IfNotPresent`             |
+| `images.web.pullSecrets`         | 镜像拉取密钥                                                                             | `""`                       |
+| `images.conductor.registry`      | 镜像 Registry                                                                            | `docker.io`                |
+| `images.conductor.repository`    | 流程编排引擎 [conductor](https://github.com/inf-monkeys/conductor) 的镜像地址            | `infmonkeys/conductor`     |
+| `images.conductor.tag`           | 版本号                                                                                   | `latest`                   |
+| `images.conductor.pullPolicy`    | 镜像拉取策略                                                                             | `IfNotPresent`             |
+| `images.conductor.pullSecrets`   | 镜像拉取密钥                                                                             | `""`                       |
+| `images.conductorUi.registry`    | 镜像 Registry                                                                            | `docker.io`                |
+| `images.conductorUi.repository`  | 流程编排引擎前端页面 [conductor-ui](https://github.com/inf-monkeys/conductor) 的镜像地址 | `infmonkeys/conductor-ui`  |
+| `images.conductorUi.tag`         | 版本号                                                                                   | `latest`                   |
+| `images.conductorUi.pullPolicy`  | 镜像拉取策略                                                                             | `IfNotPresent`             |
+| `images.conductorUi.pullSecrets` | 镜像拉取密钥                                                                             | `""`                       |
+| `images.oneapi.registry`         | 镜像 Registry                                                                            | `docker.io`                |
+| `images.oneapi.repository`       | [one-api](https://github.com/songquanpeng/one-api) 的镜像地址                            | `justsong/one-api`         |
+| `images.oneapi.tag`              | 版本号                                                                                   | `latest`                   |
+| `images.oneapi.pullPolicy`       | 镜像拉取策略                                                                             | `IfNotPresent`             |
+| `images.oneapi.pullSecrets`      | 镜像拉取密钥                                                                             | `""`                       |
+| `images.admin.registry`          | 镜像 Registry                                                                            | `docker.io`                |
+| `images.admin.repository`        | 管理后台的镜像地址                                                                       | `infmonkeys/monkeys-admin` |
+| `images.admin.tag`               | 版本号                                                                                   | `latest`                   |
+| `images.admin.pullPolicy`        | 镜像拉取策略                                                                             | `IfNotPresent`             |
+| `images.admin.pullSecrets`       | 镜像拉取密钥                                                                             | `""`                       |
+| `images.clash.registry`          | 镜像 Registry                                                                            | `docker.io`                |
+| `images.clash.repository`        | Clash 代理服务的镜像地址                                                                 | `infmonkeys/clash`         |
+| `images.clash.tag`               | 版本号                                                                                   | `latest`                   |
+| `images.clash.pullPolicy`        | 镜像拉取策略                                                                             | `IfNotPresent`             |
+| `images.clash.pullSecrets`       | 镜像拉取密钥                                                                             | `""`                       |
+| `images.busybox.registry`        | 镜像 Registry                                                                            | `docker.io`                |
+| `images.busybox.repository`      | Clash 代理服务的镜像地址                                                                 | `busybox`                  |
+| `images.busybox.tag`             | 版本号                                                                                   | `latest`                   |
+| `images.busybox.pullPolicy`      | 镜像拉取策略                                                                             | `IfNotPresent`             |
+| `images.busybox.pullSecrets`     | 镜像拉取密钥                                                                             | `""`                       |
+| `images.nginx.registry`          | 镜像 Registry                                                                            | `docker.io`                |
+| `images.nginx.repository`        | Nginx 的镜像地址                                                                         | `nginx`                    |
+| `images.nginx.tag`               | 版本号                                                                                   | `latest`                   |
+| `images.nginx.pullPolicy`        | 镜像拉取策略                                                                             | `IfNotPresent`             |
+| `images.nginx.pullSecrets`       | 镜像拉取密钥                                                                             | `""`                       |
 
 
 
@@ -582,14 +602,14 @@ sentinels:
 
 ### Daocloud DCE 菜单配置
 
-| 参数                                   | 描述                                                    | 默认值                                                    |
-| -------------------------------------- | ------------------------------------------------------- | --------------------------------------------------------- |
-| `GProductNavigator.enabled`            | 是否启用 Daocloud DCE 菜单                              | `false`                                                   |
-| `GProductNavigator.spec.name`          | 显示名称                                                | `流程编排`                                                |
+| 参数                                   | 描述                                                    | 默认值                                           |
+| -------------------------------------- | ------------------------------------------------------- | ------------------------------------------------ |
+| `GProductNavigator.enabled`            | 是否启用 Daocloud DCE 菜单                              | `false`                                          |
+| `GProductNavigator.spec.name`          | 显示名称                                                | `流程编排`                                       |
 | `GProductNavigator.spec.iconUrl`       | Logo                                                    | `https://static.infmonkeys.com/favicon-gray.svg` |
-| `GProductNavigator.spec.localizedName` | 多语言名称配置                                          | `""`                                                      |
-| `GProductNavigator.spec.url`           | 点击菜单之后的跳转地址，请修改为 Monkeys 的方访问地址。 | `"https://ai.daocloud.cn/login"`                          |
-| `GProductNavigator.spec.category`      | 类型                                                    | `modelapplication`                                        |
-| `GProductNavigator.spec.visible`       | 是否显示。                                              | `true`                                                    |
-| `GProductNavigator.spec.order`         | 排序，数字越大，越靠上。                                | `0`                                                       |
-| `GProductNavigator.spec.gproduct`      | gproduct 名称.                                          | `monkeys`                                                 |
+| `GProductNavigator.spec.localizedName` | 多语言名称配置                                          | `""`                                             |
+| `GProductNavigator.spec.url`           | 点击菜单之后的跳转地址，请修改为 Monkeys 的方访问地址。 | `"https://ai.daocloud.cn/login"`                 |
+| `GProductNavigator.spec.category`      | 类型                                                    | `modelapplication`                               |
+| `GProductNavigator.spec.visible`       | 是否显示。                                              | `true`                                           |
+| `GProductNavigator.spec.order`         | 排序，数字越大，越靠上。                                | `0`                                              |
+| `GProductNavigator.spec.gproduct`      | gproduct 名称.                                          | `monkeys`                                        |
