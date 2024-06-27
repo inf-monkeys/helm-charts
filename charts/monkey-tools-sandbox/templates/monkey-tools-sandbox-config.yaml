@@ -8,11 +8,13 @@ data:
     server:
       port: 3000
 
-    sandbox:
-      piston:
-        apiServer: http://{{ template "monkey-tools-sandbox.piston.fullname" . }}:2000
-        runTimeout: {{ .Values.sandbox.piston.runTimeout }}
-        compileTimeout: {{ .Values.sandbox.piston.compileTimeout }}
+    {{- if .Values.piston.enabled }}
+    piston:
+      enabled: true
+      apiServer: http://{{ template "monkey-tools-sandbox.piston.fullname" . }}:2000
+      runTimeout: {{ .Values.piston.timeouts.runTimeout }}
+      compileTimeout: {{ .Values.piston.timeouts.compileTimeout }}
 
     redis:
       {{- toYaml .Values.externalRedis | nindent 6 }}
+    {{- end }}

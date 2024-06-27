@@ -1,0 +1,2 @@
+- "{{ .images.sandbox.registry }}/{{ .images.sandbox.repository }}:{{ .images.sandbox.tag }}"
+- "{{ .images.piston.registry }}/{{ .images.piston.repository }}:{{ .images.piston.tag }}"

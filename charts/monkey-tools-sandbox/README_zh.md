@@ -4,7 +4,13 @@
 
 </div>
 
-
+- [基本信息](#基本信息)
+- [安装](#安装)
+  - [安装 Chart](#安装-chart)
+  - [检查运行状态](#检查运行状态)
+  - [导入工具](#导入工具)
+  - [更新配置](#更新配置)
+  - [卸载](#卸载)
 - [配置项](#配置项)
   - [镜像版本](#镜像版本)
   - [Piston 配置（可选）](#piston-配置可选)
@@ -12,13 +18,78 @@
     - [有网环境下添加 Python runtime](#有网环境下添加-python-runtime)
     - [离线网络环境下添加 Python runtime](#离线网络环境下添加-python-runtime)
   - [Sandbox 配置](#sandbox-配置)
-  - [Redis](#redis)
+  - [Redis （可选）](#redis-可选)
     - [单机 Redis](#单机-redis)
     - [Redis 集群](#redis-集群)
-      - [Redis sentinel](#redis-sentinel)
-- [安装](#安装)
-  - [更新配置](#更新配置)
-- [卸载](#卸载)
+    - [Redis sentinel](#redis-sentinel)
+
+## 基本信息
+
+此工具的 `manifestUrl` 地址为：`http://monkey-tools-sandbox:3000/manifest.json`。
+
+## 安装
+
+### 安装 Chart
+
+```sh
+# 添加 Chart 依赖
+helm repo add monkeys https://inf-monkeys.github.io/helm-charts
+
+# 安装核心服务
+helm install monkey-tools-sandbox monkeys/monkey-tools-sandbox -n monkeys --create-namespace
+```
+
+<details>
+<summary><kbd>开发模式</kbd></summary>
+
+Helm Chart 的开发者可以使用下面的命令在本地进行安装：
+
+```sh
+cd charts/monkey-tools-sandbox
+helm install monkey-tools-sandbox . --values ./values.yaml -n monkeys --create-namespace
+```
+
+</details>
+
+### 检查运行状态
+
+```sh
+kubectl get pods -n monkeys
+kubectl get svc -n monkeys
+```
+
+### 导入工具
+
+一共有两种导入工具的方式：
+
+1. 通过 `core` 服务的配置文件导入：通过此种方式导入的工具为全局工具，所有团队都可以直接使用。详情请见 [预制工具](../core/README_zh.md#预制工具)。
+2. 在控制台页面种手动导入：通过这种方式导入的工具只对当前团队有效。详情请见 [https://inf-monkeys.github.io/docs/zh-cn/tools/use-custom-tools](https://inf-monkeys.github.io/docs/zh-cn/tools/use-custom-tools)。
+
+
+### 更新配置
+
+创建一个新的 Values yaml 文件, 比如 `prod-core-values.yaml`。
+
+比如说你需要更新 sandbox 的镜像，添加下面的内容到 `prod-core-values.yaml` 中:
+
+```yaml
+images:
+  sandbox:
+    tag: some-new-tag
+```
+
+然后执行：
+
+```sh
+helm upgrade monkey-tools-sandbox .  --namespace monkeys --values ./prod-core-values.yaml
+```
+
+### 卸载
+
+```sh
+helm uninstall monkey-tools-sandbox -n monkeys
+```
+
 
 ## 配置项
 
@@ -51,6 +122,8 @@
 | `piston.enabled`                                         | 使用启用 piston 服务，默认为 false。                                          | `false`                  |
 | `piston.replicas`                                        | 副本数                                                                        | `1`                      |
 | `piston.resources`                                       | 资源限制                                                                      | 要求 1C 2G，限制 2C 8G。 |
+| `piston.timeouts.runTimeout`                             | 请和 extraEnv 的 `PISTON_RUN_TIMEOUT` 保持一致。                              | `3600000`                |
+| `piston.timeouts.compileTimeout`                         | 请和 extraEnv 的 `PISTON_COMPILE_TIMEOUT` 保持一致。                          | `3600000`                |
 | `piston.extraEnv.PISTON_RUN_TIMEOUT`                     | 执行超时时间，单位为毫秒                                                      | `3600000`                |
 | `piston.extraEnv.PISTON_COMPILE_TIMEOUT`                 | 编译超时时间，单位为毫秒                                                      | `3600000`                |
 | `piston.extraEnv.PISTON_OUTPUT_MAX_SIZE`                 | 执行 stdout 以及 stderr 最大长度。                                            | `1024`                   |
@@ -76,21 +149,21 @@
 
 ### Sandbox 配置
 
-| 参数                            | 描述                                               | 默认值                   |
-| ------------------------------- | -------------------------------------------------- | ------------------------ |
-| `sandbox.piston.runTimeout`     | 请和 piston 的 `PISTON_RUN_TIMEOUT` 保持一致。     | `3600000`                |
-| `sandbox.piston.compileTimeout` | 请和 piston 的 `PISTON_COMPILE_TIMEOUT` 保持一致。 | `3600000`                |
-| `sandbox.replicas`              | 副本数                                             | 1                        |
-| `sandbox.resources`             | 资源限制                                           | 要求 1C 2G，限制 2C 8G。 |
+| 参数                | 描述     | 默认值                   |
+| ------------------- | -------- | ------------------------ |
+| `sandbox.replicas`  | 副本数   | 1                        |
+| `sandbox.resources` | 资源限制 | 要求 1C 2G，限制 2C 8G。 |
 
 
-### Redis
+### Redis （可选）
+
+只有当你开启了 piston 之后，才需要配置 ES。
 
 #### 单机 Redis
 
-| 参数                 | 描述           | 默认值                     |
-| -------------------- | -------------- | -------------------------- |
-| `externalRedis.mode` | Redis 部署架构 | `standalone`               |
+| 参数                 | 描述                                                                                                 | 默认值                     |
+| -------------------- | ---------------------------------------------------------------------------------------------------- | -------------------------- |
+| `externalRedis.mode` | Redis 部署架构                                                                                       | `standalone`               |
 | `externalRedis.url`  | Redis 连接地址，如 `redis://@localhost:6379/0`，包含密码的示例: `redis://:password@localhost:6379/0` | `redis://localhost:6379/0` |
 
 #### Redis 集群
@@ -119,7 +192,7 @@ nodes:
     port: 7006
 ```
 
-##### Redis sentinel
+#### Redis sentinel
 
 | 参数                             | 描述                | 默认值     |
 | -------------------------------- | ------------------- | ---------- |
@@ -134,44 +207,4 @@ Redis 哨兵节点列表示例：
 sentinels:
   - host: 127.0.0.1
     port: 7101
-```
-
-
-## 安装
-
-1. 安装 chart
-
-```sh
-helm install monkey-tools-sandbox . --values ./values.yaml -n monkeys
-```
-
-2. 检查状态
-
-```sh
-kubectl get pods -n monkeys
-kubectl get svc -n monkeys
-```
-
-### 更新配置
-
-创建一个新的 Values yaml 文件, 比如 `prod-values.yaml`。
-
-比如说你需要更新 sandbox 的镜像，添加下面的内容到 `prod-values.yaml` 中:
-
-```yaml
-images:
-  sandbox:
-    tag: some-new-tag
-```
-
-然后执行：
-
-```sh
-helm upgrade monkey-tools-sandbox . --namespace monkeys --values ./values.yaml --values ./prod-values.yaml
-```
-
-## 卸载
-
-```sh
-helm uninstall monkey-tools-sandbox
 ```

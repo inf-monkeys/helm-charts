@@ -82,7 +82,7 @@ By default `values.yaml` uses ClusterIP mode, you can visit monkeys web ui throu
 kubectl get pods 
 
 # Port Forward monkey-core-proxy-xxxx-xxxx Pod, in this example use local machine's 8080 port.
-kubectl port-forward --address 0.0.0.0 monkey-core-proxy-xxxx-xxxx 8080:80 -n monkeys
+kubectl port-forward --address 0.0.0.0 monkeys-core-proxy-xxxx-xxxx 8080:80 -n monkeys
 
 # Try
 curl http://localhost:8080

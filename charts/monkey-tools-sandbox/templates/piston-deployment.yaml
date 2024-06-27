@@ -33,7 +33,7 @@ spec:
       {{- end }}
       {{- end }}
       containers:
-        - image: "{{ .Values.images.piston.repository }}:{{ .Values.images.piston.tag }}"
+        - image: "{{ .Values.images.piston.registry }}/{{ .Values.images.piston.repository }}:{{ .Values.images.piston.tag }}"
           imagePullPolicy: "{{ .Values.images.piston.pullPolicy }}"
           name: piston
           env:

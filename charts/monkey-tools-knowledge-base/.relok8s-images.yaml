@@ -1,0 +1,1 @@
+- "{{ .images.server.registry }}/{{ .images.server.repository }}:{{ .images.server.tag }}"

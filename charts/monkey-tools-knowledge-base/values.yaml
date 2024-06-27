@@ -2,6 +2,7 @@ fullnameOverride:
 
 images:
   server:
+    registry: docker.io
     repository: infmonkeys/monkey-tools-knowledge-base
     tag: 0.0.15
     pullPolicy: IfNotPresent
@@ -13,36 +14,52 @@ server:
     labels: {}
     clusterIP: ""
 
-  embeddings:
-    models:
-      - name: BAAI/bge-base-zh-v1.5
-        dimension: 768
-      - name: jinaai/jina-embeddings-v2-base-en
-        dimension: 768
-      - name: jinaai/jina-embeddings-v2-small-en
-        dimension: 512
-      - name: moka-ai/m3e-base
-        dimension: 768
-
-  storage:
-    vector:
-      type: elasticsearch
-    relational:
-      type: sqlite
+  # Resource requests and limits
+  resources:
+    requests:
+      cpu: 0.5
+      memory: 4Gi
+    limits:
+      cpu: 4
+      memory: 16Gi
 
 ###################################
-# External elasticsearch 8
+# Embedding Models
 ###################################
-externalElasticsearch:
-  url: http://elasticsearch-master:9200
-  username: elastic
-  password: monkeys123
+embeddingsModels: []
+
+# Example:
+# embeddingsModels:
+#   - name: BAAI/bge-base-zh-v1.5
+#     dimension: 768
+#   - name: jinaai/jina-embeddings-v2-base-en
+#     dimension: 768
+#   - name: jinaai/jina-embeddings-v2-small-en
+#     dimension: 512
+#   - name: moka-ai/m3e-base
+#     dimension: 768
+#   - name: daocloud
+#     displayName: daocloud
+#     dimension: 768
+#     type: api
+#     apiConfig:
+#       url: http://localhost:5200/embeddings/FileVectorize
+#       method: POST
+#       headers:
+#         Content-Type: application/json
+#         Authorization: Bearer token
+#       body:
+#         shard: "{documents}"
+#       responseResolver:
+#         type: json
+#         path: embeddings
+
 
 ###################################
 # External postgres
 ###################################
 externalPostgresql:
-  url: postgresql://monkeys:monkeys123@monkeys-postgresql:5432/monkeys
+  url: postgresql://monkeys:monkeys123@monkeys-postgresql:5432/knowledge-base
   pool:
     pool_size: 30
     pool_recycle: 3600
@@ -81,9 +98,25 @@ externalRedis:
 #   sentinelName: mymaster
 #   password: password
 
+###################################
+###################################
+# Config vector store
+###################################
+###################################
 
 ###################################
-# External PGVector
+# Option1 - Use External elasticsearch 8
 ###################################
-externalPGVector:
-  url: postgresql://postgres:postgres@localhost:5432/monkeys
+externalElasticsearchVectorStore:
+  enabled: false
+  url: http://elasticsearch-master:9200
+  username: elastic
+  password: monkeys123
+
+
+###################################
+# Option2 - Use External PGVector
+###################################
+externalPGVectorStore:
+  enabled: false
+  url: postgresql://postgres:postgres@localhost:5432/knowledge-base
