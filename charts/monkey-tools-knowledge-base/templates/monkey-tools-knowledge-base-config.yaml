@@ -9,23 +9,27 @@ data:
       port: 5000
 
     database:
-      url: {{ .Values.externalPostgresql.url }}
+      {{- toYaml .Values.externalPostgresql | nindent 6 }}
 
     redis:
       {{- toYaml .Values.externalRedis | nindent 6 }}
 
     vector:
-      type: {{ .Values.server.storage.vector.type }}
-      {{- if eq .Values.server.storage.vector.type "elasticsearch" }}
+      # Vector store type: elasticsearch, pgvector
+      {{- if .Values.externalElasticsearchVectorStore.enabled }}
+      type: elasticsearch
       elasticsearch:
-        url: {{ .Values.externalElasticsearch.url }}
-        username: {{ .Values.externalElasticsearch.username }}
-        password: {{ .Values.externalElasticsearch.password }}
-      {{- else if eq .Values.server.storage.vector.type "pgvector" }}
+        url: {{ .Values.externalElasticsearchVectorStore.url }}
+        username: {{ .Values.externalElasticsearchVectorStore.username }}
+        password: {{ .Values.externalElasticsearchVectorStore.password }}
+      {{- else if .Values.externalPGVectorStore.enabled }}
+      type: pgvector
       pgvector:
-        url: {{ .Values.externalPGVector.url }}
+        url: {{ .Values.externalPGVectorStore.url }}
       {{- else }}
       {{- end }}
 
+    {{- if .Values.embeddingsModels }}
     embeddings:
-      {{- toYaml .Values.server.embeddings | nindent 6 }}
+      {{- toYaml .Values.embeddingsModels | nindent 6 }}
+    {{- end }}
