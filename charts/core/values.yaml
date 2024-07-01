@@ -9,14 +9,14 @@ images:
     repository: infmonkeys/monkeys
     # To use multi tenancy version
     # repository: infmonkeys/monkeys-multi-tenancy
-    tag: 0.1.5
+    tag: 0.1.8
     pullPolicy: IfNotPresent
     pullSecrets: 
   
   web:
     registry: docker.io
     repository: infmonkeys/monkeys-ui
-    tag: 0.1.5
+    tag: 0.1.8
     pullPolicy: IfNotPresent
     pullSecrets: 
 
@@ -593,7 +593,7 @@ externalRedis:
 # - See more configuration at https://artifacthub.io/packages/helm/bitnami/minio
 ###################################
 minio:
-  enabled: true
+  enabled: false
   mode: standalone
   defaultBuckets: monkeys-static
   isPrivate: false
@@ -621,6 +621,10 @@ minio:
 ###################################
 externalS3:
   enabled: false
+  # If set proxy to true, uploads to s3 will be proxied through server.
+  # In some case your minio can't be accessed from browser, you can set this to true.
+  # This is defaults to true
+  proxy: true
   # If the bucket is private, set this to true
   isPrivate: false
   # If you are use minio, set this to true

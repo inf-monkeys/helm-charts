@@ -291,7 +291,7 @@ service:
 以下是一个示例：
 
 ```yaml
-models:
+llmModels:
   - model: gpt-3.5-turbo
     baseURL: https://api.openai.com/v1
     apiKey: xxxxxxxxxxxxxx
@@ -586,17 +586,18 @@ sentinels:
 
 #### 使用外部 S3 存储
 
-| 参数                         | 描述                                                                                                | 默认值  |
-| ---------------------------- | --------------------------------------------------------------------------------------------------- | ------- |
-| `externalS3.enabled`         | 使用使用外部的满足你 S3 协议的对象存储，如 Minio、AWS S3 等。                                       | `false` |
-| `externalS3.isPrivate`       | 是否为私有仓库                                                                                      | `false` |
-| `externalS3.forcePathStyle`  | 是否使用 path-style endpoint, 当你使用 minio 时，一般都需要设置为 `true`                            | `false` |
-| `externalS3.endpoint`        | 访问地址                                                                                            | `""`    |
-| `externalS3.accessKeyId`     | AccessKeyID                                                                                         | `""`    |
-| `externalS3.secretAccessKey` | Secret Access Key                                                                                   | `""`    |
-| `externalS3.region`          | 区域                                                                                                | `""`    |
-| `externalS3.bucket`          | Bucket 名称，请使用公开的 bucket，以便前端能够访问到。                                              | `""`    |
-| `externalS3.publicAccessUrl` | 请填写外部（浏览器）可访问的地址，一般为 Bucket 配置的 CDN 地址，如 `https://static.infmonkeys.com` | `31900` |
+| 参数                         | 描述                                                                                                                                                                                                                                                                                                                                                                              | 默认值  |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `externalS3.enabled`         | 使用使用外部的满足你 S3 协议的对象存储，如 Minio、AWS S3 等。                                                                                                                                                                                                                                                                                                                     | `false` |
+| `externalS3.proxy`           | 是否使用 Server 作为中转代理进行上传。在某些情况下，你的 S3 服务（比如 MinIO）无法对外直接访问，这个时候你可以设置为 `true`，通过 `server` 服务进行中转代理。                                                                                                                                                                                                                     | `true`  |
+| `externalS3.isPrivate`       | 是否为私有仓库                                                                                                                                                                                                                                                                                                                                                                    | `false` |
+| `externalS3.forcePathStyle`  | 是否使用 path-style endpoint, 当你使用 minio 时，一般都需要设置为 `true`                                                                                                                                                                                                                                                                                                          | `false` |
+| `externalS3.accessKeyId`     | AccessKeyID                                                                                                                                                                                                                                                                                                                                                                       | `""`    |
+| `externalS3.secretAccessKey` | Secret Access Key                                                                                                                                                                                                                                                                                                                                                                 | `""`    |
+| `externalS3.region`          | 区域                                                                                                                                                                                                                                                                                                                                                                              | `""`    |
+| `externalS3.bucket`          | Bucket 名称，请使用公开的 bucket，以便前端能够访问到。                                                                                                                                                                                                                                                                                                                            | `""`    |
+| `externalS3.endpoint`        | S3 服务的 endpoint 地址。如果 `proxy` 为 `true`，则会在 `server` 服务内访问 s3，填此 s3 的内网地址；如果 `proxy` 为 `false`，将会从浏览器访问此地址，此地址必须对外网能够访问。示例：如果你使用的 `minio`，则需要填写的是 `minio` 的 `api` 端口，而非 `console` 端口；如果你使用的是云厂商提供的 s3 服务，填写对应的 `endpoint` 地址，如 `https://tos-s3-cn-beijing.volces.com`。 | `""`    |
+| `externalS3.publicAccessUrl` | 注意：`publicAccessUrl` 和 `endpoint` 为两个不同的地址，此地址会作为上传得到的 URL 的前缀，必须对浏览器可访问，否则浏览器将无法正常显示上传的文件。如果你使用的是如 `aws`, `阿里云`, `火山云` 等云厂商提供的 s3 服务，并且给 bucket 配置了 CDN 加速地址，可以将此地址配置为 CDN 的地址，如 `https://static.infmonkeys.com`                                                        | `""`    |
 
 ## 其他
 
