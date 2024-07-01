@@ -593,7 +593,7 @@ externalRedis:
 # - See more configuration at https://artifacthub.io/packages/helm/bitnami/minio
 ###################################
 minio:
-  enabled: false
+  enabled: true
   mode: standalone
   defaultBuckets: monkeys-static
   isPrivate: false
