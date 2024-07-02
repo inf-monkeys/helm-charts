@@ -9,14 +9,14 @@ images:
     repository: infmonkeys/monkeys
     # To use multi tenancy version
     # repository: infmonkeys/monkeys-multi-tenancy
-    tag: 0.1.8
+    tag: 0.1.12
     pullPolicy: IfNotPresent
     pullSecrets: 
   
   web:
     registry: docker.io
     repository: infmonkeys/monkeys-ui
-    tag: 0.1.8
+    tag: 0.1.12
     pullPolicy: IfNotPresent
     pullSecrets: 
 
