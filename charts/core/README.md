@@ -241,7 +241,7 @@ Currently, the following three user authentication methods are supported:
 
 ## Built-IN LLM Models
 
-You can configure the built-in large language model, which can be used by all teams within the system.​⬤
+You can configure the built-in large language model, which can be used by all teams within the system.​
 
 | Parameter   | Description                                                                                                            | Default Value |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------- | ------------- |
@@ -256,7 +256,7 @@ You can add any OpenAI-compatible LLMmodels with the following configuration:
 | `baseURL`                 | Access URL, e.g., `https://api.openai.com/v1`                                                                                           |               |
 | `apiKey`                  | API Key, optional                                                                                                                       |               |
 | `type`                    | Model type, `chat_completions` or `completions`, for chat or text completion models. Leave empty to support both.                       | `""`          |
-| `autoMergeSystemMessages` | Automatically merge multiple System Messages. Required for VLLM models that cannot handle multiple system messages for the same `role`. | `false`       |
+| `autoMergeConsecutiveMessages` | Should messages with the same role be automatically merged? When using a model deployed through VLLM, multiple consecutive messages with the same `role` cannot be transmitted. If there are multiple consecutive messages with the same role, they need to be automatically merged into a single message. If set to `true`, the messages will be automatically merged into one, separated by `\n\n`.| `false`       |
 | `defaultParams`           | Default request parameters, e.g., `top` parameters for specific models like `Qwen/Qwen-7B-Chat-Int4`.                                   |               |
 
 Here are an example: 
@@ -276,7 +276,7 @@ llmModels:
   - model: Qwen/Qwen-7B-Chat-Int4
     baseURL: http://127.0.0.1:8000/v1
     apiKey: token-abc123
-    autoMergeSystemMessages: true
+    autoMergeConsecutiveMessages: true
     defaultParams:
       stop:
         - <|im_start|>

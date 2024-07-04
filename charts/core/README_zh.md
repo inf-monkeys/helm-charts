@@ -284,7 +284,7 @@ service:
 | `baseURL`                 | 访问地址，如 `https://api.openai.com/v1`                                                                                                                                                                                                                |         |
 | `apiKey`                  | APIKey，如果没有可不填。                                                                                                                                                                                                                                |         |
 | `type`                    | 此模型的类型，可选值为 `chat_completions` 和 `completions`，分别表示是一个对话模型还是文本补全模型。不填则表示两种方式都支持。                                                                                                                          | `""`    |
-| `autoMergeSystemMessages` | 是否自动合并多条 System Messages，通过 VLLM 部署的模型，不能连续传多条为同一个 `role` 的 `message`，如果有多条 System Message（通过知识库自动设置、大语言模型节点手动设置预制 Prompt、API 调用或第三方工具手动传入 `system` message），需要合并为一条。 | `false` |
+| `autoMergeConsecutiveMessages` | 是否自动合并连续的同一个 role 的 messages，通过 VLLM 部署的模型，不能连续传多条为同一个 `role` 的 `message`，如果有多条连续相同 role 的 Message，需要自动合并为一条。如果设置为 `true`，将自动合并为一条 message，使用 `\n\n` 进行分隔。 | `false` |
 | `defaultParams`           | 默认请求参数，比如一些模型如 `Qwen/Qwen-7B-Chat-Int4`，需要设置 top 参数。                                                                                                                                                                              |         |
 
 
@@ -305,7 +305,7 @@ llmModels:
   - model: Qwen/Qwen-7B-Chat-Int4
     baseURL: http://127.0.0.1:8000/v1
     apiKey: token-abc123
-    autoMergeSystemMessages: true
+    autoMergeConsecutiveMessages: true
     defaultParams:
       stop:
         - <|im_start|>
