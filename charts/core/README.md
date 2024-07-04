@@ -241,7 +241,7 @@ Currently, the following three user authentication methods are supported:
 
 ## Built-IN LLM Models
 
-You can configure the built-in large language model, which can be used by all teams within the system.​⬤
+You can configure the built-in large language model, which can be used by all teams within the system.​
 
 | Parameter   | Description                                                                                                            | Default Value |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------- | ------------- |
@@ -256,13 +256,13 @@ You can add any OpenAI-compatible LLMmodels with the following configuration:
 | `baseURL`                 | Access URL, e.g., `https://api.openai.com/v1`                                                                                           |               |
 | `apiKey`                  | API Key, optional                                                                                                                       |               |
 | `type`                    | Model type, `chat_completions` or `completions`, for chat or text completion models. Leave empty to support both.                       | `""`          |
-| `autoMergeSystemMessages` | Automatically merge multiple System Messages. Required for VLLM models that cannot handle multiple system messages for the same `role`. | `false`       |
+| `autoMergeConsecutiveMessages` | Should messages with the same role be automatically merged? When using a model deployed through VLLM, multiple consecutive messages with the same `role` cannot be transmitted. If there are multiple consecutive messages with the same role, they need to be automatically merged into a single message. If set to `true`, the messages will be automatically merged into one, separated by `\n\n`.| `false`       |
 | `defaultParams`           | Default request parameters, e.g., `top` parameters for specific models like `Qwen/Qwen-7B-Chat-Int4`.                                   |               |
 
 Here are an example: 
 
 ```yaml
-models:
+llmModels:
   - model: gpt-3.5-turbo
     baseURL: https://api.openai.com/v1
     apiKey: xxxxxxxxxxxxxx
@@ -276,7 +276,7 @@ models:
   - model: Qwen/Qwen-7B-Chat-Int4
     baseURL: http://127.0.0.1:8000/v1
     apiKey: token-abc123
-    autoMergeSystemMessages: true
+    autoMergeConsecutiveMessages: true
     defaultParams:
       stop:
         - <|im_start|>
@@ -552,15 +552,16 @@ After startup, you should be able to access the Minio management console at the 
 
 #### Using External S3 Storage
 
-| Parameter                    | Description                                                                                          | Default Value |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------- | ------------- |
-| `externalS3.enabled`         | Use external S3-compatible storage such as Minio, AWS S3, etc.                                       | `false`       |
-| `externalS3.isPrivate`       | Is it a private repository                                                                           | `false`       |
-| `externalS3.forcePathStyle`  | Use path-style endpoint, typically set to `true` when using Minio                                    | `false`       |
-| `externalS3.endpoint`        | Endpoint URL                                                                                         | `""`          |
-| `externalS3.accessKeyId`     | Access Key ID                                                                                        | `""`          |
-| `externalS3.secretAccessKey` | Secret Access Key                                                                                    | `""`          |
-| `externalS3.region`          | Region                                                                                               | `""`          |
-| `externalS3.bucket`          | Bucket name, use a public bucket to allow frontend access                                            | `""`          |
-| `externalS3.publicAccessUrl` | Publicly accessible URL, typically the CDN URL for the bucket, e.g., `https://static.infmonkeys.com` | `31900`       |
 
+| Parameter                    | Description                                                                                                                                                                                                                                                                                                                                                                      | Default |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `externalS3.enabled`         | Use an external object storage that supports the S3 protocol, such as Minio, AWS S3, etc.                                                                                                                                                                                                                                                                                        | `false` |
+| `externalS3.proxy`           | Use the Server as an intermediary proxy for uploads. In some cases, your S3 service (such as MinIO) may not be directly accessible from the outside.                                                                                                                                                                                                                             | `true`  |
+| `externalS3.isPrivate`       | Whether it is a private repository.                                                                                                                                                                                                                                                                                                                                             | `false` |
+| `externalS3.forcePathStyle`  | Use path-style endpoint. When using Minio, this usually needs to be set to `true`.                                                                                                                                                                                                                                                                                               | `false` |
+| `externalS3.accessKeyId`     | AccessKeyID                                                                                                                                                                                                                                                                                                                                                                      | `""`    |
+| `externalS3.secretAccessKey` | Secret Access Key                                                                                                                                                                                                                                                                                                                                                                | `""`    |
+| `externalS3.region`          | Region                                                                                                                                                                                                                                                                                                                                                                           | `""`    |
+| `externalS3.bucket`          | Bucket name. Please use a public bucket so that it can be accessed by the front end.                                                                                                                                                                                                                                                                                             | `""`    |
+| `externalS3.endpoint`        | S3 service endpoint address. If `proxy` is `true`, the S3 will be accessed within the `server` service using this internal address; if `proxy` is `false`, this address must be accessible from the browser. Example: If you are using `minio`, the `api` port should be specified, not the `console` port; if using a cloud provider's S3 service, specify the corresponding `endpoint` address, such as `https://tos-s3-cn-beijing.volces.com`. | `""`    |
+| `externalS3.publicAccessUrl` | Note: `publicAccessUrl` and `endpoint` are different addresses. This address will be used as the prefix of the URL obtained after uploading, and must be accessible by the browser, otherwise, the uploaded files will not be displayed correctly. If you are using an S3 service provided by a cloud provider such as AWS, Alibaba Cloud, Volcano Engine, and have configured a CDN acceleration address for the bucket, you can set this address to the CDN address, such as `https://static.infmonkeys.com`.        | `""`    |
