@@ -52,13 +52,16 @@ spec:
             - name: http-conductor
               containerPort: 8080
               protocol: TCP
+            - name: http-ui
+              containerPort: 5000
+              protocol: TCP
           resources:
             {{- toYaml .Values.conductor.resources | nindent 12 }}
           volumeMounts:
-            - mountPath: /app/config/config-local.properties
+            - mountPath: /app/config/config.properties
               name: conductor-config
               readOnly: true
-              subPath: config-local.properties
+              subPath: config.properties
       volumes:
         - configMap:
             defaultMode: 420
