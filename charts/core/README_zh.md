@@ -135,53 +135,48 @@ helm uninstall monkeys -n monkeys
 
 ## 镜像地址与版本
 
-| 参数                             | 描述                                                                                     | 默认值                     |
-| -------------------------------- | ---------------------------------------------------------------------------------------- | -------------------------- |
-| `images.server.registry`         | 镜像 Registry                                                                            | `docker.io`                |
-| `images.server.repository`       | [monkeys](https://github.com/inf-monkeys/monkeys) 服务 Docker 镜像地址                   | `infmonkeys/monkeys`       |
-| `images.server.tag`              | 版本号号                                                                                 | `latest`                   |
-| `images.server.pullPolicy`       | 镜像拉取策略                                                                             | `IfNotPresent`             |
-| `images.server.pullSecrets`      | 镜像拉取密钥                                                                             | `""`                       |
-| `images.web.registry`            | 镜像 Registry                                                                            | `docker.io`                |
-| `images.web.repository`          | [前端](https://github.com/inf-monkeys/monkeys/tree/main/ui) Docker 镜像地址              | `infmonkeys/monkeys-ui`    |
-| `images.web.tag`                 | 版本号                                                                                   | `latest`                   |
-| `images.web.pullPolicy`          | 镜像拉取策略                                                                             | `IfNotPresent`             |
-| `images.web.pullSecrets`         | 镜像拉取密钥                                                                             | `""`                       |
-| `images.conductor.registry`      | 镜像 Registry                                                                            | `docker.io`                |
-| `images.conductor.repository`    | 流程编排引擎 [conductor](https://github.com/inf-monkeys/conductor) 的镜像地址            | `infmonkeys/conductor`     |
-| `images.conductor.tag`           | 版本号                                                                                   | `latest`                   |
-| `images.conductor.pullPolicy`    | 镜像拉取策略                                                                             | `IfNotPresent`             |
-| `images.conductor.pullSecrets`   | 镜像拉取密钥                                                                             | `""`                       |
-| `images.conductorUi.registry`    | 镜像 Registry                                                                            | `docker.io`                |
-| `images.conductorUi.repository`  | 流程编排引擎前端页面 [conductor-ui](https://github.com/inf-monkeys/conductor) 的镜像地址 | `infmonkeys/conductor-ui`  |
-| `images.conductorUi.tag`         | 版本号                                                                                   | `latest`                   |
-| `images.conductorUi.pullPolicy`  | 镜像拉取策略                                                                             | `IfNotPresent`             |
-| `images.conductorUi.pullSecrets` | 镜像拉取密钥                                                                             | `""`                       |
-| `images.oneapi.registry`         | 镜像 Registry                                                                            | `docker.io`                |
-| `images.oneapi.repository`       | [one-api](https://github.com/songquanpeng/one-api) 的镜像地址                            | `justsong/one-api`         |
-| `images.oneapi.tag`              | 版本号                                                                                   | `latest`                   |
-| `images.oneapi.pullPolicy`       | 镜像拉取策略                                                                             | `IfNotPresent`             |
-| `images.oneapi.pullSecrets`      | 镜像拉取密钥                                                                             | `""`                       |
-| `images.admin.registry`          | 镜像 Registry                                                                            | `docker.io`                |
-| `images.admin.repository`        | 管理后台的镜像地址                                                                       | `infmonkeys/monkeys-admin` |
-| `images.admin.tag`               | 版本号                                                                                   | `latest`                   |
-| `images.admin.pullPolicy`        | 镜像拉取策略                                                                             | `IfNotPresent`             |
-| `images.admin.pullSecrets`       | 镜像拉取密钥                                                                             | `""`                       |
-| `images.clash.registry`          | 镜像 Registry                                                                            | `docker.io`                |
-| `images.clash.repository`        | Clash 代理服务的镜像地址                                                                 | `infmonkeys/clash`         |
-| `images.clash.tag`               | 版本号                                                                                   | `latest`                   |
-| `images.clash.pullPolicy`        | 镜像拉取策略                                                                             | `IfNotPresent`             |
-| `images.clash.pullSecrets`       | 镜像拉取密钥                                                                             | `""`                       |
-| `images.busybox.registry`        | 镜像 Registry                                                                            | `docker.io`                |
-| `images.busybox.repository`      | Clash 代理服务的镜像地址                                                                 | `busybox`                  |
-| `images.busybox.tag`             | 版本号                                                                                   | `latest`                   |
-| `images.busybox.pullPolicy`      | 镜像拉取策略                                                                             | `IfNotPresent`             |
-| `images.busybox.pullSecrets`     | 镜像拉取密钥                                                                             | `""`                       |
-| `images.nginx.registry`          | 镜像 Registry                                                                            | `docker.io`                |
-| `images.nginx.repository`        | Nginx 的镜像地址                                                                         | `nginx`                    |
-| `images.nginx.tag`               | 版本号                                                                                   | `latest`                   |
-| `images.nginx.pullPolicy`        | 镜像拉取策略                                                                             | `IfNotPresent`             |
-| `images.nginx.pullSecrets`       | 镜像拉取密钥                                                                             | `""`                       |
+| 参数                           | 描述                                                                          | 默认值                     |
+| ------------------------------ | ----------------------------------------------------------------------------- | -------------------------- |
+| `images.server.registry`       | 镜像 Registry                                                                 | `docker.io`                |
+| `images.server.repository`     | [monkeys](https://github.com/inf-monkeys/monkeys) 服务 Docker 镜像地址        | `infmonkeys/monkeys`       |
+| `images.server.tag`            | 版本号号                                                                      | `latest`                   |
+| `images.server.pullPolicy`     | 镜像拉取策略                                                                  | `IfNotPresent`             |
+| `images.server.pullSecrets`    | 镜像拉取密钥                                                                  | `""`                       |
+| `images.web.registry`          | 镜像 Registry                                                                 | `docker.io`                |
+| `images.web.repository`        | [前端](https://github.com/inf-monkeys/monkeys/tree/main/ui) Docker 镜像地址   | `infmonkeys/monkeys-ui`    |
+| `images.web.tag`               | 版本号                                                                        | `latest`                   |
+| `images.web.pullPolicy`        | 镜像拉取策略                                                                  | `IfNotPresent`             |
+| `images.web.pullSecrets`       | 镜像拉取密钥                                                                  | `""`                       |
+| `images.conductor.registry`    | 镜像 Registry                                                                 | `docker.io`                |
+| `images.conductor.repository`  | 流程编排引擎 [conductor](https://github.com/inf-monkeys/conductor) 的镜像地址 | `infmonkeys/conductor-oss` |
+| `images.conductor.tag`         | 版本号                                                                        | `latest`                   |
+| `images.conductor.pullPolicy`  | 镜像拉取策略                                                                  | `IfNotPresent`             |
+| `images.conductor.pullSecrets` | 镜像拉取密钥                                                                  | `""`                       |
+| `images.oneapi.registry`       | 镜像 Registry                                                                 | `docker.io`                |
+| `images.oneapi.repository`     | [one-api](https://github.com/songquanpeng/one-api) 的镜像地址                 | `justsong/one-api`         |
+| `images.oneapi.tag`            | 版本号                                                                        | `latest`                   |
+| `images.oneapi.pullPolicy`     | 镜像拉取策略                                                                  | `IfNotPresent`             |
+| `images.oneapi.pullSecrets`    | 镜像拉取密钥                                                                  | `""`                       |
+| `images.admin.registry`        | 镜像 Registry                                                                 | `docker.io`                |
+| `images.admin.repository`      | 管理后台的镜像地址                                                            | `infmonkeys/monkeys-admin` |
+| `images.admin.tag`             | 版本号                                                                        | `latest`                   |
+| `images.admin.pullPolicy`      | 镜像拉取策略                                                                  | `IfNotPresent`             |
+| `images.admin.pullSecrets`     | 镜像拉取密钥                                                                  | `""`                       |
+| `images.clash.registry`        | 镜像 Registry                                                                 | `docker.io`                |
+| `images.clash.repository`      | Clash 代理服务的镜像地址                                                      | `infmonkeys/clash`         |
+| `images.clash.tag`             | 版本号                                                                        | `latest`                   |
+| `images.clash.pullPolicy`      | 镜像拉取策略                                                                  | `IfNotPresent`             |
+| `images.clash.pullSecrets`     | 镜像拉取密钥                                                                  | `""`                       |
+| `images.busybox.registry`      | 镜像 Registry                                                                 | `docker.io`                |
+| `images.busybox.repository`    | Clash 代理服务的镜像地址                                                      | `busybox`                  |
+| `images.busybox.tag`           | 版本号                                                                        | `latest`                   |
+| `images.busybox.pullPolicy`    | 镜像拉取策略                                                                  | `IfNotPresent`             |
+| `images.busybox.pullSecrets`   | 镜像拉取密钥                                                                  | `""`                       |
+| `images.nginx.registry`        | 镜像 Registry                                                                 | `docker.io`                |
+| `images.nginx.repository`      | Nginx 的镜像地址                                                              | `nginx`                    |
+| `images.nginx.tag`             | 版本号                                                                        | `latest`                   |
+| `images.nginx.pullPolicy`      | 镜像拉取策略                                                                  | `IfNotPresent`             |
+| `images.nginx.pullSecrets`     | 镜像拉取密钥                                                                  | `""`                       |
 
 
 
@@ -278,14 +273,14 @@ service:
 
 你可以按照下面的配置添加任意符合 OpenAI 标准的大语言模型：
 
-| 参数                      | 描述                                                                                                                                                                                                                                                    | 默认值  |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `model`                   | model name，如 `gpt-3.5-turbo`                                                                                                                                                                                                                          |         |
-| `baseURL`                 | 访问地址，如 `https://api.openai.com/v1`                                                                                                                                                                                                                |         |
-| `apiKey`                  | APIKey，如果没有可不填。                                                                                                                                                                                                                                |         |
-| `type`                    | 此模型的类型，可选值为 `chat_completions` 和 `completions`，分别表示是一个对话模型还是文本补全模型。不填则表示两种方式都支持。                                                                                                                          | `""`    |
+| 参数                           | 描述                                                                                                                                                                                                                                     | 默认值  |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `model`                        | model name，如 `gpt-3.5-turbo`                                                                                                                                                                                                           |         |
+| `baseURL`                      | 访问地址，如 `https://api.openai.com/v1`                                                                                                                                                                                                 |         |
+| `apiKey`                       | APIKey，如果没有可不填。                                                                                                                                                                                                                 |         |
+| `type`                         | 此模型的类型，可选值为 `chat_completions` 和 `completions`，分别表示是一个对话模型还是文本补全模型。不填则表示两种方式都支持。                                                                                                           | `""`    |
 | `autoMergeConsecutiveMessages` | 是否自动合并连续的同一个 role 的 messages，通过 VLLM 部署的模型，不能连续传多条为同一个 `role` 的 `message`，如果有多条连续相同 role 的 Message，需要自动合并为一条。如果设置为 `true`，将自动合并为一条 message，使用 `\n\n` 进行分隔。 | `false` |
-| `defaultParams`           | 默认请求参数，比如一些模型如 `Qwen/Qwen-7B-Chat-Int4`，需要设置 top 参数。                                                                                                                                                                              |         |
+| `defaultParams`                | 默认请求参数，比如一些模型如 `Qwen/Qwen-7B-Chat-Int4`，需要设置 top 参数。                                                                                                                                                               |         |
 
 
 以下是一个示例：

@@ -9,14 +9,14 @@ images:
     repository: infmonkeys/monkeys
     # To use multi tenancy version
     # repository: infmonkeys/monkeys-multi-tenancy
-    tag: 0.1.17
+    tag: 0.1.20
     pullPolicy: IfNotPresent
     pullSecrets: 
   
   web:
     registry: docker.io
     repository: infmonkeys/monkeys-ui
-    tag: 0.1.17
+    tag: 0.1.20
     pullPolicy: IfNotPresent
     pullSecrets: 
 
@@ -31,15 +31,8 @@ images:
 
   conductor:
     registry: docker.io
-    repository: infmonkeys/conductor
-    tag: latest
-    pullPolicy: IfNotPresent
-    pullSecrets: 
-
-  conductorUi:
-    registry: docker.io
-    repository: infmonkeys/conductor-ui
-    tag: latest
+    repository: infmonkeys/conductor-oss
+    tag: 1.0.0
     pullPolicy: IfNotPresent
     pullSecrets: 
 
@@ -376,32 +369,6 @@ conductor:
 
   service:
     port: 8080
-    annotations: {}
-    labels: {}
-    clusterIP: ""
-
-###################################
-# Conductor UI
-###################################
-conductorUi:
-  enabled: true
-  replicas: 1
-
-  # Resource requests and limits
-  resources:
-    requests:
-      cpu: 0.5
-      memory: 1Gi
-    limits:
-      cpu: 4
-      memory: 8Gi
-
-  nodeSelector: {}
-  affinity: {}
-  tolerations: []
-
-  service:
-    port: 5000
     annotations: {}
     labels: {}
     clusterIP: ""
