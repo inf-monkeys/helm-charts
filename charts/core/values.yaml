@@ -9,14 +9,14 @@ images:
     repository: infmonkeys/monkeys
     # To use multi tenancy version
     # repository: infmonkeys/monkeys-multi-tenancy
-    tag: 0.1.20
+    tag: 0.1.22
     pullPolicy: IfNotPresent
     pullSecrets: 
   
   web:
     registry: docker.io
     repository: infmonkeys/monkeys-ui
-    tag: 0.1.20
+    tag: 0.1.22
     pullPolicy: IfNotPresent
     pullSecrets: 
 
@@ -631,6 +631,30 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
+
+###################################
+# Service Monitor Config
+###################################
+serviceMonitors: []
+# serviceMonitors:
+#   - name: monkeys-core-server
+#     namespace: monitoring
+#     selector:
+#       matchLabels:
+#         monkeys/app: server
+#     endpoints:
+#       - port: http-server
+#         interval: 5s
+#         path: /metrics
+#   - name: monkeys-core-conductor
+#     namespace: monitoring
+#     selector:
+#       matchLabels:
+#         monkeys/app: conductor
+#     endpoints:
+#       - port: http-conductor
+#         interval: 1s
+#         path: /actuator/prometheus
 
 autoscaling:
   enabled: false

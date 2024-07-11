@@ -49,6 +49,9 @@
   - [MinIO(S3) Storage](#minios3-storage)
     - [Using Built-in Minio Storage](#using-built-in-minio-storage)
     - [Using External S3 Storage](#using-external-s3-storage)
+- [Service Monitoring](#service-monitoring)
+  - [Installing Prometheus Operator](#installing-prometheus-operator)
+  - [Configuration](#configuration)
 
 
 ## Install
@@ -565,3 +568,59 @@ After startup, you should be able to access the Minio management console at the 
 | `externalS3.bucket`          | Bucket name. Please use a public bucket so that it can be accessed by the front end.                                                                                                                                                                                                                                                                                                                                                                                                                            | `""`    |
 | `externalS3.endpoint`        | S3 service endpoint address. If `proxy` is `true`, the S3 will be accessed within the `server` service using this internal address; if `proxy` is `false`, this address must be accessible from the browser. Example: If you are using `minio`, the `api` port should be specified, not the `console` port; if using a cloud provider's S3 service, specify the corresponding `endpoint` address, such as `https://tos-s3-cn-beijing.volces.com`.                                                               | `""`    |
 | `externalS3.publicAccessUrl` | Note: `publicAccessUrl` and `endpoint` are different addresses. This address will be used as the prefix of the URL obtained after uploading, and must be accessible by the browser, otherwise, the uploaded files will not be displayed correctly. If you are using an S3 service provided by a cloud provider such as AWS, Alibaba Cloud, Volcano Engine, and have configured a CDN acceleration address for the bucket, you can set this address to the CDN address, such as `https://static.infmonkeys.com`. | `""`    |
+
+
+## Service Monitoring
+
+For detailed Prometheus metrics exposed by the Monkeys service, please refer to [https://inf-monkeys.github.io/docs/en-us/cluster/monitoring/prometheus-grafana/](https://inf-monkeys.github.io/docs/en-us/cluster/monitoring/prometheus-grafana/).
+
+### Installing Prometheus Operator
+
+If you haven't installed Prometheus Operator yet, you can install it using the following commands, setting the namespace to `monitoring`:
+
+```sh
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+kubectl create namespace monitoring
+helm install prometheus prometheus-community/kube-prometheus-stack --namespace monitoring
+```
+
+Check the installation status:
+
+```sh
+kubectl get all -n monitoring
+```
+
+### Configuration
+
+| Parameter         | Description              | Default |
+| ----------------- | ------------------------ | ------- |
+| `serviceMonitors` | Enabled service monitors | `[]`    |
+
+As the deployment environment may not have Prometheus Operator installed by default, `serviceMonitors` is initially set to an empty array. Once Prometheus Operator is installed, you can configure `serviceMonitors` as follows:
+
+- `namespace`: Modify it to the namespace where your Prometheus Operator is deployed.
+
+```yaml
+serviceMonitors:
+  - name: monkeys-core-server
+    namespace: monitoring
+    selector:
+      matchLabels:
+        monkeys/app: server
+    endpoints:
+      - port: http-server
+        interval: 5s
+        path: /metrics
+  - name: monkeys-core-conductor
+    namespace: monitoring
+    selector:
+      matchLabels:
+        monkeys/app: conductor
+    endpoints:
+      - port: http-conductor
+        interval: 1s
+        path: /actuator/prometheus
+```
+
+If you deploy a `vllm` service in the **current namespace**, you can add a new `serviceMonitor` similarly, though Monkeys' Helm charts do not provide this by default.

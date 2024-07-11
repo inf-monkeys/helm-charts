@@ -52,6 +52,9 @@
   - [MinIO(S3) 存储](#minios3-存储)
     - [使用内置 Minio 存储](#使用内置-minio-存储)
     - [使用外部 S3 存储](#使用外部-s3-存储)
+- [服务监控](#服务监控)
+  - [安装 Prometheus Operator](#安装-prometheus-operator)
+  - [配置项](#配置项)
 - [其他](#其他)
   - [Daocloud DCE 菜单配置](#daocloud-dce-菜单配置)
 
@@ -593,6 +596,61 @@ sentinels:
 | `externalS3.bucket`          | Bucket 名称，请使用公开的 bucket，以便前端能够访问到。                                                                                                                                                                                                                                                                                                                            | `""`    |
 | `externalS3.endpoint`        | S3 服务的 endpoint 地址。如果 `proxy` 为 `true`，则会在 `server` 服务内访问 s3，填此 s3 的内网地址；如果 `proxy` 为 `false`，将会从浏览器访问此地址，此地址必须对外网能够访问。示例：如果你使用的 `minio`，则需要填写的是 `minio` 的 `api` 端口，而非 `console` 端口；如果你使用的是云厂商提供的 s3 服务，填写对应的 `endpoint` 地址，如 `https://tos-s3-cn-beijing.volces.com`。 | `""`    |
 | `externalS3.publicAccessUrl` | 注意：`publicAccessUrl` 和 `endpoint` 为两个不同的地址，此地址会作为上传得到的 URL 的前缀，必须对浏览器可访问，否则浏览器将无法正常显示上传的文件。如果你使用的是如 `aws`, `阿里云`, `火山云` 等云厂商提供的 s3 服务，并且给 bucket 配置了 CDN 加速地址，可以将此地址配置为 CDN 的地址，如 `https://static.infmonkeys.com`                                                        | `""`    |
+
+## 服务监控
+
+Monkeys 服务暴露的 Prometheus 详细指标以及配置过程请见 [https://inf-monkeys.github.io/docs/zh-cn/cluster/monitoring/prometheus-grafana/](https://inf-monkeys.github.io/docs/zh-cn/cluster/monitoring/prometheus-grafana/)。
+
+### 安装 Prometheus Operator
+
+如果你还没有安装 Prometheus Operator，可以通过下面的命令安装，这里设置的 namespace 为 `monitoring`:
+
+```sh
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+kubectl create namespace monitoring
+helm install prometheus prometheus-community/kube-prometheus-stack --namespace monitoring
+```
+
+检查安装状态:
+
+```sh
+kubectl get all -n monitoring
+```
+
+### 配置项
+
+| 参数              | 描述                   | 默认值 |
+| ----------------- | ---------------------- | ------ |
+| `serviceMonitors` | 开启的 servicemonitors | `[]]`  |
+
+由于不确定部署的环境是否安装了 Prometheus Operator，所以 `serviceMonitors` 默认为空数组。在你安装了 Prometheus Operator 之后，可以修改 `serviceMonitors` 配置如下：
+
+- `namespace`: 修改为你的 Prometheus Operator 所在的 namespace。
+
+```yaml
+serviceMonitors:
+  - name: monkeys-core-server
+    namespace: monitoring
+    selector:
+      matchLabels:
+        monkeys/app: server
+    endpoints:
+      - port: http-server
+        interval: 5s
+        path: /metrics
+  - name: monkeys-core-conductor
+    namespace: monitoring
+    selector:
+      matchLabels:
+        monkeys/app: conductor
+    endpoints:
+      - port: http-conductor
+        interval: 1s
+        path: /actuator/prometheus
+```
+
+如果你在**当前 namespace** 下部署了 vllm 服务，可以类似添加新的 `serviceMonitor`，但是 Monkeys 的 helm charts 默认不提供。
 
 ## 其他
 

@@ -5,6 +5,7 @@ metadata:
 {{ include "monkeys.ud.annotations" . | indent 4 }}
     descriptions: conductor
   labels:
+    monkeys/app: conductor
 {{- include "monkeys.labels" . | nindent 4 }}
     component: conductor
 {{ include "monkeys.ud.labels" . | indent 4 }}
@@ -18,6 +19,9 @@ spec:
   template:
     metadata:
       annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/actuator/prometheus"
 {{ include "monkeys.ud.annotations" . | indent 8 }}
       labels:
 {{- include "monkeys.selectorLabels" . | nindent 8 }}

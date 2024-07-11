@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: {{ template "monkeys.conductor.fullname" . }}
   labels:
+    monkeys/app: conductor
 {{ include "monkeys.labels" . | indent 4 }}
 {{- if .Values.conductor.service.labels }}
 {{ toYaml .Values.conductor.service.labels | indent 4 }}
