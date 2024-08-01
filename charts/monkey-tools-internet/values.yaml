@@ -9,11 +9,21 @@ images:
     pullSecrets: 
 
 server:
+  replicas: 1
+  resources:
+    limits:
+      cpu: '2'
+      memory: 8Gi
+    requests:
+      cpu: '1'
+      memory: 2Gi
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []
   service:
     annotations: {}
     labels: {}
     clusterIP: ""
-  resources: {}
 
 tavily:
   apikey:
