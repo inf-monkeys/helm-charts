@@ -2,8 +2,9 @@ fullnameOverride:
 
 images:
   server:
+    registry: docker.io
     repository: infmonkeys/monkey-tools-internet
-    tag: 0.0.2
+    tag: 0.0.9
     pullPolicy: IfNotPresent
     pullSecrets: 
 

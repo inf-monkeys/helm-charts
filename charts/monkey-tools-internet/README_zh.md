@@ -12,6 +12,7 @@
 
 | 参数                        | 描述                          | 默认值                             |
 | --------------------------- | ----------------------------- | ---------------------------------- |
+| `images.server.registry`    | 镜像地址                      | `docker.io`                        |
 | `images.server.repository`  | 镜像地址                      | `infmonkeys/monkey-tools-internet` |
 | `images.server.tag`         | 版本号                        | `""`                               |
 | `images.server.pullSecrets` | 拉取镜像的 secret，没有可留空 | `""`                               |
@@ -35,8 +36,6 @@
 | --------------- | -------------- | ------- |
 | `proxy.enabled` | 是否开启代理。 | `false` |
 | `proxy.url`     | 代理地址       | `""`    |
-
-
 
 ## 安装
 
