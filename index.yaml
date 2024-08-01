@@ -726,6 +726,16 @@ entries:
   monkey-tools-internet:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-08-01T06:21:04.404010914Z"
+    description: A Helm chart for monkey-tools-internet
+    digest: c5a52030c2b6f0d7e2ec3e250a59405e26354e56a038922222414ae7a07c2edf
+    name: monkey-tools-internet
+    type: application
+    urls:
+    - https://github.com/inf-monkeys/helm-charts/releases/download/monkey-tools-internet-0.1.1/monkey-tools-internet-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-06-18T04:13:27.218759051Z"
     description: A Helm chart for monkey-tools-internet
     digest: 4224cf2b0a08c682547729c9091ca37e4632e7f607e03351f7311b53464fbd95
@@ -865,4 +875,4 @@ entries:
     urls:
     - https://github.com/inf-monkeys/helm-charts/releases/download/vllm-0.1.0/vllm-0.1.0.tgz
     version: 0.1.0
-generated: "2024-07-11T05:11:19.962758162Z"
+generated: "2024-08-01T06:21:04.404074673Z"
