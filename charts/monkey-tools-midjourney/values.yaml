@@ -3,7 +3,7 @@ fullnameOverride:
 images:
   server:
     repository: infmonkeys/monkey-tools-midjourney
-    tag: 0.0.4
+    tag: 0.0.11
     pullPolicy: IfNotPresent
     pullSecrets: 
 

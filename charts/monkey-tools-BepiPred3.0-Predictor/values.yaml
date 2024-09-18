@@ -3,7 +3,7 @@ fullnameOverride:
 images:
   server:
     repository: infmonkeys/monkey-tools-bepipred30-predictor
-    tag: 0.0.1
+    tag: 0.0.4
     pullPolicy: IfNotPresent
     pullSecrets:
 

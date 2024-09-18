@@ -4,7 +4,7 @@ images:
   server:
     registry: docker.io
     repository: infmonkeys/monkey-tools-knowledge-base
-    tag: 0.0.15
+    tag: 0.1.18
     pullPolicy: IfNotPresent
     pullSecrets: 
 

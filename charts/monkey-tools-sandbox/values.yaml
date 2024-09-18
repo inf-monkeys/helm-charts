@@ -4,7 +4,7 @@ images:
   sandbox:
     registry: docker.io
     repository: infmonkeys/monkey-tools-sandbox
-    tag: 0.0.3
+    tag: 0.0.2
     pullPolicy: IfNotPresent
     pullSecrets: 
 

@@ -3,7 +3,7 @@ fullnameOverride:
 images:
   server:
     repository: infmonkeys/monkey-tools-social-media
-    tag: 0.0.2
+    tag: 0.0.3
     pullPolicy: IfNotPresent
     pullSecrets: 
 
